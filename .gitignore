@@ -8,6 +8,7 @@
 ##########
 # Ignores all gradle files
 /.gradle
+!gradle-wrapper.jar
 
 # Git Stuff #
 #############

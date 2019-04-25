@@ -1,3 +1,39 @@
+
+
+
+
+#Write up
+
+Our main methods of gathering data will be talking to examples of our primary stakeholder (so professionals who have to travel to meetings during their work day) and people who know how these people work - we have members of our group with this knowledge, and can also contact some people that we know. We will also do secondary research online, looking for articles about business travel, as well as finding out if it's likely that our app is likely to actually be used.
+
+
+Our data gathering revealed that considering what to wear is a "very real concern" for people travelling for business, and that this decision is based on the weather [1]. Typical real estate agents arrange most of their appointments for the morning, but would usually have to travel to their office in the morning and may also go out at lunch time, all whilst wearing the same clothes [5] [6]. This means that our app would be helping to solve a real problem.
+As the typical business professionals use a smartphone (for example, 94% of real estate agents use a smartphone daily [2]), the app could be accessed and used by a large portion of our primary stakeholder.
+Continuing to focus on salespeople (e.g. real estate agents and bankers), we found that the typical real estate agent is 54 and female [3], while more than 3/4 of entry-level Wall Street bankers are male [4]. This means that the app could have a wide audience for both men and women.
+
+
+
+[1] http://saleshq.monster.com/training/articles/350-what-to-wear-for-business-travel
+
+[2] https://www.nar.realtor/research-and-statistics/research-reports/real-estate-in-a-digital-age
+
+[3] https://www.nar.realtor/research-and-statistics/quick-real-estate-statistics
+
+[4] https://dealbook.nytimes.com/2014/09/30/wall-streets-young-bankers-are-still-mostly-white-and-male/
+
+[5] https://theagentspot.com/real-estate-business/successful-realtors-work-schedule/
+
+[6] https://topagentmagazine.com/the-daily-schedule-of-a-successful-real-estate-agent/
+
+
+
+
+
+
+
+
+
+Research
 Images
 Outfits to consider
 Time spent travelling
@@ -48,19 +84,3 @@ The typical REALTOR® is a 54-year-old white female who attended college and is 
 REALTORS® most often prefer to communicate with their clients through email, at 93%. Ninety-two % prefer to communicate through text messaging, and 37% through instant messaging.
 Over 90 percent of REALTORS® are also using e-mail, laptops/desk tops computers, and smartphones daily.
 94% use a smartphone with wireless email and Internet capabilities daily.
-
-
-
-
-#Write up
-Our main methods of gathering data will be talking to examples of our primary stakeholder (so professionals who have to travel to meetings during their work day) and people who know how these people work - we have members of our group with this knowledge, and can also contact some people that we know. We will also research online, looking for articles about business travel, as well as finding out if it's likely that our app is likely to actually be used.
-
-
-Our data gathering revealed that considering what to wear is a "very real concern" for people travelling for business, and that this decision is based on the weather [1].
-This means that our app would be helping to solve a real problem.
-As the typical business professionals use a smartphone (for example, 94% of real estate agents use a smartphone daily [2]), the app could be accessed and used by a large portion of our primary stakeholder.
-Focussing on salespeople (e.g. real estate agents and bankers), we found that the typical real estate agent is 54 and female, while more than 3/4 of entry-level Wall Street bankers are male. This means that the app has to be aimed
-
-
-[1] http://saleshq.monster.com/training/articles/350-what-to-wear-for-business-travel
-[2] https://www.nar.realtor/research-and-statistics/research-reports/real-estate-in-a-digital-age

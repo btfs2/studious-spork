@@ -14,10 +14,15 @@ Continuing to focus on salespeople (e.g. real estate agents and bankers), we fou
 
 
 [1] http://saleshq.monster.com/training/articles/350-what-to-wear-for-business-travel
+
 [2] https://www.nar.realtor/research-and-statistics/research-reports/real-estate-in-a-digital-age
+
 [3] https://www.nar.realtor/research-and-statistics/quick-real-estate-statistics
+
 [4] https://dealbook.nytimes.com/2014/09/30/wall-streets-young-bankers-are-still-mostly-white-and-male/
+
 [5] https://theagentspot.com/real-estate-business/successful-realtors-work-schedule/
+
 [6] https://topagentmagazine.com/the-daily-schedule-of-a-successful-real-estate-agent/
 
 

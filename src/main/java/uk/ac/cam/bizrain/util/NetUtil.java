@@ -1,9 +1,14 @@
 package uk.ac.cam.bizrain.util;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Networking utilities
@@ -22,7 +27,7 @@ public class NetUtil {
 	 * @return if a head returns HTTP 200 to a HEAD request to endpoint in 250ms
 	 */
 	public static boolean pingURL(String url) {
-		return pingURL(url, 250, "HEAD", new int[] {200});
+		return pingURL(url, 250, "HEAD", new int[] {HttpURLConnection.HTTP_OK});
 	}
 	
 	/**
@@ -63,10 +68,15 @@ public class NetUtil {
 		return "BYE";
 	}
 	
+	private static Map<String, String> responseCache   = new ConcurrentHashMap<>();
+	private static Map<String, Long> responseCacheTime = new ConcurrentHashMap<>();
+	
 	/**
 	 * Does stuff
 	 * 
-	 * TODO
+	 * TODO Implement
+	 * 
+	 * TODO HANDLE GZIP
 	 * 
 	 * @param url
 	 * @param method
@@ -76,6 +86,29 @@ public class NetUtil {
 	 * @return
 	 */
 	public static String httpBody(String url, String method, int requestTimeout, long cacheTimeout, boolean flushCache) {
-		return "BYE";
+		if (!flushCache && responseCache.containsKey(url)) {
+			if (responseCacheTime.get(url) < System.currentTimeMillis() + cacheTimeout) {
+				return responseCache.get(url);
+			} else {
+				responseCacheTime.remove(url);
+				responseCache.remove(url);
+			}
+		}
+		try {
+	        HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
+	        connection.setConnectTimeout(requestTimeout);
+	        connection.setReadTimeout(requestTimeout);
+	        connection.setRequestMethod(method);
+	        connection.setRequestProperty("Accept-Encoding", "identity");
+	        if (connection.getResponseCode() != 200) return null; //Read fail
+	        else {
+	        	String body = new BufferedReader(new InputStreamReader(connection.getInputStream())).lines().reduce((a, b) -> a + "\n" + b).get();
+	        	responseCache.put(url, body);
+	        	responseCacheTime.put(url, System.currentTimeMillis());
+	        	return body;
+	        }
+	    } catch (IOException exception) {
+	        return null;
+	    }
 	}
 }

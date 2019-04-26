@@ -9,9 +9,11 @@ package uk.ac.cam.bizrain.weather;
 public interface IWeatherProvider {
 
 	/**
-	 * Gets the size of each weather block IN SECONDS
+	 * Gets the default size of each weather block IN SECONDS
 	 * 
 	 * Note that doing second by second res is a bad idea
+	 * 
+	 * The seconds are as this is used in EPOCH time systems
 	 * 
 	 * @return Size of weather
 	 */

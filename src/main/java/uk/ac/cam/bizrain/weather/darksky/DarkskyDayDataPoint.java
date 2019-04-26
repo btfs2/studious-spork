@@ -8,7 +8,7 @@ package uk.ac.cam.bizrain.weather.darksky;
  * @author btfs2
  *
  */
-public class DarkskyDayDataPoint extends DarkskyDataPoint {
+public class DarkskyDayDataPoint extends DarkskyRegularDataPoint {
 
 	//Day info
 	public long sunriseTime;
@@ -30,7 +30,7 @@ public class DarkskyDayDataPoint extends DarkskyDataPoint {
 	public long windGustTime;
 	//Sky
 	public long uvIndexTime;
-	public long visibility;
+	public float visibility;
 	//Total Temp
 	public float temperatureMax;
 	public long temperatureMaxTime;

@@ -38,4 +38,9 @@ public class Location {
 	public float getLng() {
 		return lng;
 	}
+	
+	@Override
+	public String toString() {
+		return  Math.abs(getLat()) + "° " + (getLat() >= 0 ? "N " : "S ") + Math.abs(getLng()) + "° " + (getLng() >= 0 ? "E" : "W");
+	}
 }

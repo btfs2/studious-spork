@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.zip.GZIPInputStream;
 
 /**
  * Networking utilities
@@ -62,8 +63,6 @@ public class NetUtil {
 	/**
 	 * Gets the body of a request to a url
 	 * 
-	 * TODO: IMPLEMENT
-	 * 
 	 * @param url URL to request
 	 * @return Body of response of a GET to url.
 	 */
@@ -83,7 +82,7 @@ public class NetUtil {
 	 * 
 	 * Note that this only returns if the code is 200;
 	 * 
-	 * TODO HANDLE ENCODING (i.e. gzip)
+	 * Supports parsing of both raw and GZIP'd data.
 	 * 
 	 * @param url URL to request; must be safely encoded
 	 * @param method Method to use for request; must be valid
@@ -106,18 +105,28 @@ public class NetUtil {
 	        connection.setConnectTimeout(requestTimeout);
 	        connection.setReadTimeout(requestTimeout);
 	        connection.setRequestMethod(method);
-	        connection.setRequestProperty("Accept-Encoding", "identity");
+	        connection.setRequestProperty("Accept-Encoding", "identity, gzip");
 	        if (connection.getResponseCode() != 200) {
 	        	log.log(Level.WARNING, "HTTP Read failed response code: " + connection.getResponseCode());
 	        	return null; //Read fail
 	        }
 	        else {
-	        	String body = new BufferedReader(new InputStreamReader(connection.getInputStream())).lines().reduce((a, b) -> a + "\n" + b).get();
-	        	responseCache.put(url, body);
-	        	responseCacheTime.put(url, System.currentTimeMillis());
+	        	String body = "";
+	        	if (connection.getContentEncoding() == null || connection.getContentEncoding().equalsIgnoreCase("identity")) {
+		        	body = new BufferedReader(new InputStreamReader(connection.getInputStream())).lines().reduce((a, b) -> a + "\n" + b).get();
+		        	responseCache.put(url, body);
+		        	responseCacheTime.put(url, System.currentTimeMillis());
+	        	} else if (connection.getContentEncoding().equalsIgnoreCase("gzip")) {
+	        		body = new BufferedReader(new InputStreamReader(new GZIPInputStream(connection.getInputStream()))).lines().reduce((a, b) -> a + "\n" + b).get();
+		        	responseCache.put(url, body);
+		        	responseCacheTime.put(url, System.currentTimeMillis());
+	        	} else {
+	        		System.err.println("INVALID ENCODING: " + connection.getContentEncoding());
+	        	}
 	        	return body;
 	        }
-	    } catch (IOException exception) {
+	    } catch (IOException e) {
+	    	log.log(Level.WARNING, "HTTP Read failed; IO error", e);
 	        return null;
 	    }
 	}

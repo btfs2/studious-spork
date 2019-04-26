@@ -25,7 +25,7 @@ public interface IGeocoder {
 	 * @param place Location to look up
 	 * @return Location of place
 	 */
-	public Location placeToLoc(String place);
+	public Location placeToLoc(IPlace place);
 	
 	/**
 	 * Lookup place and find it's lat long, prioritising searching around a location
@@ -35,7 +35,7 @@ public interface IGeocoder {
 	 * @param place Location to look up
 	 * @return Location of place
 	 */
-	public Location placeToLocAround(String place, Location around);
+	public Location placeToLocAround(IPlace place, Location around);
 	
 	/**
 	 * Get place at location
@@ -43,7 +43,7 @@ public interface IGeocoder {
 	 * @param loc location to find place
 	 * @return Place at location
 	 */
-	public String locToPlace(Location loc);
+	public IPlace locToPlace(Location loc);
 	
 	/**
 	 * Attempt to find location from partial query
@@ -51,5 +51,5 @@ public interface IGeocoder {
 	 * @param partialQuery user input string
 	 * @return List of probable predictions by likelihood
 	 */
-	public List<String> predict(String partialQuery);
+	public List<IPlace> predict(IPlace partialQuery);
 }

@@ -8,6 +8,7 @@ import java.util.List;
 import com.google.gson.Gson;
 
 import uk.ac.cam.bizrain.location.IGeocoder;
+import uk.ac.cam.bizrain.location.IPlace;
 import uk.ac.cam.bizrain.location.Location;
 import uk.ac.cam.bizrain.util.NetUtil;
 
@@ -48,7 +49,8 @@ public class PhotonGeocoder implements IGeocoder {
 			System.err.println("Probably unsuported encoding");
 			return null;
 		}
-		String body = NetUtil.httpBody(query.toString(), "GET", 200, 600000, false);
+		//Timeout is long as remote is slow
+		String body = NetUtil.httpBody(query.toString(), "GET", 20000, 6000000, false);
 		return g.fromJson(body, PhotonResponse.class);
 	}
 	
@@ -60,32 +62,51 @@ public class PhotonGeocoder implements IGeocoder {
 	 */
 	private PhotonResponse reverse(Location place) {
 		String query = null;
+		//Timeout is long as remote is slow
 		query = String.format("https://photon.komoot.de/reverse?lon=%f&lat=%f", place.getLng(), place.getLat());
-		String body = NetUtil.httpBody(query.toString(), "GET", 200, 600000, false);
+		String body = NetUtil.httpBody(query.toString(), "GET", 20000, 6000000, false);
 		return g.fromJson(body, PhotonResponse.class);
 	}
 	
 	@Override
-	public Location placeToLoc(String place) {
+	public Location placeToLoc(IPlace place) {
 		return placeToLocAround(place, null);
 	}
 
 	@Override
-	public Location placeToLocAround(String place, Location around) {
-		PhotonResponse pr = search(place, around);
+	public Location placeToLocAround(IPlace place, Location around) {
+		String query;
+		if (place instanceof PhotonPlace) {
+			query = ((PhotonPlace) place).name;
+		} else {
+			query = place.getDisplayName();
+		}
+		PhotonResponse pr = search(query, around);
+		if (pr.features.size() == 0) {
+			return null;
+		}
 		return pr.features.get(0).getPlaceLocation();
 	}
 
 	@Override
-	public String locToPlace(Location loc) {
+	public IPlace locToPlace(Location loc) {
 		PhotonResponse pr = reverse(loc);
-		return pr.features.get(0).getPlaceString();
+		if (pr.features.size() == 0) {
+			return null;
+		}
+		return new PhotonPlace(pr.features.get(0));
 	}
 
 	@Override
-	public List<String> predict(String partialQuery) {
-		PhotonResponse pr = search(partialQuery, null);
-		return pr.features.stream().map(PhotonFeature::getPlaceString).collect(Collectors.toList());
+	public List<IPlace> predict(IPlace partialQuery) {
+		String query;
+		if (partialQuery instanceof PhotonPlace) {
+			query = ((PhotonPlace) partialQuery).name;
+		} else {
+			query = partialQuery.getDisplayName();
+		}
+		PhotonResponse pr = search(query, null);
+		return pr.features.stream().map(PhotonPlace::new).collect(Collectors.toList());
 	}
 
 }

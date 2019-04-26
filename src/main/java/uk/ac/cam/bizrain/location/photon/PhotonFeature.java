@@ -12,14 +12,14 @@ import uk.ac.cam.bizrain.location.Location;
  */
 public class PhotonFeature {
 
-	class Geometry {
+	public class Geometry {
 		public float[] coordinates;
 		public String type;
 	}
 	
 	
 	
-	class Properties {
+	public class Properties {
 		//OSM STUFF
 		public long osm_id;
 		public String osm_type;

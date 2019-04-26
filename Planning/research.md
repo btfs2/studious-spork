@@ -61,26 +61,26 @@ Researching online - research about whether this is a problem
 
 
 http://saleshq.monster.com/training/articles/350-what-to-wear-for-business-travel
-Business travel. It’s a great way to build your career but can be a real challenge when it comes to packing. If you’re going someplace you’ve never gone before for business travel, the first question that pops in your head is, “What in the world am I going to wear?”
-This is a very real concern.
+*Business travel. It’s a great way to build your career but can be a real challenge when it comes to packing. If you’re going someplace you’ve never gone before for business travel, the first question that pops in your head is, “What in the world am I going to wear?”
+This is a very real concern.*
 
 
 
 
 
 __Example schedule of a real estate agent__ - https://theagentspot.com/real-estate-business/successful-realtors-work-schedule/
-Morning spent in the office
-About 12:30 - lunch, possibly out of the office
-Early afternoon - in the office or going out to preview homes for clients. Prepare for appointments
-4 pm onwards - go to appointments
+- Morning spent in the office
+- About 12:30 - lunch, possibly out of the office
+- Early afternoon - in the office or going out to preview homes for clients. Prepare for appointments
+- 4 pm onwards - go to appointments
 
-Weekends - working by appointment, so could involve lots of travel
+- Weekends - working by appointment, so could involve lots of travel
 
 
 __Demographics__ - https://www.nar.realtor/research-and-statistics/quick-real-estate-statistics and https://www.nar.realtor/research-and-statistics/research-reports/real-estate-in-a-digital-age
-Real Estate in a Digital Age
-The typical REALTOR® is a 54-year-old white female who attended college and is a homeowner.
-63% of all REALTORS® are female, and the median age of all REALTORS® is 54.
-REALTORS® most often prefer to communicate with their clients through email, at 93%. Ninety-two % prefer to communicate through text messaging, and 37% through instant messaging.
-Over 90 percent of REALTORS® are also using e-mail, laptops/desk tops computers, and smartphones daily.
-94% use a smartphone with wireless email and Internet capabilities daily.
+- Real Estate in a Digital Age
+- The typical REALTOR® is a 54-year-old white female who attended college and is a homeowner.
+- 63% of all REALTORS® are female, and the median age of all REALTORS® is 54.
+- REALTORS® most often prefer to communicate with their clients through email, at 93%. Ninety-two % prefer to communicate through text messaging, and 37% through instant messaging.
+- Over 90 percent of REALTORS® are also using e-mail, laptops/desk tops computers, and smartphones daily.
+- 94% use a smartphone with wireless email and Internet capabilities daily.

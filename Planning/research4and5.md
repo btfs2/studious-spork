@@ -4,12 +4,16 @@
 
 #Write up
 
+__4__
 Our main methods of gathering data will be talking to examples of our primary stakeholder (so professionals who have to travel to meetings during their work day) and people who know how these people work - we have members of our group with this knowledge, and can also contact some people that we know. We will also do secondary research online, looking for articles about business travel, as well as finding out if it's likely that our app is likely to actually be used.
 
 
-Our data gathering revealed that considering what to wear is a "very real concern" for people travelling for business, and that this decision is based on the weather [^1]. Typical real estate agents arrange most of their appointments for the morning, but would usually have to travel to their office in the morning and may also go out at lunch time, all whilst wearing the same clothes [^5] [^6]. This means that our app would be helping to solve a real problem.
+__5__
+* __Secondary research__: Our data gathering revealed that considering what to wear is a "very real concern" for people travelling for business, and that this decision is based on the weather [^1]. Typical real estate agents arrange most of their appointments for the morning, but would usually have to travel to their office in the morning and may also go out at lunch time, all whilst wearing the same clothes [^5] [^6]. This means that our app would be helping to solve a real problem.
 As the typical business professionals use a smartphone (for example, 94% of real estate agents use a smartphone daily [^2]), the app could be accessed and used by a large portion of our primary stakeholder.
 Continuing to focus on salespeople (e.g. real estate agents and bankers), we found that the typical real estate agent is 54 and female [^3], while more than 3/4 of entry-level Wall Street bankers are male [^4]. This means that the app could have a wide audience for both men and women.
+
+* __Primary research__:
 
 
 

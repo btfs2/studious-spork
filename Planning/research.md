@@ -33,7 +33,7 @@ Continuing to focus on salespeople (e.g. real estate agents and bankers), we fou
 
 
 
-Research
+__Research__
 Images
 Outfits to consider
 Time spent travelling
@@ -53,7 +53,7 @@ If you used interviews or questionnaires, include the questions as appendices. I
 data from articles, journals, papers etc. make sure you cite these. 
 
 
-Data gathering:
+__Data gathering:__
 Talking to someone who knows how sales people work - travelling, changing outifts
 Researching online - research about whether this is a problem
 
@@ -68,7 +68,7 @@ This is a very real concern.
 
 
 
-#Example schedule of a real estate agent - https://theagentspot.com/real-estate-business/successful-realtors-work-schedule/
+__Example schedule of a real estate agent__ - https://theagentspot.com/real-estate-business/successful-realtors-work-schedule/
 Morning spent in the office
 About 12:30 - lunch, possibly out of the office
 Early afternoon - in the office or going out to preview homes for clients. Prepare for appointments
@@ -77,7 +77,7 @@ Early afternoon - in the office or going out to preview homes for clients. Prepa
 Weekends - working by appointment, so could involve lots of travel
 
 
-#Demographics - https://www.nar.realtor/research-and-statistics/quick-real-estate-statistics and https://www.nar.realtor/research-and-statistics/research-reports/real-estate-in-a-digital-age
+__Demographics__ - https://www.nar.realtor/research-and-statistics/quick-real-estate-statistics and https://www.nar.realtor/research-and-statistics/research-reports/real-estate-in-a-digital-age
 Real Estate in a Digital Age
 The typical REALTOR® is a 54-year-old white female who attended college and is a homeowner.
 63% of all REALTORS® are female, and the median age of all REALTORS® is 54.

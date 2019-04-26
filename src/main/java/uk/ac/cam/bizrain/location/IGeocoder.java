@@ -1,5 +1,7 @@
 package uk.ac.cam.bizrain.location;
 
+import java.util.List;
+
 /**
  * A geocoding service
  * 
@@ -49,5 +51,5 @@ public interface IGeocoder {
 	 * @param partialQuery user input string
 	 * @return List of probable predictions by likelihood
 	 */
-	public String[] predict(String partialQuery);
+	public List<String> predict(String partialQuery);
 }

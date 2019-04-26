@@ -6,9 +6,10 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Networking utilities
@@ -17,6 +18,8 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  */
 public class NetUtil {
+	
+	static Logger log = Logger.getLogger("NetUtil");
 	
 	/**
 	 * Checks a URL for availability, with default values
@@ -65,25 +68,29 @@ public class NetUtil {
 	 * @return Body of response of a GET to url.
 	 */
 	public static String getUrl(String url) {
-		return "BYE";
+		return httpBody(url, "GET", 200, 60000, false);
 	}
 	
 	private static Map<String, String> responseCache   = new ConcurrentHashMap<>();
 	private static Map<String, Long> responseCacheTime = new ConcurrentHashMap<>();
 	
 	/**
-	 * Does stuff
+	 * Sends a http request to a site with the given method, 
+	 * and then caches it for the given time, 
+	 * unless cache flushing is requested.
 	 * 
-	 * TODO Implement
+	 * Then returns the response body.
 	 * 
-	 * TODO HANDLE GZIP
+	 * Note that this only returns if the code is 200;
 	 * 
-	 * @param url
-	 * @param method
-	 * @param requestTimeout
-	 * @param cacheTimeout
-	 * @param flushCache
-	 * @return
+	 * TODO HANDLE ENCODING (i.e. gzip)
+	 * 
+	 * @param url URL to request; must be safely encoded
+	 * @param method Method to use for request; must be valid
+	 * @param requestTimeout HTTP request timeout in ms
+	 * @param cacheTimeout Cache timeout in ms
+	 * @param flushCache Force request new web request if true 
+	 * @return Body of http request, or null if failed
 	 */
 	public static String httpBody(String url, String method, int requestTimeout, long cacheTimeout, boolean flushCache) {
 		if (!flushCache && responseCache.containsKey(url)) {
@@ -100,7 +107,10 @@ public class NetUtil {
 	        connection.setReadTimeout(requestTimeout);
 	        connection.setRequestMethod(method);
 	        connection.setRequestProperty("Accept-Encoding", "identity");
-	        if (connection.getResponseCode() != 200) return null; //Read fail
+	        if (connection.getResponseCode() != 200) {
+	        	log.log(Level.WARNING, "HTTP Read failed response code: " + connection.getResponseCode());
+	        	return null; //Read fail
+	        }
 	        else {
 	        	String body = new BufferedReader(new InputStreamReader(connection.getInputStream())).lines().reduce((a, b) -> a + "\n" + b).get();
 	        	responseCache.put(url, body);

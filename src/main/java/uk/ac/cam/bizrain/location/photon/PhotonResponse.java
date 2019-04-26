@@ -1,6 +1,6 @@
 package uk.ac.cam.bizrain.location.photon;
 
-import java.util.Arrays;
+import java.util.List;
 
 /**
  * The standard Photon response to a query
@@ -10,10 +10,11 @@ import java.util.Arrays;
  */
 public class PhotonResponse {
 
-	public PhotonFeature[] features;
+	public List<PhotonFeature> features;
+	public String type;
 	
 	@Override
 	public String toString() {
-		return Arrays.deepToString(features);
+		return features.toString();
 	}
 }

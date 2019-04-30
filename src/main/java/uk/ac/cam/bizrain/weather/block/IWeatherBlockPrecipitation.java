@@ -1,4 +1,4 @@
-package uk.ac.cam.bizrain.weather;
+package uk.ac.cam.bizrain.weather.block;
 
 /**
  * A weather block that provides precipitation information

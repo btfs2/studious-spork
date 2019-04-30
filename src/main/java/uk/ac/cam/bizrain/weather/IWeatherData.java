@@ -3,6 +3,8 @@ package uk.ac.cam.bizrain.weather;
 import java.util.List;
 
 import uk.ac.cam.bizrain.location.Location;
+import uk.ac.cam.bizrain.weather.block.CombinedWeatherBlock;
+import uk.ac.cam.bizrain.weather.block.IWeatherBlock;
 
 public interface IWeatherData {
 

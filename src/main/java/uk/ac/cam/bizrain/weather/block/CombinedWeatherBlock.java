@@ -1,9 +1,10 @@
-package uk.ac.cam.bizrain.weather;
+package uk.ac.cam.bizrain.weather.block;
 
 import java.util.List;
 import java.util.logging.Logger;
 
 import uk.ac.cam.bizrain.location.Location;
+import uk.ac.cam.bizrain.weather.IWeatherProvider;
 
 /**
  * TODO THIS IS A MERGING OF MULTIPLE DATA POINTS FOR MAXIMUM DATA AT A GIVEN TIME AT HIGHEST RES
@@ -36,8 +37,10 @@ public class CombinedWeatherBlock implements IWeatherBlock, IWeatherBlockPrecipi
 		for (IWeatherBlock iwb : blocks) {
 			if (loc == null) {
 				loc = iwb.getWeatherLocation();
-			} else if (loc != iwb.getWeatherLocation()) {
+			} else if (!loc.equals(iwb.getWeatherLocation())) {
 				Logger.getLogger("Weather").warning("Mismatched blocks combined");
+				System.out.println(loc.toString());
+				System.out.println(iwb.getWeatherLocation());
 			}
 			if (prov == null) {
 				prov = iwb.getWeatherProvider();

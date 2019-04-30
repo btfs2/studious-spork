@@ -1,4 +1,5 @@
 import json
+import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -26,3 +27,32 @@ for i, city in enumerate(cities):
     axs[1].set_title('Temperature')
     fig.show()
     plt.savefig(city + '.png')
+
+for i, city1 in enumerate(cities):
+    for j, city2 in enumerate(cities):
+        if i == j:
+            continue
+        # use keyword args
+        fig, axs = plt.subplots(1, 1, constrained_layout=True)
+        fig.suptitle('Intensity of rain - comparision')
+        axs.plot(seconds[i], intensity[i], 'g-', seconds[j], intensity[j], 'b-')
+        axs.set_title(city1 + ' and ' + city2)
+        axs.set_xlabel('time (seconds)')
+        green_patch = mpatches.Patch(color='green', label=city1)
+        blue_patch = mpatches.Patch(color='blue', label=city2)
+        plt.legend(handles=[green_patch, blue_patch])
+        fig.show()
+        plt.savefig(city1 + '-' + city2 + '-rain.png')
+        plt.close()
+        
+        fig, axs = plt.subplots(1, 1, constrained_layout=True)
+        fig.suptitle('Temperature - comparision')
+        axs.plot(seconds[i], realtemp[i], 'y-', seconds[j], realtemp[j], 'r-')
+        axs.set_title(city1 + ' and ' + city2)
+        axs.set_xlabel('time (seconds)')
+        green_patch = mpatches.Patch(color='yellow', label=city1)
+        blue_patch = mpatches.Patch(color='red', label=city2)
+        plt.legend(handles=[green_patch, blue_patch])
+        fig.show()
+        plt.savefig(city1 + '-' + city2 + '-temp.png')
+        plt.close()

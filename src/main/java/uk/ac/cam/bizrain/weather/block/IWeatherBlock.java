@@ -1,6 +1,7 @@
-package uk.ac.cam.bizrain.weather;
+package uk.ac.cam.bizrain.weather.block;
 
 import uk.ac.cam.bizrain.location.Location;
+import uk.ac.cam.bizrain.weather.IWeatherProvider;
 
 /**
  * Defines some block of weather data

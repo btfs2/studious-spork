@@ -3,6 +3,14 @@ package uk.ac.cam.bizrain.location.photon;
 import uk.ac.cam.bizrain.location.IPlaceLocated;
 import uk.ac.cam.bizrain.location.Location;
 
+/**
+ * A place aquired by Photon
+ * 
+ * Is located and has detail
+ * 
+ * @author btfs2
+ *
+ */
 public class PhotonPlace implements IPlaceLocated {
 
 	String name;
@@ -15,6 +23,13 @@ public class PhotonPlace implements IPlaceLocated {
 	
 	Location location;
 	
+	/**
+	 * Creates a Photon Place from a photon feature
+	 * 
+	 * @see PhotonFeature
+	 * 
+	 * @param pf Photon feature to generate more data
+	 */
 	public PhotonPlace(PhotonFeature pf) {
 		this.name = pf.properties.name;
 		this.country = pf.properties.country;

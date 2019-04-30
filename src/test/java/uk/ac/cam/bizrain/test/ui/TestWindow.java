@@ -10,6 +10,9 @@ import java.awt.Insets;
 import javax.swing.JLabel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+
+import uk.ac.cam.bizrain.util.Pointer;
+
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 
@@ -87,8 +90,8 @@ public class TestWindow {
 		gbc_scrollBody.gridy = 1;
 		frame.getContentPane().add(scrollBody, gbc_scrollBody);
 		
-		JPanel panelBody = new PanelNewSchedule();
-		scrollBody.setViewportView(panelBody);
+		Pointer<JPanel> bodyPointer = new Pointer<JPanel>(new PanelNewSchedule());
+		scrollBody.setViewportView(bodyPointer.get());
 	}
 
 }

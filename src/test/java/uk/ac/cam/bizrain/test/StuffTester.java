@@ -16,6 +16,12 @@ import uk.ac.cam.bizrain.location.StringPlace;
 import uk.ac.cam.bizrain.location.photon.PhotonGeocoder;
 import uk.ac.cam.bizrain.location.photon.PhotonResponse;
 import uk.ac.cam.bizrain.util.NetUtil;
+import uk.ac.cam.bizrain.weather.IWeatherData;
+import uk.ac.cam.bizrain.weather.block.IWeatherBlock;
+import uk.ac.cam.bizrain.weather.block.IWeatherBlockPrecipitation;
+import uk.ac.cam.bizrain.weather.block.IWeatherBlockTempreture;
+import uk.ac.cam.bizrain.weather.darksky.DarkSkyWeatherData;
+import uk.ac.cam.bizrain.weather.darksky.DarkSkyWeatherProvider;
 import uk.ac.cam.bizrain.weather.darksky.DarkskyResponse;
 
 /**
@@ -29,7 +35,8 @@ public class StuffTester {
 	public static void main(String[] args) {
 		//PhotonTest1();
 		//PhotonTest2();
-		DarkskyFileTest();
+		//DarkskyFileTest();
+		DarkskyProcTest();
 	}
 	
 	public static void PhotonTest1() {
@@ -45,10 +52,28 @@ public class StuffTester {
 		InputStream is = (new StuffTester()).getClass()
 				.getClassLoader()
 				.getResourceAsStream("uk/ac/cam/bizrain/test/DarkSkyTest2.json");
-		String file = new BufferedReader(new InputStreamReader(is)).lines().reduce((a, b) -> a + "\n" + b).get();;
+		String file = new BufferedReader(new InputStreamReader(is)).lines().reduce((a, b) -> a + "\n" + b).get();
 		Gson g = new Gson();
 		DarkskyResponse res = g.fromJson(file, DarkskyResponse.class);
 		System.out.println(res.hourly.summary);
+	}
+	
+	public static void DarkskyProcTest() {
+		System.out.println("Powered By Darksky");
+		InputStream is = (new StuffTester()).getClass()
+				.getClassLoader()
+				.getResourceAsStream("uk/ac/cam/bizrain/test/DarkSkyTest2.json");
+		String file = new BufferedReader(new InputStreamReader(is)).lines().reduce((a, b) -> a + "\n" + b).get();
+		DarkSkyWeatherProvider dwp = new DarkSkyWeatherProvider("lol-no"); // NEEDED for data construction
+		Gson g = new Gson();
+		DarkskyResponse res = g.fromJson(file, DarkskyResponse.class);
+		IWeatherData data = new DarkSkyWeatherData(dwp, res);
+		//long time = 1556320020+30;
+		long time = 1556316480;
+		System.out.println(data.getWeatherAllDataAt(time).size());
+		IWeatherBlock blk = data.getWeatherDataAt(time);
+		System.out.println(((IWeatherBlockTempreture) blk).getWeatherAppTemperature());
+		System.out.println(((IWeatherBlockPrecipitation) blk).getWeatherPrecipProb());
 	}
 
 }

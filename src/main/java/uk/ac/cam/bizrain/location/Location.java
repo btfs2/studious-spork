@@ -44,9 +44,19 @@ public class Location {
 		return  Math.abs(getLat()) + "° " + (getLat() >= 0 ? "N " : "S ") + Math.abs(getLng()) + "° " + (getLng() >= 0 ? "E" : "W");
 	}
 	
+	/**
+	 * To floating point location string
+	 * 
+	 * @return float string of loc
+	 */
+	public String toFloatString() {
+		return getLat() + "," + getLng();
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof Location) {
+			//Solves float problems
 			return (Float.floatToRawIntBits(lat) == Float.floatToRawIntBits(((Location) obj).lat))
 					&& (Float.floatToRawIntBits(lng) == Float.floatToRawIntBits(((Location) obj).lng));
 		}

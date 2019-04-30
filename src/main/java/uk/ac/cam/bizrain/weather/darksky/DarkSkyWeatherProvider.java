@@ -24,7 +24,7 @@ public class DarkSkyWeatherProvider implements IWeatherProvider {
 	public boolean isWeatherAvaliable() {
 		return NetUtil.pingURL("https://darksky.net/");
 	}
-
+	
 	@Override
 	public IWeatherData getWeatherDataFor(Location loc) {
 		StringBuilder query = new StringBuilder("https://api.darksky.net/forecast/");
@@ -33,11 +33,10 @@ public class DarkSkyWeatherProvider implements IWeatherProvider {
 		query.append(loc.getLat());
 		query.append(",");
 		query.append(loc.getLng());
-		String body = NetUtil.httpBody(query.toString(), "GET", 20000, 6000000, false);
+		String body = NetUtil.httpBody(query.toString(), "GET", 20000, 3600000, false);
 		Gson g = new Gson();
 		DarkskyResponse res = g.fromJson(body, DarkskyResponse.class);
-		//TODO finish
-		return null;
+		return new DarkSkyWeatherData(this, res);
 	}
 
 }

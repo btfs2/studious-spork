@@ -10,6 +10,12 @@ public class StringPlace implements IPlace {
 
 	String place;
 	
+	/**
+	 * Creates a string place
+	 * 
+	 * @param place String that is used as display string
+	 * @see IPlace#getDisplayName()
+	 */
 	public StringPlace(String place) {
 		this.place = place;
 	}

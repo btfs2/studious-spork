@@ -1,4 +1,4 @@
-package uk.ac.cam.bizrain.weather;
+package uk.ac.cam.bizrain.weather.block;
 
 /**
  * Describes a weather block that provides a summary of the data

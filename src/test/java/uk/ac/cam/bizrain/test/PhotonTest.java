@@ -55,7 +55,7 @@ public class PhotonTest {
 				} else {
 					l = pgc.placeToLoc(predictions.get(tgt));
 				}
-				System.out.println(predictions.get(tgt).getDisplayName() + " is at " + l.toString());
+				System.out.println(predictions.get(tgt).getDisplayName() + " is at " + l.toString() + " (" + l.toFloatString() + ")");
 			} else {
 				System.out.println("No matches found");
 			}

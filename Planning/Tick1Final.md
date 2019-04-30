@@ -35,9 +35,11 @@ Continuing to focus on salespeople (e.g. real estate agents and bankers), we fou
 * __Primary research__: We interviewed a sales and marketing person, who works for a company based in Vienna, asking how their work day is structured and whether the weather app, along with the specific features we've considered, would benefit them. Their answers agreed mostly with the secondary research - their day begins in the office with emails and phone calls, and then, depending on the day, they may go out to meet potential sponsors and exhibitors. They also said that they often move around the city a lot, and sometimes drive to other neighbouring countries. They also said that they do think about the weather when they're travelling, but beyond carrying an umbrella, they can't prepare much, especially in autumn and spring, when the weather is not so predictable and consistent accross one day as it in summer or winter. They said that it would be "cool" to be able to see a summary of the weather for two places together on the days that they move between cities. Another interview told us that people with more junior positions tend to travel to a city and stay there for a few days before returning, while more senior positions take frequent but shorter trips. They also said that if they have a free weekend in the middle of a trip, some offices will pay for them to use that time to visit another city rather than flying home.
 
 ![alt text](https://github.com/btfs2/studious-spork/blob/master/Planning/officeForNationalStatistics.JPG "Office for National Statistics")
+
 Graph from Office for National Statistics
 
 ![alt text](https://github.com/btfs2/studious-spork/blob/master/Planning/commutingAndBusinessTrips.png "Department of Transport")
+
 Graph from Department of Transport
 
 

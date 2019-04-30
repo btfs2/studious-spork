@@ -32,7 +32,7 @@ Continuing to focus on salespeople (e.g. real estate agents and bankers), we fou
 
 [^7]: https://www.hbs.edu/faculty/conferences/2013-w50-research-symposium/Documents/Gender_and_work_web_update2015.pdf
 
-[^8] https://www.ons.gov.uk/employmentandlabourmarket/peopleinwork/employmentandemployeetypes/articles/thecommutinggapmenaccountfor65ofcommuteslastingmorethananhour/2018-11-07
+[^8]: https://www.ons.gov.uk/employmentandlabourmarket/peopleinwork/employmentandemployeetypes/articles/thecommutinggapmenaccountfor65ofcommuteslastingmorethananhour/2018-11-07
 
 
 

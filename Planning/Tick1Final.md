@@ -71,6 +71,7 @@ __7__
 
 ____________
 __Interview 1__
+
 Interview with Austrian Sales & Marketing Person working at a company that organizes conferences
 
 Q: How does your average day look like? A: I have a strict morning routine although work hours and locations are flexible and vary greatly. My work day usually starts with e-mails and phone calls. Whenever I plan to call someone, I like to do it early in the day - before they have other meetings. On some days, I am in the office for the majority of the day and handle internal stuff and work with the marketing people to develop synergetic strategies. On many days, I am out meeting with potential sponsors and exhibitors to discuss details of potential cooperations.
@@ -85,6 +86,7 @@ Q: Would an app giving a worst-case summary of the weather at all the places you
 
 
 __Interview 2__
+
 It changes a lot depending on tenure, office, industry you specialize in and of course how much you are willing to travel.
 
 From BA to EM, you should expect working in a city other than your office roughly half of the year. Every Monday you leave, every Thursday or Friday (depending on whether “Friday in the office” is commonplace where you get hired) you go back. Obviously there will be consultants work the whole year in a different place, while other consultants may work in their home office the whole time.

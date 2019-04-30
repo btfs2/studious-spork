@@ -36,9 +36,11 @@ Continuing to focus on salespeople (e.g. real estate agents and bankers), we fou
 
 
 
-
+_______________________________
 
 __Research__
+
+
 Images
 Outfits to consider
 Time spent travelling

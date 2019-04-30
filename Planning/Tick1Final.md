@@ -1,14 +1,32 @@
-1. Our primary stakeholders are professionals based in sales, who travel frequently for work.
+__1__
 
-2. Sales people, executives, real estate brokers, analysts and many other professionals having multiple client meetings each day. These can be at different places around a city, in multiple cities or even in multiple countries. To perform well and achieve their goals of high sales, it is crucial that these professionals are always perfectly dressed. What must not be forgotten, however, is that their clothing must be suitable for all weather conditions they will be facing throughout the day as they often have no chance to change their outfit between meetings.
+Our primary stakeholders are professionals based in sales, who travel frequently for work.
+
+__2__
+
+Sales people, executives, real estate brokers, analysts and many other professionals having multiple client meetings each day. These can be at different places around a city, in multiple cities or even in multiple countries. To perform well and achieve their goals of high sales, it is crucial that these professionals are always perfectly dressed. What must not be forgotten, however, is that their clothing must be suitable for all weather conditions they will be facing throughout the day as they often have no chance to change their outfit between meetings.
 
 This target group is most often between the ages of 20 and 70, not specific to any gender, and exists in many cultures. They primarily live in cities and are used to a stressful and fast-paced life. This implies that they will not spend much time with our app and will rather just want very quick feedback to their query. Moreover, this means that we need to provide a fast and efficient way for them to submit queries to the app.
 
 Almost all of them are technologically versed. As 94% use a smartphone daily, we can expect them to know how to interact with standard smartphone apps. While they will likely be able to understand weather information such as wind speed and likelihood of rain, their limited busy schedules might not allow them time to derive conclusions from these values for multiple locations, which is why a broken down summary could be preferred.
 
-3. Our main methods of gathering data will be talking to examples of our primary stakeholder (so professionals who have to travel to meetings during their work day) and people who know how these people work - we have members of our group with this knowledge, and can also contact some people that we know. We will also do secondary research online, looking for articles about business travel, as well as finding out if it's likely that our app is likely to actually be used.
+__3__
 
-4. 
+The primary stakeholders are professionals who have to travel around frequently to different locations within the same work-day. This includes realtors, bankers, salespeople and executives at large companies. For example, a consultant at McKinsey might have to travel between offices in London and Paris. This app helps them plan their day according to the weather at the different places they will visit in the course of 24 hours.
+
+A secondary feature, that will be implemented if time permits, will help the users decide what to wear. Professionals typically have a limited number of clothing choices (either business casual or business formal) and cannot change their outfits throughout the day.
+
+The secondary stakeholders are the clients, potential buyers and other professionals that the users interact with at the different locations. For instance, if a realtor turns up well-prepared for an open house, the potential buyers are more likely to purchase the house.
+
+Tertiary stakeholders will be the employers of the professionals that use the app. A company gets higher returns if their employees are more productive and organized. These companies also have to purchase the app for their employees so they will have to make a significant financial commitment.
+
+Facilitating stakeholders include us (the developers) and weather API providers (currently Dark Sky API).
+
+__4__
+
+Our main methods of gathering data will be talking to examples of our primary stakeholder (so professionals who have to travel to meetings during their work day) and people who know how these people work - we have members of our group with this knowledge, and can also contact some people that we know. We will also do secondary research online, looking for articles about business travel, as well as finding out if it's likely that our app is likely to actually be used.
+
+__5__ 
 * __Secondary research__: Our data gathering revealed that considering what to wear is a "very real concern" for people travelling for business, and that this decision is based on the weather [^1]. Typical real estate agents arrange most of their appointments for the afternoon, but would usually have to travel to their office in the morning and may also go out at lunch time, without being able to go home in between [^5] [^6]. This means that our app would be helping to solve a real problem.
 A study [^7] by Harvard Business School also found there is "a lot of travel and a lot of flights", including someone who took 105 flights in a year.
 As the typical business professionals use a smartphone (for example, 94% of real estate agents use a smartphone daily [^2]), the app could be accessed and used by a large portion of our primary stakeholder.
@@ -42,7 +60,13 @@ Graph from Department of Transport
 [^8]: https://www.ons.gov.uk/employmentandlabourmarket/peopleinwork/employmentandemployeetypes/articles/thecommutinggapmenaccountfor65ofcommuteslastingmorethananhour/2018-11-07
 
 
-6. 
+__6__
+
+
+
+
+__7__
+
 
 
 ____________

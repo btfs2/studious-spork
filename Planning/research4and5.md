@@ -1,7 +1,3 @@
-
-
-
-
 #Write up
 
 __4__
@@ -10,6 +6,7 @@ Our main methods of gathering data will be talking to examples of our primary st
 
 __5__
 * __Secondary research__: Our data gathering revealed that considering what to wear is a "very real concern" for people travelling for business, and that this decision is based on the weather [^1]. Typical real estate agents arrange most of their appointments for the afternoon, but would usually have to travel to their office in the morning and may also go out at lunch time, without being able to go home in between [^5] [^6]. This means that our app would be helping to solve a real problem.
+A study [^7] by Harvard Business School also found there is "a lot of travel and a lot of flights", including someone who took 105 flights in a year.
 As the typical business professionals use a smartphone (for example, 94% of real estate agents use a smartphone daily [^2]), the app could be accessed and used by a large portion of our primary stakeholder.
 Continuing to focus on salespeople (e.g. real estate agents and bankers), we found that the typical real estate agent is 54 and female [^3], while more than 3/4 of entry-level Wall Street bankers are male [^4]. This means that the app could have a wide audience for both men and women.
 
@@ -30,6 +27,8 @@ Continuing to focus on salespeople (e.g. real estate agents and bankers), we fou
 [^5]: https://theagentspot.com/real-estate-business/successful-realtors-work-schedule/
 
 [^6]: https://topagentmagazine.com/the-daily-schedule-of-a-successful-real-estate-agent/
+
+[^7]: https://www.hbs.edu/faculty/conferences/2013-w50-research-symposium/Documents/Gender_and_work_web_update2015.pdf
 
 
 

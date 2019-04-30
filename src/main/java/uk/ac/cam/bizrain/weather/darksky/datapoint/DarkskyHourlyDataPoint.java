@@ -1,4 +1,4 @@
-package uk.ac.cam.bizrain.weather.darksky;
+package uk.ac.cam.bizrain.weather.darksky.datapoint;
 
 public class DarkskyHourlyDataPoint extends DarkskyRegularDataPoint {
 

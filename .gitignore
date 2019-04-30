@@ -29,6 +29,8 @@
 # Idea users should target the project as a gradle project
 *.iml
 /.idea
+*.iws
+modules.xml
 
 # Java #
 ########

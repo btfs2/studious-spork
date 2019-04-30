@@ -13,6 +13,8 @@ public interface IWeatherBlockPrecipitation extends IWeatherBlock {
 	 * 
 	 * <br><br><b>Unit: Probability (i.e. float in (0,1) inclusive)</b>
 	 * 
+	 * null val: -1*Float.MAX_VALUE
+	 * 
 	 * @return Probability of precipitation 
 	 */
 	public float getWeatherPrecipProb();
@@ -22,6 +24,8 @@ public interface IWeatherBlockPrecipitation extends IWeatherBlock {
 	 * 
 	 * <br><br><b>Unit: mm/hour</b>
 	 * 
+	 * null val: -1*Float.MAX_VALUE
+	 * 
 	 * @return predicted amount of rain in mm/hour
 	 */
 	public float getWeatherPrecipIntensity();
@@ -30,6 +34,8 @@ public interface IWeatherBlockPrecipitation extends IWeatherBlock {
 	 * The error bars on the predicted precipitation intensity
 	 * 
 	 * <br><br><b>Unit: mm/hour</b>
+	 * 
+	 * null val: -1*Float.MAX_VALUE
 	 * 
 	 * @return Error on predicted intensity
 	 */
@@ -57,9 +63,9 @@ public interface IWeatherBlockPrecipitation extends IWeatherBlock {
 	 * @author btfs2
 	 */
 	public enum PrecipType implements IPrecipType {
-		Rain,
-		Snow,
-		Hail;
+		RAIN,
+		SNOW,
+		SLEET;
 		
 		public String getPrecipTypeName() {
 			return name();

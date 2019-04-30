@@ -1,4 +1,4 @@
-package uk.ac.cam.bizrain.weather.darksky;
+package uk.ac.cam.bizrain.weather.darksky.datapoint;
 
 /**
  * A datapoint from darksky as defined in docs. Formed by only having stuff on every datapoint type

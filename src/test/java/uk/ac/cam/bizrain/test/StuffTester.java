@@ -28,8 +28,8 @@ public class StuffTester {
 
 	public static void main(String[] args) {
 		//PhotonTest1();
-		PhotonTest2();
-		//DarkskyFileTest();
+		//PhotonTest2();
+		DarkskyFileTest();
 	}
 	
 	public static void PhotonTest1() {
@@ -40,55 +40,11 @@ public class StuffTester {
 		System.out.println(g.fromJson(body, PhotonResponse.class).toString());
 	}
 	
-	public static void PhotonTest2() {
-		Scanner in = new Scanner(System.in);
-		while (true) {
-			System.out.println();
-			System.out.println();
-			System.out.print("Enter location to search for (or q to quit): ");
-			String line = in.nextLine();
-			if (line.equalsIgnoreCase("q")) {
-				break;
-			} else if (line.equalsIgnoreCase("")) {
-				continue;
-			}
-			IGeocoder pgc = new PhotonGeocoder();
-			List<IPlace> predictions = pgc.predict(new StringPlace(line));
-			if (predictions.size() > 0) {
-				System.out.println("Places like that are: ");
-				int i = 0;
-				for (IPlace s : predictions) {
-					System.out.println("\t " + i++ + ":"+s.getDisplayName());
-				}
-				int tgt = 0;
-				do {
-					System.out.print("Enter valid target id: ");
-					try {
-						tgt = in.nextInt();
-					} catch (Exception e) { 
-						System.err.println("Invalid input"); 
-					}
-				} while (!(0<=tgt && tgt < i));
-				Location l;
-				IPlace ip = predictions.get(tgt);
-				if (ip instanceof IPlaceLocated) {
-					l = ((IPlaceLocated) ip).getPlaceLocation();
-				} else {
-					l = pgc.placeToLoc(predictions.get(tgt));
-				}
-				System.out.println(predictions.get(tgt).getDisplayName() + " is at " + l.toString());
-			} else {
-				System.out.println("No matches found");
-			}
-		}
-		in.close();
-	}
-	
 	public static void DarkskyFileTest() {
 		System.out.println("Powered By Darksky");
 		InputStream is = (new StuffTester()).getClass()
 				.getClassLoader()
-				.getResourceAsStream("uk/ac/cam/bizrain/test/DarkSkyTest1.json");
+				.getResourceAsStream("uk/ac/cam/bizrain/test/DarkSkyTest2.json");
 		String file = new BufferedReader(new InputStreamReader(is)).lines().reduce((a, b) -> a + "\n" + b).get();;
 		Gson g = new Gson();
 		DarkskyResponse res = g.fromJson(file, DarkskyResponse.class);

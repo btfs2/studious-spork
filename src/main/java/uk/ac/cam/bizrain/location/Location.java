@@ -43,4 +43,13 @@ public class Location {
 	public String toString() {
 		return  Math.abs(getLat()) + "° " + (getLat() >= 0 ? "N " : "S ") + Math.abs(getLng()) + "° " + (getLng() >= 0 ? "E" : "W");
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof Location) {
+			return (Float.floatToRawIntBits(lat) == Float.floatToRawIntBits(((Location) obj).lat))
+					&& (Float.floatToRawIntBits(lng) == Float.floatToRawIntBits(((Location) obj).lng));
+		}
+		return false;
+	}
 }

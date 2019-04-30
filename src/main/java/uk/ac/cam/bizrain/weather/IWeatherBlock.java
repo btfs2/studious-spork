@@ -1,5 +1,7 @@
 package uk.ac.cam.bizrain.weather;
 
+import uk.ac.cam.bizrain.location.Location;
+
 /**
  * Defines some block of weather data
  * 
@@ -35,4 +37,11 @@ public interface IWeatherBlock {
 	 * @return Start time of block validity
 	 */
 	public long getWeatherTime();
+	
+	/**
+	 * Get the location of this weather sample
+	 * 
+	 * @return Location of this weather data
+	 */
+	public Location getWeatherLocation();
 }

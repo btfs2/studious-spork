@@ -1,5 +1,7 @@
 package uk.ac.cam.bizrain.weather;
 
+import uk.ac.cam.bizrain.location.Location;
+
 /**
  * Represents a provider of weather information
  * 
@@ -25,4 +27,14 @@ public interface IWeatherProvider {
 	 * @return If provider is avaliable
 	 */
 	public boolean isWeatherAvaliable();
+	
+	/**
+	 * Get as much weather data as is possible for a given location
+	 * 
+	 * TODO: Add past data collection to see historicals
+	 * 
+	 * @param loc Location to get weather for
+	 * @return Current weather data for location
+	 */
+	public IWeatherData getWeatherDataFor(Location loc);
 }

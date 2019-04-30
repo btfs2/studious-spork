@@ -2,6 +2,11 @@ package uk.ac.cam.bizrain.weather.darksky;
 
 import java.util.List;
 
+import uk.ac.cam.bizrain.location.Location;
+import uk.ac.cam.bizrain.weather.darksky.datapoint.DarkskyDataPoint;
+import uk.ac.cam.bizrain.weather.darksky.datapoint.DarkskyDayDataPoint;
+import uk.ac.cam.bizrain.weather.darksky.datapoint.DarkskyHourlyDataPoint;
+
 /**
  * A standard response from darksky as defined in docs
  * 
@@ -25,5 +30,14 @@ public class DarkskyResponse {
 	public DarkskyDataBlock<DarkskyDataPoint> minutely;
 	public DarkskyDataBlock<DarkskyHourlyDataPoint> hourly;
 	public DarkskyDataBlock<DarkskyDayDataPoint> daily;
+	
+	/**
+	 * Gets location of request
+	 * 
+	 * @return Location of request
+	 */
+	public Location getLoc() {
+		return new Location(latitude, longitude);
+	}
 	
 }

@@ -1,0 +1,10 @@
+Functional: The app needs to
+- use a weather API to be able to provide accurate weather data for different countries,
+- allow users to enter their schedule for the day as a variable number of [time | location] pairs and
+- slice weather forecasts from these locations together based on this schedule and
+- provide a summary as well as individual forecasts. It also should
+- remember the schedule entered/used in the last session to make future interactions quicker if the same schedule is to be used
+
+Non-functional:
+- Users need to get their results quickly
+- Interaction needs to be easy and intuitive for all age groups and genders

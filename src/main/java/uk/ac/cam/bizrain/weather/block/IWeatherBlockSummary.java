@@ -10,9 +10,13 @@ public interface IWeatherBlockSummary {
 	/**
 	 * Get the forcast summary
 	 * 
+	 * null implies one doesn't exist
+	 * 
 	 * @return Human readable forcast
 	 */
-	public String getWeatherSummary();
+	public default String getWeatherSummary() {
+		return null;
+	}
 	
 	interface IWeatherIcon {
 		public String getIconName();

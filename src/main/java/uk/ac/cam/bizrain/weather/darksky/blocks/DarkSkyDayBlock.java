@@ -2,24 +2,23 @@ package uk.ac.cam.bizrain.weather.darksky.blocks;
 
 import uk.ac.cam.bizrain.location.Location;
 import uk.ac.cam.bizrain.weather.IWeatherProvider;
-import uk.ac.cam.bizrain.weather.block.IWeatherBlockAtmospherics;
+import uk.ac.cam.bizrain.weather.block.IWeatherBlockDayStats;
 import uk.ac.cam.bizrain.weather.block.IWeatherBlockPrecipitation;
 import uk.ac.cam.bizrain.weather.block.IWeatherBlockSummary;
-import uk.ac.cam.bizrain.weather.block.IWeatherBlockTempreture;
-import uk.ac.cam.bizrain.weather.darksky.datapoint.DarkskyHourlyDataPoint;
+import uk.ac.cam.bizrain.weather.darksky.datapoint.DarkskyDayDataPoint;
 
-public class DarkSkyHourBlock implements IWeatherBlockPrecipitation, IWeatherBlockTempreture, IWeatherBlockSummary, IWeatherBlockAtmospherics {
+public class DarkSkyDayBlock implements IWeatherBlockPrecipitation, IWeatherBlockSummary, IWeatherBlockDayStats {
 
 	IWeatherProvider provider;
 	long time;
 	float precipProb, precipIntensity, precipIntensityError;
 	IPrecipType precipType = null;
 	Location loc;
-	float temp, appTemp;
 	IWeatherIcon icon;
-	float press, due, humid, vis;
+	long sunrise, sunset;
+	float lunation;
 
-	public DarkSkyHourBlock(IWeatherProvider wp, Location l, DarkskyHourlyDataPoint dp) {
+	public DarkSkyDayBlock(IWeatherProvider wp, Location l, DarkskyDayDataPoint dp) {
 		provider = wp;
 		time = dp.time;
 		precipProb = dp.precipProbability;
@@ -35,8 +34,6 @@ public class DarkSkyHourBlock implements IWeatherBlockPrecipitation, IWeatherBlo
 			}
 		}
 		loc = l;
-		temp = dp.temperature;
-		appTemp = dp.apparentTemperature;
 		switch (dp.icon) {
 		case "clear-day":
 			icon = WeatherIcons.CLEAR_DAY;
@@ -69,10 +66,9 @@ public class DarkSkyHourBlock implements IWeatherBlockPrecipitation, IWeatherBlo
 			icon = WeatherIcons.PARTLY_CLOUDY_NIGHT;
 			break;
 		}
-		press = dp.pressure;
-		humid = dp.humidity;
-		vis = dp.visibility;
-		due = dp.dewPoint;
+		sunrise = dp.sunriseTime;
+		sunset = dp.sunsetTime;
+		lunation = dp.moonPhase;
 	}
 
 	@Override
@@ -87,7 +83,7 @@ public class DarkSkyHourBlock implements IWeatherBlockPrecipitation, IWeatherBlo
 
 	@Override
 	public long getWeatherLength() {
-		return 60 * 60;
+		return 60 * 60 * 24;
 	}
 
 	@Override
@@ -116,37 +112,22 @@ public class DarkSkyHourBlock implements IWeatherBlockPrecipitation, IWeatherBlo
 	}
 
 	@Override
-	public float getWeatherTemperature() {
-		return temp;
-	}
-
-	@Override
-	public float getWeatherAppTemperature() {
-		return appTemp;
-	}
-
-	@Override
 	public IWeatherIcon getWeatherIcon() {
 		return icon;
 	}
 
 	@Override
-	public float getWeatherPressure() {
-		return press;
+	public long getWeatherSunrise() {
+		return sunrise;
 	}
 
 	@Override
-	public float getWeatherDewPoint() {
-		return due;
+	public long getWeatherSunset() {
+		return sunset;
 	}
 
 	@Override
-	public float getWeatherHumidity() {
-		return humid;
-	}
-
-	@Override
-	public float getWeatherVisibility() {
-		return vis;
+	public float getLunarPhase() {
+		return lunation;
 	}
 }

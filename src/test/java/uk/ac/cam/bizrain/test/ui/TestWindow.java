@@ -73,7 +73,11 @@ public class TestWindow {
 		gridBagLayout.rowWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
 		frame.getContentPane().setLayout(gridBagLayout);
 		
-		JPanel panelNav = new PanelNav();
+		// Windowing config stuff
+		Pointer<JPanel> bodyPointer = new Pointer<JPanel>();
+		Pointer<Integer> indexPointer = new Pointer<Integer>(0);
+		
+		JPanel panelNav = new PanelNav(bodyPointer, indexPointer);
 		GridBagConstraints gbc_panelNav = new GridBagConstraints();
 		gbc_panelNav.fill = GridBagConstraints.BOTH;
 		gbc_panelNav.insets = new Insets(0, 0, 5, 0);
@@ -90,8 +94,8 @@ public class TestWindow {
 		gbc_scrollBody.gridy = 1;
 		frame.getContentPane().add(scrollBody, gbc_scrollBody);
 		
-		Pointer<JPanel> bodyPointer = new Pointer<JPanel>(new PanelNewSchedule());
-		scrollBody.setViewportView(bodyPointer.get());
+		bodyPointer.addCB(i -> scrollBody.setViewportView(i));
+		bodyPointer.set(new PanelNewSchedule());
 	}
 
 }

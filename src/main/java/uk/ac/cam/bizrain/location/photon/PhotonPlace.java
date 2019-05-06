@@ -80,4 +80,9 @@ public class PhotonPlace implements IPlaceLocated {
 		return location;
 	}
 	
+	@Override
+	public String toString() {
+		return getDisplayName();
+	}
+	
 }

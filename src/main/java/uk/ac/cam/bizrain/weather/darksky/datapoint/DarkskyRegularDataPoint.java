@@ -16,4 +16,5 @@ public class DarkskyRegularDataPoint extends DarkskyDataPoint {
 	//Sky
 	public float cloudCover;
 	public int uvIndex;
+	public float visibility; 
 }

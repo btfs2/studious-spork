@@ -9,12 +9,16 @@ import uk.ac.cam.bizrain.weather.block.IWeatherBlock;
 public interface IWeatherData {
 
 	public default IWeatherBlock getWeatherDataAt(long time) {
-		return new CombinedWeatherBlock(getWeatherAllDataAt(time));
+		List<IWeatherBlock> blocks = getWeatherAllDataAt(time);
+		if (blocks == null) { return null; }
+		return new CombinedWeatherBlock(blocks);
 	}
 	
 	public List<IWeatherBlock> getWeatherAllDataAt(long time);
 	
 	public default Location getWeatherLocationAt(long time) {
+		IWeatherBlock blk = getWeatherDataAt(time);
+		if (blk == null) { return null; }
 		return getWeatherDataAt(time).getWeatherLocation();
 	}
 	

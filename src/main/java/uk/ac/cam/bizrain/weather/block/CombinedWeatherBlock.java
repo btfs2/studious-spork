@@ -12,7 +12,7 @@ import uk.ac.cam.bizrain.weather.IWeatherProvider;
  * @author btfs2
  *
  */
-public class CombinedWeatherBlock implements IWeatherBlock, IWeatherBlockPrecipitation, IWeatherBlockSummary, IWeatherBlockTempreture {
+public class CombinedWeatherBlock implements IWeatherBlock, IWeatherBlockPrecipitation, IWeatherBlockSummary, IWeatherBlockTempreture, IWeatherBlockDayStats {
 
 	List<IWeatherBlock> blocks;
 	IWeatherProvider prov = null;
@@ -27,6 +27,9 @@ public class CombinedWeatherBlock implements IWeatherBlock, IWeatherBlockPrecipi
 	float precipIntensity = -1*Float.MAX_VALUE;
 	float precipIntensityErr = -1*Float.MAX_VALUE;
 	IPrecipType precipType = null;
+	long sunrise = Long.MIN_VALUE;
+	long sunset = Long.MIN_VALUE;
+	float luna = -1*Float.MAX_VALUE;
 	
 	public CombinedWeatherBlock(List<IWeatherBlock> blocks) {
 		this.blocks = blocks;
@@ -79,6 +82,17 @@ public class CombinedWeatherBlock implements IWeatherBlock, IWeatherBlockPrecipi
 				}
 				if (icon == null) {
 					icon = ((IWeatherBlockSummary) iwb).getWeatherIcon();
+				}
+			}
+			if (iwb instanceof IWeatherBlockDayStats) {
+				if (luna == -1*Float.MAX_VALUE) {
+					luna = ((IWeatherBlockDayStats) iwb).getLunarPhase();
+				}
+				if (sunrise == Long.MIN_VALUE) {
+					sunrise = ((IWeatherBlockDayStats) iwb).getWeatherSunrise();
+				}
+				if (sunset == Long.MIN_VALUE) {
+					sunset = ((IWeatherBlockDayStats) iwb).getWeatherSunset();
 				}
 			}
 		}
@@ -142,6 +156,21 @@ public class CombinedWeatherBlock implements IWeatherBlock, IWeatherBlockPrecipi
 	@Override
 	public Location getWeatherLocation() {
 		return loc;
+	}
+
+	@Override
+	public long getWeatherSunrise() {
+		return sunrise;
+	}
+
+	@Override
+	public long getWeatherSunset() {
+		return sunset;
+	}
+
+	@Override
+	public float getLunarPhase() {
+		return luna;
 	}
 
 }

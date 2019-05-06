@@ -50,7 +50,7 @@ public class PhotonGeocoder implements IGeocoder {
 			return null;
 		}
 		//Timeout is long as remote is slow
-		String body = NetUtil.httpBody(query.toString(), "GET", 20000, 6000000, false);
+		String body = NetUtil.httpBody(query.toString(), "GET", 60000, 6000000, false);
 		return g.fromJson(body, PhotonResponse.class);
 	}
 	

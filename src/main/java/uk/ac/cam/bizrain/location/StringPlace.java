@@ -24,5 +24,10 @@ public class StringPlace implements IPlace {
 	public String getDisplayName() {
 		return place;
 	}
+	
+	@Override
+	public String toString() {
+		return place;
+	}
 
 }

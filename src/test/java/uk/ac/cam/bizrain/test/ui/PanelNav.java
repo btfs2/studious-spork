@@ -1,12 +1,20 @@
 package uk.ac.cam.bizrain.test.ui;
 
 import javax.swing.JPanel;
+
+import uk.ac.cam.bizrain.util.Pointer;
+
 import javax.swing.JButton;
 import java.awt.GridBagLayout;
 import java.awt.ComponentOrientation;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.ImageIcon;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 /**
  * 
@@ -29,7 +37,7 @@ public class PanelNav extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public PanelNav() {
+	public PanelNav(Pointer<JPanel> pannelPointer, Pointer<Integer> idxPointer) {
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0, 0, 0, 0};
 		gridBagLayout.rowHeights = new int[]{50, 0};
@@ -38,6 +46,12 @@ public class PanelNav extends JPanel {
 		setLayout(gridBagLayout);
 		
 		JButton buttonBack = new JButton("Back");
+		buttonBack.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				idxPointer.set(idxPointer.get()-1);
+			}
+		});
 		buttonBack.setIcon(new ImageIcon(PanelNav.class.getResource("/uk/ac/cam/bizrain/test/ui/fa-chevron-left-16.png")));
 		GridBagConstraints gbc_buttonBack = new GridBagConstraints();
 		gbc_buttonBack.fill = GridBagConstraints.BOTH;
@@ -72,6 +86,12 @@ public class PanelNav extends JPanel {
 		gbc_btnForward.gridx = 3;
 		gbc_btnForward.gridy = 0;
 		add(btnForward, gbc_btnForward);
+		btnForward.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				idxPointer.set(idxPointer.get()+1);
+			}
+		});
 	}
 
 }

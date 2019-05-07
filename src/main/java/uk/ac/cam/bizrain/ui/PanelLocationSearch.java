@@ -1,7 +1,26 @@
 package uk.ac.cam.bizrain.ui;
 
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.Box;
+import javax.swing.ComboBoxModel;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.ListCellRenderer;
+import javax.swing.JSpinner;
 import javax.swing.SpinnerModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -10,35 +29,11 @@ import javax.swing.event.ListDataListener;
 
 import uk.ac.cam.bizrain.location.IGeocoder;
 import uk.ac.cam.bizrain.location.IPlace;
+import uk.ac.cam.bizrain.location.Location;
 import uk.ac.cam.bizrain.location.StringPlace;
-
-import java.awt.GridBagLayout;
-import javax.swing.JLabel;
-import javax.swing.JList;
-
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Font;
-import javax.swing.JComboBox;
-import javax.swing.JButton;
-import javax.swing.ComboBoxModel;
-import javax.swing.ImageIcon;
-
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-
-import javax.swing.JSpinner;
-import javax.swing.Box;
-import java.awt.Dimension;
+import uk.ac.cam.bizrain.ui.comp.ComboBoxFix;
+import uk.ac.cam.bizrain.ui.comp.JClock;
+import uk.ac.cam.bizrain.ui.comp.RoundedBorder;
 
 public class PanelLocationSearch extends JPanel {
 
@@ -53,14 +48,20 @@ public class PanelLocationSearch extends JPanel {
 		List<IPlace> places = new ArrayList<IPlace>();
 		IPlace selected;
 		List<ListDataListener> ldl = new ArrayList<ListDataListener>();
+		JComboBox<IPlace> cb;
 		
-		LocSearchModel(IGeocoder geocoder) {
+		LocSearchModel(IGeocoder geocoder, JComboBox<IPlace> cb) {
 			this.geocoder = geocoder;
+			this.cb = cb;
 		}
 		
 		public void search() {
 			new Thread(() -> {
 				System.out.println("Searching " + selected.getDisplayName());
+				if (!geocoder.isGeocoderAvaliable()) {
+					JOptionPane.showMessageDialog(null, "Cannot connect to geocoder\nplease check network connection", "Networking error", JOptionPane.WARNING_MESSAGE);
+					return;
+				}
 				List<IPlace> nplaces = geocoder.predict(selected);
 				synchronized (places) {
 					places = nplaces;
@@ -68,6 +69,7 @@ public class PanelLocationSearch extends JPanel {
 				LocSearchModel beme = this;
 				ldl.forEach(i -> i.contentsChanged(new ListDataEvent(beme, ListDataEvent.CONTENTS_CHANGED, 0, beme.getSize())));
 				System.out.println("Search complete");
+				cb.setPopupVisible(true);
 			}).start();
 		}
 		
@@ -101,7 +103,7 @@ public class PanelLocationSearch extends JPanel {
 			if (anItem instanceof IPlace) {
 				selected = (IPlace) anItem;
 			} else if(anItem instanceof String) {
-				selected = new StringPlace((String) anItem);
+				selected = places.stream().filter(i -> i.getDisplayName().equals(anItem)).findFirst().orElse(new StringPlace((String) anItem));
 			} else {
 				System.err.println("INVALID TYPE: " + anItem.getClass().getName());
 			}
@@ -131,6 +133,10 @@ public class PanelLocationSearch extends JPanel {
 		public Object getValue() {
 			return time.format(DateTimeFormatter.ofPattern("HH:mm"));
 		}
+		
+		public LocalTime getCurrent() {
+			return time;
+		}
 
 		@Override
 		public void setValue(Object value) {
@@ -139,7 +145,6 @@ public class PanelLocationSearch extends JPanel {
 				time = (LocalTime) value;
 			} else if (value instanceof String) {
 				time = LocalTime.parse((String)value);
-				//time = LocalTime.of(Integer.parseInt(((String) value).split(":")[0]), Integer.parseInt(((String) value).split(":")[1]), 0, 0);
 			} else {
 				System.err.println("INVALID TYPE");
 			}
@@ -169,17 +174,189 @@ public class PanelLocationSearch extends JPanel {
 
 	}
 	
+	public interface LocSearchReturn {
+		public void returnData(IPlace place, Location loc, LocalTime startTime, LocalTime endTime);
+	}
+	
+	/**
+	 * @wbp.parser.constructor
+	 */
+	public PanelLocationSearch(Bizrain br, IGeocoder geocoder, LocSearchReturn ret) {
+		this(br, geocoder, ret, new StringPlace(""));
+	}
+	
 	/**
 	 * Create the panel.
 	 */
-	public PanelLocationSearch(IGeocoder geocoder) {
-		GridBagLayout gridBagLayout = new GridBagLayout();
-		gridBagLayout.columnWidths = new int[]{0, 0, 0, 16, 0, 0, 0};
-		gridBagLayout.rowHeights = new int[]{0, 0, 0, 37, 0, 0, 0, 0, 0, 0, 0};
-		gridBagLayout.columnWeights = new double[]{0.0, 1.0, 1.0, 2.0, 0.0, 0.0, Double.MIN_VALUE};
-		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
-		setLayout(gridBagLayout);
+	public PanelLocationSearch(Bizrain br, IGeocoder geocoder, LocSearchReturn ret, IPlace defaultLoc) {
+		PanelLocationSearch beme = this;
 		
+		
+		GridBagLayout gridBagLayout = new GridBagLayout();
+		gridBagLayout.columnWidths = new int[]{0, 0, 16, 0, 0, 0};
+		gridBagLayout.rowHeights = new int[]{0, 0, 0, 37, 0, 0, 0, 0, 0, 0, 0};
+		gridBagLayout.columnWeights = new double[]{0.0, 0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE};
+		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, Double.MIN_VALUE};
+		setLayout(gridBagLayout);
+
+		
+		JClock clock = new JClock();
+		GridBagConstraints gbc_panel = new GridBagConstraints();
+		gbc_panel.insets = new Insets(0, 0, 5, 5);
+		gbc_panel.fill = GridBagConstraints.BOTH;
+		gbc_panel.gridx = 2;
+		gbc_panel.gridy = 6;
+		add(clock, gbc_panel);
+		
+		addBlocks();
+		
+		
+		JComboBox<IPlace> cbSearch = new JComboBox<IPlace>();
+		cbSearch.setBorder(new RoundedBorder(30));
+		cbSearch.setBackground(Color.WHITE);
+		LocSearchModel lsm = new LocSearchModel(geocoder, cbSearch);
+		cbSearch.setModel(lsm);
+		cbSearch.setSelectedItem(defaultLoc);
+		cbSearch.setMaximumRowCount(14);
+		cbSearch.setEditable(true);
+		cbSearch.addActionListener(e -> {
+			if (e.getActionCommand().equals("comboBoxEdited")) {
+				lsm.search();
+			}
+		});
+		//cbSearch.setRenderer(new PlaceCellRenderer()); TODO FIX FOR INTEROPERABILITY; CURRENT SOLUTION IS TO JUST ENSURE TOSTRING WORKS
+		//TODO ADD horisontal scrolling
+		cbSearch.setToolTipText("Location Search");
+		GridBagConstraints gbc_cbSearch = new GridBagConstraints();
+		gbc_cbSearch.gridwidth = 2;
+		gbc_cbSearch.insets = new Insets(0, 0, 5, 5);
+		gbc_cbSearch.fill = GridBagConstraints.BOTH;
+		gbc_cbSearch.gridx = 1;
+		gbc_cbSearch.gridy = 2;
+		add(cbSearch, gbc_cbSearch);
+		ComboBoxFix.fixCbBorder(cbSearch);
+		
+		
+		
+		JButton btnSearch = new JButton("");
+		btnSearch.setBackground(Color.WHITE);
+		btnSearch.setBorder(new RoundedBorder(30));
+		btnSearch.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				lsm.search();
+			}
+		});
+		btnSearch.setToolTipText("Search");
+		btnSearch.setIcon(new ImageIcon(PanelLocationSearch.class.getResource("/uk/ac/cam/bizrain/ui/ico/fa-search-16.png")));
+		GridBagConstraints gbc_btnSearch = new GridBagConstraints();
+		gbc_btnSearch.fill = GridBagConstraints.BOTH;
+		gbc_btnSearch.insets = new Insets(0, 0, 5, 5);
+		gbc_btnSearch.gridx = 3;
+		gbc_btnSearch.gridy = 2;
+		add(btnSearch, gbc_btnSearch);
+		
+		TimeSpinner tsStart = new TimeSpinner();
+		
+		TimeSpinner tsEnd = new TimeSpinner(LocalTime.now().plusHours(1));
+
+		
+		JSpinner spStart = new JSpinner();
+		spStart.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				clock.setFrom(((TimeSpinner) spStart.getModel()).getCurrent());
+			}
+		});
+		spStart.setModel(tsStart);
+		GridBagConstraints gbc_spStart = new GridBagConstraints();
+		gbc_spStart.fill = GridBagConstraints.HORIZONTAL;
+		gbc_spStart.insets = new Insets(0, 0, 5, 5);
+		gbc_spStart.gridx = 1;
+		gbc_spStart.gridy = 5;
+		add(spStart, gbc_spStart);
+		
+		JSpinner spEnd = new JSpinner();
+		spEnd.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				clock.setTo(((TimeSpinner) spEnd.getModel()).getCurrent());
+			}
+		});
+		spEnd.setModel(tsEnd);
+		GridBagConstraints gbc_spEnd = new GridBagConstraints();
+		gbc_spEnd.fill = GridBagConstraints.HORIZONTAL;
+		gbc_spEnd.insets = new Insets(0, 0, 5, 5);
+		gbc_spEnd.gridx = 3;
+		gbc_spEnd.gridy = 5;
+		add(spEnd, gbc_spEnd);
+		
+		JButton btnAdd = new JButton("");
+		btnAdd.setBorder(new RoundedBorder(30));
+		btnAdd.setBackground(Color.WHITE);
+		btnAdd.setIcon(new ImageIcon(PanelLocationSearch.class.getResource("/uk/ac/cam/bizrain/ui/ico/fa-plus-16.png")));
+		btnAdd.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				ret.returnData((IPlace)cbSearch.getSelectedItem(), 
+						geocoder.placeToLoc((IPlace) cbSearch.getSelectedItem()), 
+						((TimeSpinner) spStart.getModel()).getCurrent(), 
+						((TimeSpinner) spEnd.getModel()).getCurrent());
+			}
+		});
+		
+		GridBagConstraints gbc_btnAdd = new GridBagConstraints();
+		gbc_btnAdd.gridwidth = 3;
+		gbc_btnAdd.insets = new Insets(0, 0, 5, 5);
+		gbc_btnAdd.gridx = 1;
+		gbc_btnAdd.gridy = 8;
+		add(btnAdd, gbc_btnAdd);
+		
+		
+
+		
+		JButton btnStart = new JButton("Start");
+		btnStart.setBorder(new RoundedBorder(30));
+		btnStart.setBackground(Color.WHITE);
+		btnStart.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				br.setMainPanel(new PanelTimeSelector(LocalTime.now(), (time) -> {
+					br.setMainPanel(beme);
+					spStart.setValue(time);
+				}));
+			}
+		});
+		btnStart.setIcon(new ImageIcon(PanelLocationSearch.class.getResource("/uk/ac/cam/bizrain/ui/ico/fa-clock-16.png")));
+		GridBagConstraints gbc_btnStart = new GridBagConstraints();
+		gbc_btnStart.fill = GridBagConstraints.BOTH;
+		gbc_btnStart.insets = new Insets(0, 0, 5, 5);
+		gbc_btnStart.gridx = 1;
+		gbc_btnStart.gridy = 4;
+		add(btnStart, gbc_btnStart);
+		
+		JButton btnEnd = new JButton("End");
+		btnEnd.setBorder(new RoundedBorder(30));
+		btnEnd.setBackground(Color.WHITE);
+		btnEnd.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				br.setMainPanel(new PanelTimeSelector(LocalTime.now().plusHours(1), (time) -> {
+					br.setMainPanel(beme);
+					spEnd.setValue(time);
+				}));
+			}
+		});
+		btnEnd.setIcon(new ImageIcon(PanelLocationSearch.class.getResource("/uk/ac/cam/bizrain/ui/ico/fa-clock-16.png")));
+		GridBagConstraints gbc_btnEnd = new GridBagConstraints();
+		gbc_btnEnd.fill = GridBagConstraints.BOTH;
+		gbc_btnEnd.insets = new Insets(0, 0, 5, 5);
+		gbc_btnEnd.gridx = 3;
+		gbc_btnEnd.gridy = 4;
+		add(btnEnd, gbc_btnEnd);
+		
+
+	}
+	
+	private void addBlocks() {
 		Component rigidArea = Box.createRigidArea(new Dimension(20, 20));
 		GridBagConstraints gbc_rigidArea = new GridBagConstraints();
 		gbc_rigidArea.insets = new Insets(0, 0, 5, 5);
@@ -190,99 +367,10 @@ public class PanelLocationSearch extends JPanel {
 		Component rigidArea_1 = Box.createRigidArea(new Dimension(20, 20));
 		GridBagConstraints gbc_rigidArea_1 = new GridBagConstraints();
 		gbc_rigidArea_1.insets = new Insets(0, 0, 5, 0);
-		gbc_rigidArea_1.gridx = 5;
+		gbc_rigidArea_1.gridx = 4;
 		gbc_rigidArea_1.gridy = 0;
 		add(rigidArea_1, gbc_rigidArea_1);
 		
-		JLabel lblAddLocation = new JLabel("Add Location");
-		lblAddLocation.setFont(new Font("Tahoma", Font.BOLD, 16));
-		GridBagConstraints gbc_lblAddLocation = new GridBagConstraints();
-		gbc_lblAddLocation.gridwidth = 4;
-		gbc_lblAddLocation.insets = new Insets(0, 0, 5, 5);
-		gbc_lblAddLocation.gridx = 1;
-		gbc_lblAddLocation.gridy = 1;
-		add(lblAddLocation, gbc_lblAddLocation);
-		
-		LocSearchModel lsm = new LocSearchModel(geocoder);
-		
-		JComboBox<IPlace> cbSearch = new JComboBox<>();
-		cbSearch.setModel(lsm);
-		cbSearch.setMaximumRowCount(14);
-		cbSearch.setEditable(true);
-		cbSearch.addActionListener(e -> {
-			if (e.getActionCommand().equals("comboBoxEdited")) {
-				lsm.search();
-			}
-		});
-		//cbSearch.setRenderer(new PlaceCellRenderer()); TODO FIX FOR INTEROPERABILITY; CURRENT SOLUTION IS TO JUST ENSURE TOSTRING WORKS
-		cbSearch.setToolTipText("Location Search");
-		GridBagConstraints gbc_cbSearch = new GridBagConstraints();
-		gbc_cbSearch.gridwidth = 3;
-		gbc_cbSearch.insets = new Insets(0, 0, 5, 5);
-		gbc_cbSearch.fill = GridBagConstraints.HORIZONTAL;
-		gbc_cbSearch.gridx = 1;
-		gbc_cbSearch.gridy = 2;
-		add(cbSearch, gbc_cbSearch);
-		
-		
-		JButton btnSearch = new JButton("");
-		btnSearch.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				lsm.search();
-			}
-		});
-		btnSearch.setToolTipText("Search");
-		btnSearch.setIcon(new ImageIcon(PanelLocationSearch.class.getResource("/uk/ac/cam/bizrain/ui/ico/fa-search-16.png")));
-		GridBagConstraints gbc_btnSearch = new GridBagConstraints();
-		gbc_btnSearch.fill = GridBagConstraints.HORIZONTAL;
-		gbc_btnSearch.insets = new Insets(0, 0, 5, 5);
-		gbc_btnSearch.gridx = 4;
-		gbc_btnSearch.gridy = 2;
-		add(btnSearch, gbc_btnSearch);
-		
-		TimeSpinner tsStart = new TimeSpinner();
-		
-		JLabel lblStart = new JLabel("Start");
-		GridBagConstraints gbc_lblStart = new GridBagConstraints();
-		gbc_lblStart.insets = new Insets(0, 0, 5, 5);
-		gbc_lblStart.gridx = 2;
-		gbc_lblStart.gridy = 4;
-		add(lblStart, gbc_lblStart);
-		JSpinner spStart = new JSpinner();
-		spStart.setModel(tsStart);
-		GridBagConstraints gbc_spStart = new GridBagConstraints();
-		gbc_spStart.fill = GridBagConstraints.HORIZONTAL;
-		gbc_spStart.insets = new Insets(0, 0, 5, 5);
-		gbc_spStart.gridx = 3;
-		gbc_spStart.gridy = 4;
-		add(spStart, gbc_spStart);
-		
-		TimeSpinner tsEnd = new TimeSpinner(LocalTime.now().plusHours(1));
-		
-		JLabel lblEnd = new JLabel("End");
-		GridBagConstraints gbc_lblEnd = new GridBagConstraints();
-		gbc_lblEnd.insets = new Insets(0, 0, 5, 5);
-		gbc_lblEnd.gridx = 2;
-		gbc_lblEnd.gridy = 6;
-		add(lblEnd, gbc_lblEnd);
-		JSpinner spEnd = new JSpinner();
-		spEnd.setModel(tsEnd);
-		GridBagConstraints gbc_spEnd = new GridBagConstraints();
-		gbc_spEnd.fill = GridBagConstraints.HORIZONTAL;
-		gbc_spEnd.insets = new Insets(0, 0, 5, 5);
-		gbc_spEnd.gridx = 3;
-		gbc_spEnd.gridy = 6;
-		add(spEnd, gbc_spEnd);
-		
-		JButton btnAdd = new JButton("");
-		btnAdd.setIcon(new ImageIcon(PanelLocationSearch.class.getResource("/uk/ac/cam/bizrain/ui/ico/fa-plus-16.png")));
-		GridBagConstraints gbc_btnAdd = new GridBagConstraints();
-		gbc_btnAdd.gridwidth = 3;
-		gbc_btnAdd.insets = new Insets(0, 0, 5, 5);
-		gbc_btnAdd.gridx = 2;
-		gbc_btnAdd.gridy = 8;
-		add(btnAdd, gbc_btnAdd);
 		
 		Component rigidArea_2 = Box.createRigidArea(new Dimension(20, 20));
 		GridBagConstraints gbc_rigidArea_2 = new GridBagConstraints();
@@ -293,10 +381,24 @@ public class PanelLocationSearch extends JPanel {
 		
 		Component rigidArea_3 = Box.createRigidArea(new Dimension(20, 20));
 		GridBagConstraints gbc_rigidArea_3 = new GridBagConstraints();
-		gbc_rigidArea_3.gridx = 5;
+		gbc_rigidArea_3.gridx = 4;
 		gbc_rigidArea_3.gridy = 9;
 		add(rigidArea_3, gbc_rigidArea_3);
-
+		
+		
+		Component rigidArea_4 = Box.createRigidArea(new Dimension(20, 20));
+		GridBagConstraints gbc_rigidArea_4 = new GridBagConstraints();
+		gbc_rigidArea_4.insets = new Insets(0, 0, 5, 5);
+		gbc_rigidArea_4.gridx = 0;
+		gbc_rigidArea_4.gridy = 3;
+		add(rigidArea_4, gbc_rigidArea_4);
+		
+		Component rigidArea_5 = Box.createRigidArea(new Dimension(20, 20));
+		GridBagConstraints gbc_rigidArea_5 = new GridBagConstraints();
+		gbc_rigidArea_5.insets = new Insets(0, 0, 5, 0);
+		gbc_rigidArea_5.gridx = 4;
+		gbc_rigidArea_5.gridy = 3;
+		add(rigidArea_5, gbc_rigidArea_5);
 	}
 
 }

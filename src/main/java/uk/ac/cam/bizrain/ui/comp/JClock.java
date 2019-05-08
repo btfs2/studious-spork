@@ -49,32 +49,27 @@ public class JClock extends JPanel {
 		
 		int diam = Math.min(getWidth()-pad, getHeight()-pad);
 		int rad = diam/2;
-		double arc = Math.PI/6f;
+		int inset = 10;
+		
+		
+		g2.translate(getWidth()/2-rad-pad/2, getHeight()/2-rad-pad/2);
 		
 		g2.drawOval(Math.floorDiv(pad, 2), Math.floorDiv(pad, 2), diam, diam);
 		
-		int inset = 10;
-		for (int i = 1; i<=12; i++) {
-			int x = (int) ((rad-inset)*Math.cos(arc*(i-1)-Math.PI/2)+rad+Math.floorDiv(pad, 2));
-			int y = (int) ((rad-inset)*Math.sin(arc*(i-1)-Math.PI/2)+rad+Math.floorDiv(pad, 2));
-			//g2.drawLine(rad+Math.floorDiv(pad, 2), rad+Math.floorDiv(pad, 2), x, y);
-			g2.drawString(Integer.toString(i), x-pad, y+pad);
-		}
-		
-		arc = Math.PI/144f;
+		double arc144 = Math.PI/144f;
 		if (from != null && to != null) {
 			int startPos = 12*from.getHour()+from.getMinute()/5;
 			int endPos = 12*to.getHour()+to.getMinute()/5;
-			int xs = (int) ((rad-inset)*Math.cos(arc*(startPos)-Math.PI/2)+rad+Math.floorDiv(pad, 2));
-			int ys = (int) ((rad-inset)*Math.sin(arc*(startPos)-Math.PI/2)+rad+Math.floorDiv(pad, 2));
-			int xe = (int) ((rad-inset)*Math.cos(arc*(endPos)-Math.PI/2)+rad+Math.floorDiv(pad, 2));
-			int ye = (int) ((rad-inset)*Math.sin(arc*(endPos)-Math.PI/2)+rad+Math.floorDiv(pad, 2));
+			int xs = (int) ((rad-inset)*Math.cos(arc144*(startPos)-Math.PI/2)+rad+Math.floorDiv(pad, 2));
+			int ys = (int) ((rad-inset)*Math.sin(arc144*(startPos)-Math.PI/2)+rad+Math.floorDiv(pad, 2));
+			int xe = (int) ((rad-inset)*Math.cos(arc144*(endPos)-Math.PI/2)+rad+Math.floorDiv(pad, 2));
+			int ye = (int) ((rad-inset)*Math.sin(arc144*(endPos)-Math.PI/2)+rad+Math.floorDiv(pad, 2));
 			Polygon p = new Polygon();
 			p.addPoint(pad/2+rad, pad/2+rad);
 			p.addPoint(xs, ys);
 			for (int i = startPos; i < endPos; i+=2) {
-				int xi = (int) ((rad-inset)*Math.cos(arc*(i)-Math.PI/2)+rad+Math.floorDiv(pad, 2));
-				int yi = (int) ((rad-inset)*Math.sin(arc*(i)-Math.PI/2)+rad+Math.floorDiv(pad, 2));
+				int xi = (int) ((rad-inset)*Math.cos(arc144*(i)-Math.PI/2)+rad+Math.floorDiv(pad, 2));
+				int yi = (int) ((rad-inset)*Math.sin(arc144*(i)-Math.PI/2)+rad+Math.floorDiv(pad, 2));
 				p.addPoint(xi, yi);
 			}
 			p.addPoint(xe, ye);
@@ -82,16 +77,25 @@ public class JClock extends JPanel {
 			g2.fill(p);
 		}
 		if (from != null) {
-			int x = (int) ((rad-inset)*Math.cos(arc*(12*from.getHour()+from.getMinute()/5)-Math.PI/2)+rad+Math.floorDiv(pad, 2));
-			int y = (int) ((rad-inset)*Math.sin(arc*(12*from.getHour()+from.getMinute()/5)-Math.PI/2)+rad+Math.floorDiv(pad, 2));
+			int x = (int) ((rad-inset)*Math.cos(arc144*(12*from.getHour()+from.getMinute()/5)-Math.PI/2)+rad+Math.floorDiv(pad, 2));
+			int y = (int) ((rad-inset)*Math.sin(arc144*(12*from.getHour()+from.getMinute()/5)-Math.PI/2)+rad+Math.floorDiv(pad, 2));
 			g2.setColor(Color.GREEN);
 			g2.drawLine(pad/2+rad, pad/2+rad, x, y);
 		}
 		if (to != null) {
-			int x = (int) ((rad-inset)*Math.cos(arc*(12*to.getHour()+to.getMinute()/5)-Math.PI/2)+rad+Math.floorDiv(pad, 2));
-			int y = (int) ((rad-inset)*Math.sin(arc*(12*to.getHour()+to.getMinute()/5)-Math.PI/2)+rad+Math.floorDiv(pad, 2));
+			int x = (int) ((rad-inset)*Math.cos(arc144*(12*to.getHour()+to.getMinute()/5)-Math.PI/2)+rad+Math.floorDiv(pad, 2));
+			int y = (int) ((rad-inset)*Math.sin(arc144*(12*to.getHour()+to.getMinute()/5)-Math.PI/2)+rad+Math.floorDiv(pad, 2));
 			g2.setColor(Color.RED);
 			g2.drawLine(pad/2+rad, pad/2+rad, x, y);
+		}
+		
+		g.setColor(getForeground());
+		double arc6 = Math.PI/6f;
+		for (int i = 1; i<=12; i++) {
+			int x = (int) ((rad-inset)*Math.cos(arc6*(i)-Math.PI/2)+rad+Math.floorDiv(pad, 2));
+			int y = (int) ((rad-inset)*Math.sin(arc6*(i)-Math.PI/2)+rad+Math.floorDiv(pad, 2));
+			//g2.drawLine(rad+Math.floorDiv(pad, 2), rad+Math.floorDiv(pad, 2), x, y);
+			g2.drawString(Integer.toString(i), x-pad, y+pad);
 		}
 	}
 }

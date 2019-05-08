@@ -60,4 +60,10 @@ public class MergedWeatherData implements IWeatherData {
 		} else { return null; }
 	}
 
+	@Override
+	public List<IWeatherBlock> getWeatherAllDataIn(long start, long end) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

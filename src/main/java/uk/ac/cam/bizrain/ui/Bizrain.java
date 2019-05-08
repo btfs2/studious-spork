@@ -55,6 +55,7 @@ public class Bizrain {
 					"\nFrom:" + startTime.format(DateTimeFormatter.ofPattern("HH:mm")) + 
 					"\nTo: " + endTime.format(DateTimeFormatter.ofPattern("HH:mm")));
 		});
+		//mainPanel = new PanelAddSchedule();
 		frame.getContentPane().add(mainPanel, BorderLayout.CENTER);
 	}
 

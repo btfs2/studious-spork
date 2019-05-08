@@ -5,15 +5,18 @@ import java.util.List;
 
 import uk.ac.cam.bizrain.weather.IWeatherData;
 import uk.ac.cam.bizrain.weather.block.IWeatherBlock;
+import uk.ac.cam.bizrain.weather.darksky.blocks.DarkSkyDayBlock;
 import uk.ac.cam.bizrain.weather.darksky.blocks.DarkSkyHourBlock;
 import uk.ac.cam.bizrain.weather.darksky.blocks.DarkSkyMinuteBlock;
 import uk.ac.cam.bizrain.weather.darksky.datapoint.DarkskyDataPoint;
+import uk.ac.cam.bizrain.weather.darksky.datapoint.DarkskyDayDataPoint;
 import uk.ac.cam.bizrain.weather.darksky.datapoint.DarkskyHourlyDataPoint;
 
 public class DarkSkyWeatherData implements IWeatherData {
 
 	List<DarkSkyMinuteBlock> minblk;
 	List<DarkSkyHourBlock> hrblk;
+	List<DarkSkyDayBlock> dblk;
 	
 	public DarkSkyWeatherData(DarkSkyWeatherProvider dsp, DarkskyResponse dsr) {
 		minblk = new ArrayList<DarkSkyMinuteBlock>();
@@ -26,7 +29,10 @@ public class DarkSkyWeatherData implements IWeatherData {
 		for (DarkskyHourlyDataPoint mp : dsr.hourly.data) {
 			hrblk.add(new DarkSkyHourBlock(dsp, dsr.getLoc(), mp));
 		}
-		//TODO ADD DAYS
+		dblk = new ArrayList<DarkSkyDayBlock>();
+		for (DarkskyDayDataPoint mp : dsr.daily.data) {
+			dblk.add(new DarkSkyDayBlock(dsp, dsr.getLoc(), mp));
+		}
 	}
 	
 	@Override
@@ -40,6 +46,22 @@ public class DarkSkyWeatherData implements IWeatherData {
 				.filter(b -> b.getWeatherTime() <= time && b.getWeatherTime() + b.getWeatherLength() >= time)
 				.findFirst().orElse(null);
 		if (thing != null) out.add(thing);
+		thing = dblk.stream()
+				.filter(b -> b.getWeatherTime() <= time && b.getWeatherTime() + b.getWeatherLength() >= time)
+				.findFirst().orElse(null);
+		if (thing != null) out.add(thing);
+		return out;
+	}
+
+	@Override
+	public List<IWeatherBlock> getWeatherAllDataIn(long start, long end) {
+		List<IWeatherBlock> out = new ArrayList<IWeatherBlock>();
+		minblk.stream().filter(b -> b.getWeatherTime() <= end && b.getWeatherTime() + b.getWeatherLength() >= start)
+		.forEach(out::add);
+		hrblk.stream().filter(b -> b.getWeatherTime() <= end && b.getWeatherTime() + b.getWeatherLength() >= start)
+		.forEach(out::add);
+		dblk.stream().filter(b -> b.getWeatherTime() <= end && b.getWeatherTime() + b.getWeatherLength() >= start)
+		.forEach(out::add);
 		return out;
 	}
 

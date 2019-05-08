@@ -21,7 +21,7 @@ import uk.ac.cam.bizrain.location.IGeocoder;
 import uk.ac.cam.bizrain.location.IPlace;
 import uk.ac.cam.bizrain.location.StringPlace;
 import uk.ac.cam.bizrain.ui.PanelLocationSearch.LocSearchModel;
-import uk.ac.cam.bizrain.ui.comp.ComboBoxFix;
+import uk.ac.cam.bizrain.ui.comp.SwingUtil;
 import uk.ac.cam.bizrain.ui.comp.RoundedBorder;
 
 import javax.swing.JLabel;
@@ -164,7 +164,7 @@ public class PanelTimeSelector extends JPanel {
 		gbc_cbHour.gridx = 1;
 		gbc_cbHour.gridy = 3;
 		add(cbHour, gbc_cbHour);
-		ComboBoxFix.fixCbBorder(cbHour);
+		SwingUtil.fixCbBorder(cbHour);
 		
 		JLabel lblColon = new JLabel(":");
 		GridBagConstraints gbc_lblColon = new GridBagConstraints();
@@ -184,7 +184,7 @@ public class PanelTimeSelector extends JPanel {
 		gbc_cbMinute.gridx = 3;
 		gbc_cbMinute.gridy = 3;
 		add(cbMinute, gbc_cbMinute);
-		ComboBoxFix.fixCbBorder(cbMinute);
+		SwingUtil.fixCbBorder(cbMinute);
 		
 		JButton btnOk = new JButton("OK");
 		btnOk.setToolTipText("Accept time");

@@ -31,4 +31,5 @@ public interface IWeatherBlockTempreture extends IWeatherBlock {
 	public default float getWeatherAppTemperature() {
 		return getWeatherTemperature();
 	}
+
 }

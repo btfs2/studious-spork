@@ -31,7 +31,7 @@ import uk.ac.cam.bizrain.location.IGeocoder;
 import uk.ac.cam.bizrain.location.IPlace;
 import uk.ac.cam.bizrain.location.Location;
 import uk.ac.cam.bizrain.location.StringPlace;
-import uk.ac.cam.bizrain.ui.comp.ComboBoxFix;
+import uk.ac.cam.bizrain.ui.comp.SwingUtil;
 import uk.ac.cam.bizrain.ui.comp.JClock;
 import uk.ac.cam.bizrain.ui.comp.RoundedBorder;
 
@@ -234,7 +234,7 @@ public class PanelLocationSearch extends JPanel {
 		gbc_cbSearch.gridx = 1;
 		gbc_cbSearch.gridy = 2;
 		add(cbSearch, gbc_cbSearch);
-		ComboBoxFix.fixCbBorder(cbSearch);
+		SwingUtil.fixCbBorder(cbSearch);
 		
 		
 		

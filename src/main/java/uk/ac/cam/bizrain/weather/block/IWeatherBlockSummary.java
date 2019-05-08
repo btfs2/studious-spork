@@ -20,23 +20,27 @@ public interface IWeatherBlockSummary {
 	
 	interface IWeatherIcon {
 		public String getIconName();
+		public int getIconPriority();
 	}
 	
 	enum WeatherIcons implements IWeatherIcon {
 		CLEAR_DAY,
 		CLEAR_NIGHT,
-		RAIN,
-		SNOW,
-		SLEET,
+		PARTLY_CLOUDY_DAY,
+		PARTLY_CLOUDY_NIGHT,
+		CLOUDY,
 		WIND,
 		FOG,
-		CLOUDY,
-		PARTLY_CLOUDY_DAY,
-		PARTLY_CLOUDY_NIGHT;
+		SLEET,
+		RAIN,
+		SNOW;
+		
 
 		@Override
 		public String getIconName() {return name();}
 		
+		@Override
+		public int getIconPriority() { return ordinal(); }
 	}
 	
 	/**

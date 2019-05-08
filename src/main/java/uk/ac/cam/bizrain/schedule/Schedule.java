@@ -31,6 +31,22 @@ public class Schedule {
 			return start.compareTo(o.start);
 		}
 		
+		public IPlace getPlace() {
+			return place;
+		}
+		
+		public LocalTime getEnd() {
+			return end;
+		}
+		
+		public LocalTime getStart() {
+			return start;
+		}
+		
+		public Location getLoc() {
+			return loc;
+		}
+		
 	}
 	
 	List<ScheduleItem> items = new ArrayList<ScheduleItem>();

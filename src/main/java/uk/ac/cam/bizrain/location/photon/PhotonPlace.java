@@ -1,6 +1,7 @@
 package uk.ac.cam.bizrain.location.photon;
 
 import uk.ac.cam.bizrain.location.IPlaceLocated;
+import uk.ac.cam.bizrain.location.IPlaceSpecific;
 import uk.ac.cam.bizrain.location.Location;
 
 /**
@@ -11,7 +12,7 @@ import uk.ac.cam.bizrain.location.Location;
  * @author btfs2
  *
  */
-public class PhotonPlace implements IPlaceLocated {
+public class PhotonPlace implements IPlaceLocated, IPlaceSpecific {
 
 	String name;
 	String country;
@@ -83,6 +84,21 @@ public class PhotonPlace implements IPlaceLocated {
 	@Override
 	public String toString() {
 		return getDisplayName();
+	}
+
+	@Override
+	public String getName() {
+		return name;
+	}
+
+	@Override
+	public String getCountry() {
+		return country;
+	}
+
+	@Override
+	public String getCity() {
+		return city;
 	}
 	
 }

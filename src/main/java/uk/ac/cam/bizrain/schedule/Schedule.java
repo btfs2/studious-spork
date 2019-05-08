@@ -1,6 +1,7 @@
 package uk.ac.cam.bizrain.schedule;
 
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -12,7 +13,7 @@ public class Schedule {
 
 	String scheduleName;
 	
-	public class ScheduleItem implements Comparable<ScheduleItem> {
+	public static class ScheduleItem implements Comparable<ScheduleItem> {
 		IPlace place;
 		Location loc;
 		LocalTime start;
@@ -60,8 +61,32 @@ public class Schedule {
 		Collections.sort(items);
 	}
 	
+	public List<ScheduleItem> getItems() {
+		return new ArrayList<ScheduleItem>(items);
+	}
+	
+	public List<ScheduleItem> getNLongestItems(int n) {
+		Collections.sort(items, (i, j) -> {
+			return -1*Long.compare(i.start.until(i.end, ChronoUnit.MINUTES), j.start.until(j.end, ChronoUnit.MINUTES));
+		});
+		List<ScheduleItem> si = new ArrayList<Schedule.ScheduleItem>();
+		for (int i = 0; i < n; i++) {
+			si.add(items.get(i));
+		}
+		Collections.sort(items);
+		return si;
+	}
+	
 	public String getScheduleName() {
 		return scheduleName;
+	}
+	
+	public LocalTime getStart() {
+		return items.get(0).getStart();
+	}
+	
+	public LocalTime getEnd() {
+		return items.get(items.size()-1).getEnd();
 	}
 	
 }

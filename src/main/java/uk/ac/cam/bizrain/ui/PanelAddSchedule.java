@@ -16,6 +16,8 @@ import uk.ac.cam.bizrain.ui.comp.RoundedBorder;
 
 import javax.swing.JButton;
 import javax.swing.ImageIcon;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class PanelAddSchedule extends JPanel {
 	/**
@@ -25,10 +27,18 @@ public class PanelAddSchedule extends JPanel {
 	
 	private JTextField textField;
 
+	interface AddSchedReturn {
+		public void ret(String name);
+	}
+	
+	interface AddSchedBack {
+		public void back();
+	}
+	
 	/**
 	 * Create the panel.
 	 */
-	public PanelAddSchedule() {
+	public PanelAddSchedule(AddSchedBack back, AddSchedReturn ret) {
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0, 0, 0, 0, 0};
 		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0};
@@ -93,22 +103,28 @@ public class PanelAddSchedule extends JPanel {
 		add(textField, gbc_textField);
 		textField.setColumns(10);
 		
-		JPanel panel = new JPanel();
-		GridBagConstraints gbc_panel = new GridBagConstraints();
-		gbc_panel.gridwidth = 3;
-		gbc_panel.insets = new Insets(0, 0, 5, 5);
-		gbc_panel.fill = GridBagConstraints.HORIZONTAL;
-		gbc_panel.gridx = 1;
-		gbc_panel.gridy = 5;
-		add(panel, gbc_panel);
-		GridBagLayout gbl_panel = new GridBagLayout();
-		gbl_panel.columnWidths = new int[]{0, 0, 0};
-		gbl_panel.rowHeights = new int[]{0, 0};
-		gbl_panel.columnWeights = new double[]{1.0, 1.0, Double.MIN_VALUE};
-		gbl_panel.rowWeights = new double[]{0.0, Double.MIN_VALUE};
-		panel.setLayout(gbl_panel);
+		JPanel panelButtons = new JPanel();
+		GridBagConstraints gbc_panelButtons = new GridBagConstraints();
+		gbc_panelButtons.gridwidth = 3;
+		gbc_panelButtons.insets = new Insets(0, 0, 5, 5);
+		gbc_panelButtons.fill = GridBagConstraints.HORIZONTAL;
+		gbc_panelButtons.gridx = 1;
+		gbc_panelButtons.gridy = 5;
+		add(panelButtons, gbc_panelButtons);
+		GridBagLayout gbl_panelButtons = new GridBagLayout();
+		gbl_panelButtons.columnWidths = new int[]{0, 0, 0};
+		gbl_panelButtons.rowHeights = new int[]{0, 0};
+		gbl_panelButtons.columnWeights = new double[]{1.0, 1.0, Double.MIN_VALUE};
+		gbl_panelButtons.rowWeights = new double[]{0.0, Double.MIN_VALUE};
+		panelButtons.setLayout(gbl_panelButtons);
 		
 		JButton btnBack = new JButton("Back");
+		btnBack.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				back.back();
+			}
+		});
 		btnBack.setBorder(new RoundedBorder(30));
 		btnBack.setBackground(Color.WHITE);
 		btnBack.setIcon(new ImageIcon(PanelAddSchedule.class.getResource("/uk/ac/cam/bizrain/ui/ico/fa-chevron-left-16.png")));
@@ -116,16 +132,22 @@ public class PanelAddSchedule extends JPanel {
 		gbc_btnBack.insets = new Insets(0, 0, 0, 5);
 		gbc_btnBack.gridx = 0;
 		gbc_btnBack.gridy = 0;
-		panel.add(btnBack, gbc_btnBack);
+		panelButtons.add(btnBack, gbc_btnBack);
 		
 		JButton btnAdd = new JButton("Ok");
+		btnAdd.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				ret.ret(textField.getText());
+			}
+		});
 		btnAdd.setBorder(new RoundedBorder(30));
 		btnAdd.setBackground(Color.WHITE);
 		btnAdd.setIcon(new ImageIcon(PanelAddSchedule.class.getResource("/uk/ac/cam/bizrain/ui/ico/fa-plus-16.png")));
 		GridBagConstraints gbc_btnAdd = new GridBagConstraints();
 		gbc_btnAdd.gridx = 1;
 		gbc_btnAdd.gridy = 0;
-		panel.add(btnAdd, gbc_btnAdd);
+		panelButtons.add(btnAdd, gbc_btnAdd);
 		
 		Component rigidArea_2 = Box.createRigidArea(new Dimension(20, 20));
 		GridBagConstraints gbc_rigidArea_2 = new GridBagConstraints();

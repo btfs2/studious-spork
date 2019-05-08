@@ -20,18 +20,24 @@ public class DarkSkyWeatherData implements IWeatherData {
 	
 	public DarkSkyWeatherData(DarkSkyWeatherProvider dsp, DarkskyResponse dsr) {
 		minblk = new ArrayList<DarkSkyMinuteBlock>();
-		for (DarkskyDataPoint mp : dsr.minutely.data) {
-			minblk.add(
-					new DarkSkyMinuteBlock(dsp, 
-							dsr.getLoc(), mp));
+		if (dsr.minutely != null && dsr.minutely.data != null) {
+			for (DarkskyDataPoint mp : dsr.minutely.data) {
+				minblk.add(
+						new DarkSkyMinuteBlock(dsp, 
+								dsr.getLoc(), mp));
+			}
 		}
 		hrblk = new ArrayList<DarkSkyHourBlock>();
-		for (DarkskyHourlyDataPoint mp : dsr.hourly.data) {
-			hrblk.add(new DarkSkyHourBlock(dsp, dsr.getLoc(), mp));
+		if (dsr.hourly != null && dsr.hourly.data != null) {
+			for (DarkskyHourlyDataPoint mp : dsr.hourly.data) {
+				hrblk.add(new DarkSkyHourBlock(dsp, dsr.getLoc(), mp));
+			}
 		}
 		dblk = new ArrayList<DarkSkyDayBlock>();
-		for (DarkskyDayDataPoint mp : dsr.daily.data) {
-			dblk.add(new DarkSkyDayBlock(dsp, dsr.getLoc(), mp));
+		if (dsr.daily != null && dsr.daily.data != null) {
+			for (DarkskyDayDataPoint mp : dsr.daily.data) {
+				dblk.add(new DarkSkyDayBlock(dsp, dsr.getLoc(), mp));
+			}
 		}
 	}
 	

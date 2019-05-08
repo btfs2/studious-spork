@@ -179,18 +179,23 @@ public class PanelLocationSearch extends JPanel {
 	}
 	
 	/**
+	 *
 	 * @wbp.parser.constructor
 	 */
-	public PanelLocationSearch(Bizrain br, IGeocoder geocoder, LocSearchReturn ret) {
-		this(br, geocoder, ret, new StringPlace(""));
+	public PanelLocationSearch(Bizrain br, LocSearchReturn ret) {
+		this(br, ret, new StringPlace(""));
 	}
 	
 	/**
 	 * Create the panel.
 	 */
-	public PanelLocationSearch(Bizrain br, IGeocoder geocoder, LocSearchReturn ret, IPlace defaultLoc) {
+	public PanelLocationSearch(Bizrain br, LocSearchReturn ret, IPlace defaultLoc) {
+		
+		// This reference for callbacks
 		PanelLocationSearch beme = this;
 		
+		//Adds dimension fixing blocks to rigidify layout, provide padding, etc.
+		addBlocks();
 		
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0, 16, 0, 0, 0};
@@ -206,15 +211,13 @@ public class PanelLocationSearch extends JPanel {
 		gbc_panel.fill = GridBagConstraints.BOTH;
 		gbc_panel.gridx = 2;
 		gbc_panel.gridy = 6;
-		add(clock, gbc_panel);
-		
-		addBlocks();
+		//add(clock, gbc_panel);
 		
 		
 		JComboBox<IPlace> cbSearch = new JComboBox<IPlace>();
 		cbSearch.setBorder(new RoundedBorder(30));
 		cbSearch.setBackground(Color.WHITE);
-		LocSearchModel lsm = new LocSearchModel(geocoder, cbSearch);
+		LocSearchModel lsm = new LocSearchModel(br.geocoder, cbSearch);
 		cbSearch.setModel(lsm);
 		cbSearch.setSelectedItem(defaultLoc);
 		cbSearch.setMaximumRowCount(14);
@@ -226,7 +229,7 @@ public class PanelLocationSearch extends JPanel {
 		});
 		//cbSearch.setRenderer(new PlaceCellRenderer()); TODO FIX FOR INTEROPERABILITY; CURRENT SOLUTION IS TO JUST ENSURE TOSTRING WORKS
 		//TODO ADD horisontal scrolling
-		cbSearch.setToolTipText("Location Search");
+		//cbSearch.setToolTipText("Location Search");
 		GridBagConstraints gbc_cbSearch = new GridBagConstraints();
 		gbc_cbSearch.gridwidth = 2;
 		gbc_cbSearch.insets = new Insets(0, 0, 5, 5);
@@ -247,7 +250,7 @@ public class PanelLocationSearch extends JPanel {
 				lsm.search();
 			}
 		});
-		btnSearch.setToolTipText("Search");
+		//btnSearch.setToolTipText("Search");
 		btnSearch.setIcon(new ImageIcon(PanelLocationSearch.class.getResource("/uk/ac/cam/bizrain/ui/ico/fa-search-16.png")));
 		GridBagConstraints gbc_btnSearch = new GridBagConstraints();
 		gbc_btnSearch.fill = GridBagConstraints.BOTH;
@@ -297,7 +300,7 @@ public class PanelLocationSearch extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				ret.returnData((IPlace)cbSearch.getSelectedItem(), 
-						geocoder.placeToLoc((IPlace) cbSearch.getSelectedItem()), 
+						br.geocoder.placeToLoc((IPlace) cbSearch.getSelectedItem()), 
 						((TimeSpinner) spStart.getModel()).getCurrent(), 
 						((TimeSpinner) spEnd.getModel()).getCurrent());
 			}

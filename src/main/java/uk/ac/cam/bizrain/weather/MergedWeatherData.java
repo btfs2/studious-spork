@@ -52,6 +52,13 @@ public class MergedWeatherData implements IWeatherData {
 		Collections.sort(providers);
 	}
 	
+	public MergedWeatherData() {}
+	
+	public void addRegion(Region r) {
+		providers.add(r);
+		Collections.sort(providers);
+	}
+	
 	@Override
 	public List<IWeatherBlock> getWeatherAllDataAt(long time) {
 		Region iwd = providers.stream().filter(i -> i.compareTo(time) == 0).findFirst().orElse(null);

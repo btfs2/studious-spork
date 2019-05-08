@@ -30,7 +30,6 @@ public class DarkskyDayDataPoint extends DarkskyRegularDataPoint {
 	public long windGustTime;
 	//Sky
 	public long uvIndexTime;
-	public float visibility;
 	//Total Temp
 	public float temperatureMax;
 	public long temperatureMaxTime;

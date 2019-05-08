@@ -3,6 +3,7 @@ package uk.ac.cam.bizrain.weather.darksky.blocks;
 import uk.ac.cam.bizrain.location.Location;
 import uk.ac.cam.bizrain.weather.IWeatherProvider;
 import uk.ac.cam.bizrain.weather.block.IWeatherBlockPrecipitation;
+import uk.ac.cam.bizrain.weather.block.IWeatherBlockPrecipitation.PrecipType;
 import uk.ac.cam.bizrain.weather.darksky.datapoint.DarkskyDataPoint;
 
 /**
@@ -18,7 +19,7 @@ public class DarkSkyMinuteBlock implements IWeatherBlockPrecipitation {
 	IWeatherProvider provider;
 	long time;
 	float precipProb, precipIntensity, precipIntensityError;
-	IPrecipType precipType = PrecipType.RAIN;
+	IPrecipType precipType = null;
 	Location loc;
 	
 	public DarkSkyMinuteBlock(IWeatherProvider wp, Location l, DarkskyDataPoint dp) {
@@ -27,10 +28,14 @@ public class DarkSkyMinuteBlock implements IWeatherBlockPrecipitation {
 		precipProb = dp.precipProbability;
 		precipIntensity = dp.precipIntensity;
 		precipIntensityError = dp.precipIntensityError;
-		if (dp.precipType.equalsIgnoreCase("snow")) {
-			precipType = PrecipType.SNOW;
-		} else if (dp.precipType.equalsIgnoreCase("sleet")) {
-			precipType = PrecipType.SLEET;
+		if (dp.precipType != null) {
+			if (dp.precipType.equalsIgnoreCase("snow")) {
+				precipType = PrecipType.SNOW;
+			} else if (dp.precipType.equalsIgnoreCase("sleet")) {
+				precipType = PrecipType.SLEET;
+			} else {
+				precipType = PrecipType.RAIN;
+			}
 		}
 		loc = l;
 	}

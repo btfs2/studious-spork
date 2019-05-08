@@ -5,6 +5,7 @@ import uk.ac.cam.bizrain.weather.IWeatherProvider;
 import uk.ac.cam.bizrain.weather.block.IWeatherBlockDayStats;
 import uk.ac.cam.bizrain.weather.block.IWeatherBlockPrecipitation;
 import uk.ac.cam.bizrain.weather.block.IWeatherBlockSummary;
+import uk.ac.cam.bizrain.weather.block.IWeatherBlockSummary.WeatherIcons;
 import uk.ac.cam.bizrain.weather.darksky.datapoint.DarkskyDayDataPoint;
 
 public class DarkSkyDayBlock implements IWeatherBlockPrecipitation, IWeatherBlockSummary, IWeatherBlockDayStats {
@@ -34,37 +35,39 @@ public class DarkSkyDayBlock implements IWeatherBlockPrecipitation, IWeatherBloc
 			}
 		}
 		loc = l;
-		switch (dp.icon) {
-		case "clear-day":
-			icon = WeatherIcons.CLEAR_DAY;
-			break;
-		case "clear-night":
-			icon = WeatherIcons.CLEAR_NIGHT;
-			break;
-		case "rain":
-			icon = WeatherIcons.RAIN;
-			break;
-		case "snow":
-			icon = WeatherIcons.SNOW;
-			break;
-		case "sleet":
-			icon = WeatherIcons.SLEET;
-			break;
-		case "wind":
-			icon = WeatherIcons.WIND;
-			break;
-		case "fog":
-			icon = WeatherIcons.FOG;
-			break;
-		case "cloudy":
-			icon = WeatherIcons.CLOUDY;
-			break;
-		case "partly-cloudy-day":
-			icon = WeatherIcons.PARTLY_CLOUDY_DAY;
-			break;
-		case "partly-cloudy-night":
-			icon = WeatherIcons.PARTLY_CLOUDY_NIGHT;
-			break;
+		if (dp.icon != null) {
+			switch (dp.icon) {
+			case "clear-day":
+				icon = WeatherIcons.CLEAR_DAY;
+				break;
+			case "clear-night":
+				icon = WeatherIcons.CLEAR_NIGHT;
+				break;
+			case "rain":
+				icon = WeatherIcons.RAIN;
+				break;
+			case "snow":
+				icon = WeatherIcons.SNOW;
+				break;
+			case "sleet":
+				icon = WeatherIcons.SLEET;
+				break;
+			case "wind":
+				icon = WeatherIcons.WIND;
+				break;
+			case "fog":
+				icon = WeatherIcons.FOG;
+				break;
+			case "cloudy":
+				icon = WeatherIcons.CLOUDY;
+				break;
+			case "partly-cloudy-day":
+				icon = WeatherIcons.PARTLY_CLOUDY_DAY;
+				break;
+			case "partly-cloudy-night":
+				icon = WeatherIcons.PARTLY_CLOUDY_NIGHT;
+				break;
+			}
 		}
 		sunrise = dp.sunriseTime;
 		sunset = dp.sunsetTime;

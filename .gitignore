@@ -47,3 +47,9 @@ replay_pid*.log
 /*.old
 *.bak
 /*.bak
+
+# SECURITY STUFF #
+##################
+# Hides stuff that might contain, say, API keys
+# Good idea
+config.json

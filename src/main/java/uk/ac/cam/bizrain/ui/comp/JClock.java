@@ -42,6 +42,7 @@ public class JClock extends JPanel {
 	
 	@Override
 	protected void paintComponent(Graphics g) {
+		System.out.println(this instanceof JPanel);
 		super.paintComponent(g);
 		
 		Graphics2D g2 = (Graphics2D) g;

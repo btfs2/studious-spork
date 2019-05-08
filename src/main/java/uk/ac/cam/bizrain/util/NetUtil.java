@@ -121,7 +121,7 @@ public class NetUtil {
 		        	responseCache.put(url, body);
 		        	responseCacheTime.put(url, System.currentTimeMillis());
 	        	} else {
-	        		System.err.println("INVALID ENCODING: " + connection.getContentEncoding());
+	        		log.log(Level.WARNING, "INVALID ENCODING: " + connection.getContentEncoding());
 	        	}
 	        	return body;
 	        }

@@ -13,7 +13,7 @@ We started compiling the document and authored sections 6 and 7 based on our res
 Finish compiling the document with multiple feedback cycles and refining our conclusions based on the data obtained from the questionaire.
 
 ### The third session
-Tied up Tick 1 and got it ticked. Discussed our different ideas for prototypes and agreed to work on our own designs, based on what we agreed on.
+Tied up Tick 1 and got it ticked. Discussed our different ideas for prototypes and agreed to work on our separate own designs, based on what we agreed on.
 
 ### Between sessions
 Each of us created a design based on what we undestood of our requirements.

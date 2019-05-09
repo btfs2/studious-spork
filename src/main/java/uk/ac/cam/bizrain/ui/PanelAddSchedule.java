@@ -1,23 +1,23 @@
 package uk.ac.cam.bizrain.ui;
 
-import javax.swing.JPanel;
-import java.awt.GridBagLayout;
 import java.awt.Color;
 import java.awt.Component;
-import javax.swing.Box;
 import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import javax.swing.JLabel;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+import javax.swing.Box;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import uk.ac.cam.bizrain.ui.comp.RoundedBorder;
-
-import javax.swing.JButton;
-import javax.swing.ImageIcon;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 public class PanelAddSchedule extends JPanel {
 	/**

@@ -10,9 +10,9 @@ import uk.ac.cam.bizrain.weather.block.CombinedWeatherBlock;
 import uk.ac.cam.bizrain.weather.block.IWeatherBlock;
 import uk.ac.cam.bizrain.weather.block.IWeatherBlockPrecipitation;
 import uk.ac.cam.bizrain.weather.block.IWeatherBlockSummary;
-import uk.ac.cam.bizrain.weather.block.IWeatherBlockWorst;
 import uk.ac.cam.bizrain.weather.block.IWeatherBlockSummary.IWeatherIcon;
 import uk.ac.cam.bizrain.weather.block.IWeatherBlockTempreture;
+import uk.ac.cam.bizrain.weather.block.IWeatherBlockWorst;
 
 public interface IWeatherData {
 

@@ -1,31 +1,29 @@
 package uk.ac.cam.bizrain.ui;
 
-import javax.swing.JPanel;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
 import java.awt.Color;
 import java.awt.Component;
-import javax.swing.Box;
 import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
-import javax.swing.JScrollPane;
-import javax.swing.JButton;
+import javax.swing.Box;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 
 import uk.ac.cam.bizrain.Bizrain;
+import uk.ac.cam.bizrain.schedule.LocalTimeToEpoch;
 import uk.ac.cam.bizrain.schedule.Schedule;
 import uk.ac.cam.bizrain.schedule.Schedule.ScheduleItem;
 import uk.ac.cam.bizrain.ui.comp.RoundedBorder;
 import uk.ac.cam.bizrain.ui.sub.PanelLocation;
 import uk.ac.cam.bizrain.ui.sub.PanelOverview;
 import uk.ac.cam.bizrain.weather.IWeatherData;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 public class PanelSchedule extends JPanel {
 
@@ -145,7 +143,7 @@ public class PanelSchedule extends JPanel {
 	
 	public void reschedule(Bizrain br, JScrollPane pan, Schedule sch) {
 		IWeatherData iwd = br.sm.getScheduleCombinedWeather(sch, br.weatherProv, false, 
-				i->LocalDateTime.of(LocalDate.now(ZoneOffset.UTC), i).toEpochSecond(ZoneOffset.UTC));
+				LocalTimeToEpoch.getDefault());
 		if (pnOverview != null) {
 			remove(pnOverview);
 		}
@@ -180,8 +178,7 @@ public class PanelSchedule extends JPanel {
 			panel.add(rigidArea_2, gbc_rigidArea_2);
 			
 			System.out.println(br.sm.getScheduleItemWeather(sch, br.weatherProv, false, si));
-			//JPanel panel_1 = new PanelLocation(si, br.sm.getScheduleItemWeather(sch, br.weatherProv, false, si));
-			JPanel panel_1 = new PanelLocation(si, br.weatherProv.getWeatherDataFor(si.getLoc()));
+			JPanel panel_1 = new PanelLocation(si, br.sm.getScheduleItemWeather(sch, br.weatherProv, false, si), LocalTimeToEpoch.getDefault());
 			GridBagConstraints gbc_panel_1 = new GridBagConstraints();
 			gbc_panel_1.insets = new Insets(0, 0, 0, 5);
 			gbc_panel_1.fill = GridBagConstraints.BOTH;

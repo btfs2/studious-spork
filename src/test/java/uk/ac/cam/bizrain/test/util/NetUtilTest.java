@@ -1,6 +1,6 @@
 package uk.ac.cam.bizrain.test.util;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 

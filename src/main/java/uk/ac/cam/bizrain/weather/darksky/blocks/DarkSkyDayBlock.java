@@ -5,7 +5,6 @@ import uk.ac.cam.bizrain.weather.IWeatherProvider;
 import uk.ac.cam.bizrain.weather.block.IWeatherBlockDayStats;
 import uk.ac.cam.bizrain.weather.block.IWeatherBlockPrecipitation;
 import uk.ac.cam.bizrain.weather.block.IWeatherBlockSummary;
-import uk.ac.cam.bizrain.weather.block.IWeatherBlockSummary.WeatherIcons;
 import uk.ac.cam.bizrain.weather.darksky.datapoint.DarkskyDayDataPoint;
 
 public class DarkSkyDayBlock implements IWeatherBlockPrecipitation, IWeatherBlockSummary, IWeatherBlockDayStats {

@@ -1,20 +1,18 @@
 package uk.ac.cam.bizrain.test.ui;
 
 import java.awt.EventQueue;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 
 import javax.swing.JFrame;
-import java.awt.GridBagLayout;
 import javax.swing.JPanel;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import javax.swing.JLabel;
+import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import uk.ac.cam.bizrain.util.Pointer;
-
-import javax.swing.JScrollPane;
-import javax.swing.ScrollPaneConstants;
 
 /**
  * 

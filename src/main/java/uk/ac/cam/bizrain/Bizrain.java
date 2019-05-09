@@ -1,29 +1,19 @@
 package uk.ac.cam.bizrain;
 
+import java.awt.BorderLayout;
 import java.awt.EventQueue;
-import java.time.format.DateTimeFormatter;
 
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.plaf.synth.SynthLookAndFeel;
 
 import uk.ac.cam.bizrain.config.BizrainConfig;
 import uk.ac.cam.bizrain.location.IGeocoder;
 import uk.ac.cam.bizrain.location.photon.PhotonGeocoder;
 import uk.ac.cam.bizrain.schedule.Schedule;
 import uk.ac.cam.bizrain.schedule.ScheduleManager;
-import uk.ac.cam.bizrain.ui.PanelLocationSearch;
 import uk.ac.cam.bizrain.ui.PanelSchedule;
-import uk.ac.cam.bizrain.ui.comp.SwingUtil;
-import uk.ac.cam.bizrain.ui.sub.PanelLocation;
-import uk.ac.cam.bizrain.weather.IWeatherData;
 import uk.ac.cam.bizrain.weather.IWeatherProvider;
 import uk.ac.cam.bizrain.weather.darksky.DarkSkyWeatherProvider;
-
-import java.awt.BorderLayout;
 
 /**
  * Main of program

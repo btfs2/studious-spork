@@ -3,7 +3,6 @@ package uk.ac.cam.bizrain.weather.darksky.blocks;
 import uk.ac.cam.bizrain.location.Location;
 import uk.ac.cam.bizrain.weather.IWeatherProvider;
 import uk.ac.cam.bizrain.weather.block.IWeatherBlockPrecipitation;
-import uk.ac.cam.bizrain.weather.block.IWeatherBlockPrecipitation.PrecipType;
 import uk.ac.cam.bizrain.weather.darksky.datapoint.DarkskyDataPoint;
 
 /**

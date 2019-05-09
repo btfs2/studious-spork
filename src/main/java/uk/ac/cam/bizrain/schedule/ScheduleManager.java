@@ -23,7 +23,6 @@ import uk.ac.cam.bizrain.weather.IWeatherData;
 import uk.ac.cam.bizrain.weather.IWeatherProvider;
 import uk.ac.cam.bizrain.weather.MergedWeatherData;
 import uk.ac.cam.bizrain.weather.MergedWeatherData.Region;
-import uk.ac.cam.bizrain.weather.block.CombinedWeatherBlock;
 
 /**
  * 

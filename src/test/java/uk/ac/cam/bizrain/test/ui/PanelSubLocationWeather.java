@@ -1,10 +1,9 @@
 package uk.ac.cam.bizrain.test.ui;
 
-import javax.swing.JPanel;
-
-import uk.ac.cam.bizrain.weather.IWeatherData;
+import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
+import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
@@ -12,12 +11,16 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 
-import java.awt.Graphics;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
+import uk.ac.cam.bizrain.weather.IWeatherData;
 
 public class PanelSubLocationWeather extends JPanel {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 173557214697435863L;
 
 	/**
 	 * Create the panel.
@@ -66,7 +69,6 @@ public class PanelSubLocationWeather extends JPanel {
 		gbc_lblIconLabel.gridx = 0;
 		gbc_lblIconLabel.gridy = 0;
 		panel.add(lblIconLabel, gbc_lblIconLabel);
-		Graphics gfx = panel.getGraphics();
 		Image img;
 		try {
 			img = ImageIO.read(ClassLoader.getSystemClassLoader().getResource("uk/ac/cam/bizrain/test/ui/fa-plus-128.png"));

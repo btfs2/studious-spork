@@ -1,33 +1,32 @@
 package uk.ac.cam.bizrain.ui.sub;
 
-import javax.swing.JPanel;
-import java.awt.GridBagLayout;
 import java.awt.Color;
 import java.awt.Component;
-import javax.swing.Box;
-import javax.swing.ComboBoxModel;
-import javax.swing.DefaultComboBoxModel;
-
 import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
 import java.awt.Font;
-import javax.swing.event.ListDataListener;
-
-import uk.ac.cam.bizrain.location.IGeocoder;
-import uk.ac.cam.bizrain.location.IPlace;
-import uk.ac.cam.bizrain.ui.comp.SwingUtil;
-import uk.ac.cam.bizrain.ui.comp.RoundedBorder;
-
-import javax.swing.JLabel;
-import javax.swing.JButton;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+
+import javax.swing.Box;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.event.ListDataListener;
+
+import uk.ac.cam.bizrain.location.IGeocoder;
+import uk.ac.cam.bizrain.location.IPlace;
+import uk.ac.cam.bizrain.ui.comp.RoundedBorder;
+import uk.ac.cam.bizrain.ui.comp.SwingUtil;
 
 /**
  * Main window panel for selecting time

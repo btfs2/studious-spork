@@ -1,5 +1,21 @@
 package uk.ac.cam.bizrain.ui.sub;
 
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.Box;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import uk.ac.cam.bizrain.location.IPlaceSpecific;
@@ -9,21 +25,6 @@ import uk.ac.cam.bizrain.ui.comp.RoundedBorder;
 import uk.ac.cam.bizrain.ui.comp.SwingUtil;
 import uk.ac.cam.bizrain.weather.IWeatherData;
 import uk.ac.cam.bizrain.weather.block.IWeatherBlockWorst;
-
-import java.awt.GridBagLayout;
-import javax.swing.JLabel;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.awt.Component;
-import javax.swing.Box;
-import java.awt.Dimension;
-import java.awt.Font;
 
 public class PanelOverview extends JPanel {
 
@@ -37,6 +38,7 @@ public class PanelOverview extends JPanel {
 	 */
 	public PanelOverview(Schedule sch, IWeatherData locWeather) {
 		setBorder(new RoundedBorder(30));
+		setBackground(Color.decode("0xDDDDDD"));
 		
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0, 0, 0};

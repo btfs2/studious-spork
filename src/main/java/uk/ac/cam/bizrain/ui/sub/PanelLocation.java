@@ -1,20 +1,10 @@
 package uk.ac.cam.bizrain.ui.sub;
 
-import javax.swing.JPanel;
-
-import uk.ac.cam.bizrain.config.BizrainConfig;
-import uk.ac.cam.bizrain.location.IPlace;
-import uk.ac.cam.bizrain.location.IPlaceSpecific;
-import uk.ac.cam.bizrain.schedule.Schedule.ScheduleItem;
-import uk.ac.cam.bizrain.ui.comp.RoundedBorder;
-import uk.ac.cam.bizrain.ui.comp.SwingUtil;
-import uk.ac.cam.bizrain.util.ConfigParser;
-import uk.ac.cam.bizrain.weather.IWeatherData;
-import uk.ac.cam.bizrain.weather.block.IWeatherBlockWorst;
-
-import java.awt.GridBagLayout;
-import javax.swing.JLabel;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -22,10 +12,20 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.awt.Component;
+
 import javax.swing.Box;
-import javax.swing.ImageIcon;
-import java.awt.Dimension;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+import uk.ac.cam.bizrain.config.BizrainConfig;
+import uk.ac.cam.bizrain.location.IPlace;
+import uk.ac.cam.bizrain.location.IPlaceSpecific;
+import uk.ac.cam.bizrain.schedule.LocalTimeToEpoch;
+import uk.ac.cam.bizrain.schedule.Schedule.ScheduleItem;
+import uk.ac.cam.bizrain.ui.comp.RoundedBorder;
+import uk.ac.cam.bizrain.ui.comp.SwingUtil;
+import uk.ac.cam.bizrain.weather.IWeatherData;
+import uk.ac.cam.bizrain.weather.block.IWeatherBlockWorst;
 
 public class PanelLocation extends JPanel {
 
@@ -37,8 +37,9 @@ public class PanelLocation extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public PanelLocation(ScheduleItem schi, IWeatherData locWeather) {
+	public PanelLocation(ScheduleItem schi, IWeatherData locWeather, LocalTimeToEpoch lt2e) {
 		setBorder(new RoundedBorder(30));
+		setBackground(Color.decode("0xDDDDDD"));
 		
 		String line1, line2, line3;
 		IPlace place = schi.getPlace();

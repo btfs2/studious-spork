@@ -3,17 +3,9 @@ package uk.ac.cam.bizrain.test;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.List;
-import java.util.Scanner;
 
 import com.google.gson.Gson;
 
-import uk.ac.cam.bizrain.location.IGeocoder;
-import uk.ac.cam.bizrain.location.IPlace;
-import uk.ac.cam.bizrain.location.IPlaceLocated;
-import uk.ac.cam.bizrain.location.Location;
-import uk.ac.cam.bizrain.location.StringPlace;
-import uk.ac.cam.bizrain.location.photon.PhotonGeocoder;
 import uk.ac.cam.bizrain.location.photon.PhotonResponse;
 import uk.ac.cam.bizrain.util.NetUtil;
 import uk.ac.cam.bizrain.weather.IWeatherData;

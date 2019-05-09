@@ -22,6 +22,7 @@ public class RoundedBorder extends AbstractBorder {
 	
 	int rad = 10;
 	private RenderingHints hints;
+	Insets moreInset = new Insets(0, 0, 0, 0);
 	
 	public RoundedBorder() {
 		init();
@@ -29,6 +30,12 @@ public class RoundedBorder extends AbstractBorder {
 	
 	public RoundedBorder(int rad) {
 		this.rad = rad;
+		init();
+	}
+	
+	public RoundedBorder(int rad, Insets moreInset) {
+		this.rad = rad;
+		this.moreInset = moreInset;
 		init();
 	}
 	
@@ -85,7 +92,9 @@ public class RoundedBorder extends AbstractBorder {
         if (c instanceof JComboBox<?>) {
         	fill.subtract(new Area(new Rectangle(2+rad/2, 2+rad/2, width-rad-20, height-rad-4)));
         } else {
-        	fill.subtract(new Area(new Rectangle(rad/2, rad/2, width-rad, height-rad)));
+        	fill.subtract(new Area(new Rectangle(rad/2-moreInset.left, 
+        			rad/2-moreInset.top, width-rad-moreInset.right, 
+        			height-rad-moreInset.bottom)));
         }
         
         g2.setColor(c.getBackground());

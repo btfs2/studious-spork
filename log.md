@@ -13,15 +13,14 @@ We started compiling the document and authored sections 6 and 7 based on our res
 Finish compiling the document with multiple feedback cycles and refining our conclusions based on the data obtained from the questionaire.
 
 ### The third session
-Tied up Tick 1 and got it ticked. Discussed our different ideas for prototypes and agreed to work on our separate own designs, based on what we agreed on.
+Tied up Tick 1 and got it ticked. Discussed our different ideas for prototypes and plans for the next days.
 
 ### Between sessions
-Each of us created a design based on what we undestood of our requirements.
+Each of us created a design based on what we undestood of our requirements. So we had multiple concepts for the final GUI to choose from.
 
 ### The fourth session
-We looked at everyone's individual designs for how the app should look and how it functions. We chose which features to include from each design.
-Debated specific aspects of functionality.
-Designated tasks to do between sessions.
+We looked at everyone's individual designs for how the app should look and how it functions. We chose which features to include from each design and nailed down final sketches.
+Designated tasks to do between sessions and decided on user tasks to storyboard.
 
 ### Between sessions
 Individually completed tasks:

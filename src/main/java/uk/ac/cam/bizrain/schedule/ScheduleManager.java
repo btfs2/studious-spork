@@ -22,6 +22,7 @@ import uk.ac.cam.bizrain.schedule.Schedule.ScheduleItem;
 import uk.ac.cam.bizrain.weather.IWeatherData;
 import uk.ac.cam.bizrain.weather.IWeatherProvider;
 import uk.ac.cam.bizrain.weather.MergedWeatherData;
+import uk.ac.cam.bizrain.weather.MergedWeatherData.Region;
 import uk.ac.cam.bizrain.weather.block.CombinedWeatherBlock;
 
 /**
@@ -93,10 +94,17 @@ public class ScheduleManager {
 		}
 	}
 	
-	public IWeatherData getScheduleCombinedWeather(Schedule s, IWeatherProvider iwp, boolean regen) {
+	public IWeatherData getScheduleCombinedWeather(Schedule s, IWeatherProvider iwp, boolean regen, LocalTimeToEpoch lt2e) {
 		Map<IPlace, IWeatherData> dataMap = getScheduleWeather(s, iwp, regen);
 		MergedWeatherData out = new MergedWeatherData();
-		return null;
+		for (ScheduleItem si : s.getItems()) {
+			out.addRegion(new Region(lt2e.toEpoch(si.start), lt2e.toEpoch(si.end), dataMap.get(si.place)));
+		}
+		return out;
+	}
+	
+	public IWeatherData getScheduleItemWeather(Schedule s, IWeatherProvider iwp, boolean regen, ScheduleItem si) {
+		return getScheduleWeather(s, iwp, regen).get(si.place);
 	}
 	
 	/**

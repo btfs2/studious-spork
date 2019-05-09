@@ -11,7 +11,7 @@ sourceCompatibility = 1.8
 version = '0.2.12'
 
 //This specifies the main class
-mainClassName = "uk.ac.cam.bizrain.ui.Bizrain"
+mainClassName = "uk.ac.cam.bizrain.Bizrain"
 
 //This configures the jar to have the right metadata, and so it will autostart the application
 jar {

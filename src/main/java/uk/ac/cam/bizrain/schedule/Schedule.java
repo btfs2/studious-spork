@@ -13,6 +13,13 @@ public class Schedule {
 
 	String scheduleName;
 	
+	@SuppressWarnings("unused")
+	private Schedule() {}
+	
+	public Schedule(String scheduleName) {
+		this.scheduleName = scheduleName;
+	}
+	
 	public static class ScheduleItem implements Comparable<ScheduleItem> {
 		IPlace place;
 		Location loc;
@@ -70,7 +77,7 @@ public class Schedule {
 			return -1*Long.compare(i.start.until(i.end, ChronoUnit.MINUTES), j.start.until(j.end, ChronoUnit.MINUTES));
 		});
 		List<ScheduleItem> si = new ArrayList<Schedule.ScheduleItem>();
-		for (int i = 0; i < n; i++) {
+		for (int i = 0; i < Math.min(n, si.size()); i++) {
 			si.add(items.get(i));
 		}
 		Collections.sort(items);
@@ -82,10 +89,16 @@ public class Schedule {
 	}
 	
 	public LocalTime getStart() {
+		if (items.size() == 0) {
+			return LocalTime.MIN;
+		}
 		return items.get(0).getStart();
 	}
 	
 	public LocalTime getEnd() {
+		if (items.size() == 0) {
+			return LocalTime.MAX;
+		}
 		return items.get(items.size()-1).getEnd();
 	}
 	

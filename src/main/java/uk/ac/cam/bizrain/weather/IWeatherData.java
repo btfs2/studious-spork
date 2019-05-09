@@ -62,7 +62,7 @@ public interface IWeatherData {
 						.filter(IWeatherBlockTempreture.class::isInstance)
 						.map(i -> (IWeatherBlockTempreture)i)
 						.mapToDouble(IWeatherBlockTempreture::getWeatherTemperature)
-						.min().getAsDouble();
+						.min().orElse(-1*Float.MAX_VALUE);
 			}
 			
 			@Override
@@ -71,7 +71,7 @@ public interface IWeatherData {
 						.filter(IWeatherBlockTempreture.class::isInstance)
 						.map(i -> (IWeatherBlockTempreture)i)
 						.mapToDouble(IWeatherBlockTempreture::getWeatherTemperature)
-						.max().getAsDouble();
+						.max().orElse(-1*Float.MAX_VALUE);
 			}
 			
 			@Override
@@ -80,7 +80,7 @@ public interface IWeatherData {
 						.filter(IWeatherBlockPrecipitation.class::isInstance)
 						.map(i -> (IWeatherBlockPrecipitation)i)
 						.mapToDouble(IWeatherBlockPrecipitation::getWeatherPrecipProb)
-						.max().getAsDouble();
+						.max().orElse(-1*Float.MAX_VALUE);
 			}
 			
 			@Override
@@ -89,7 +89,7 @@ public interface IWeatherData {
 						.filter(IWeatherBlockPrecipitation.class::isInstance)
 						.map(i -> (IWeatherBlockPrecipitation)i)
 						.mapToDouble(IWeatherBlockPrecipitation::getWeatherPrecipIntensity)
-						.max().getAsDouble();
+						.max().orElse(-1*Float.MAX_VALUE);
 			}
 
 			@Override

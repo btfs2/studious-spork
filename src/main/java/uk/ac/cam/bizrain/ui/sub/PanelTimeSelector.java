@@ -1,4 +1,4 @@
-package uk.ac.cam.bizrain.ui;
+package uk.ac.cam.bizrain.ui.sub;
 
 import javax.swing.JPanel;
 import java.awt.GridBagLayout;
@@ -10,33 +10,33 @@ import javax.swing.DefaultComboBoxModel;
 
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
-import javax.swing.JSpinner;
 import java.awt.Insets;
 import java.awt.Font;
-import javax.swing.SpinnerNumberModel;
-import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
 import uk.ac.cam.bizrain.location.IGeocoder;
 import uk.ac.cam.bizrain.location.IPlace;
-import uk.ac.cam.bizrain.location.StringPlace;
-import uk.ac.cam.bizrain.ui.PanelLocationSearch.LocSearchModel;
 import uk.ac.cam.bizrain.ui.comp.SwingUtil;
 import uk.ac.cam.bizrain.ui.comp.RoundedBorder;
 
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JButton;
-import java.awt.event.ActionListener;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JComboBox;
 
+/**
+ * Main window panel for selecting time
+ * 
+ * Just gets time from user and returns it
+ * 
+ * @author btfs2
+ *
+ */
 public class PanelTimeSelector extends JPanel {
 
 	
@@ -46,7 +46,16 @@ public class PanelTimeSelector extends JPanel {
 	 */
 	private static final long serialVersionUID = 1455428906071148231L;
 
+	/**
+	 * Return function for this thing
+	 * 
+	 * @author btfs2
+	 */
 	public interface TimeSelectorReturn {
+		/**
+		 * Called when returning
+		 * @param time
+		 */
 		public void returnData(LocalTime time);
 	}
 	
@@ -156,7 +165,8 @@ public class PanelTimeSelector extends JPanel {
 		JComboBox<Integer> cbHour = new JComboBox<Integer>();
 		cbHour.setBorder(new RoundedBorder(30));
 		cbHour.setBackground(Color.WHITE);
-		cbHour.setModel(new IntModel(new Integer[] {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23}));
+		cbHour.setModel(new DefaultComboBoxModel<Integer>(new Integer[] {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23}));
+		//cbHour.setModel(new IntModel(new Integer[] {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23}));
 		cbHour.getModel().setSelectedItem(start.getHour());
 		GridBagConstraints gbc_cbHour = new GridBagConstraints();
 		gbc_cbHour.insets = new Insets(0, 0, 5, 5);
@@ -176,7 +186,8 @@ public class PanelTimeSelector extends JPanel {
 		JComboBox<Integer> cbMinute = new JComboBox<Integer>();
 		cbMinute.setBorder(new RoundedBorder(30));
 		cbMinute.setBackground(Color.WHITE);
-		cbMinute.setModel(new IntModel(new Integer[] {0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55}));
+		cbMinute.setModel(new DefaultComboBoxModel<Integer>(new Integer[] {0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55}));
+		//cbMinute.setModel(new IntModel(new Integer[] {0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55}));
 		cbMinute.getModel().setSelectedItem((start.getMinute()/5)*5);
 		GridBagConstraints gbc_cbMinute = new GridBagConstraints();
 		gbc_cbMinute.insets = new Insets(0, 0, 5, 5);

@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import uk.ac.cam.bizrain.weather.block.IWeatherBlock;
 
 public class MergedWeatherData implements IWeatherData {
 
-	class Region implements Comparable<Region> {
+	public static class Region implements Comparable<Region> {
 
 		long start, end;
 		IWeatherData iwd;
@@ -69,8 +71,10 @@ public class MergedWeatherData implements IWeatherData {
 
 	@Override
 	public List<IWeatherBlock> getWeatherAllDataIn(long start, long end) {
-		// TODO Auto-generated method stub
-		return null;
+		//MAGIC
+		return providers.stream().filter(i -> i.end > start || i.start < end)
+				.flatMap(i->i.iwd.getWeatherAllDataIn(Math.max(i.start, start), Math.min(i.end, end)).stream())
+				.collect(Collectors.toList());
 	}
 
 }

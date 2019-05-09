@@ -8,14 +8,24 @@ import java.awt.Component;
 import javax.swing.Box;
 import java.awt.Dimension;
 import java.awt.Insets;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+
 import javax.swing.JScrollPane;
 import javax.swing.JButton;
 import javax.swing.ImageIcon;
 import javax.swing.ScrollPaneConstants;
 
+import uk.ac.cam.bizrain.Bizrain;
 import uk.ac.cam.bizrain.schedule.Schedule;
 import uk.ac.cam.bizrain.schedule.Schedule.ScheduleItem;
 import uk.ac.cam.bizrain.ui.comp.RoundedBorder;
+import uk.ac.cam.bizrain.ui.sub.PanelLocation;
+import uk.ac.cam.bizrain.ui.sub.PanelOverview;
+import uk.ac.cam.bizrain.weather.IWeatherData;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class PanelSchedule extends JPanel {
 
@@ -23,11 +33,24 @@ public class PanelSchedule extends JPanel {
 	 * 
 	 */
 	private static final long serialVersionUID = 8141445800963049174L;
-
+	
+	/**
+	 * Called when this panel wants to return
+	 * 
+	 * @author btfs2
+	 *
+	 */
+	public interface PanelScheduleRet {
+		public void ret();
+	}
+	
 	/**
 	 * Create the panel.
 	 */
-	public PanelSchedule(Bizrain br, Schedule sch) {
+	public PanelSchedule(Bizrain br, Schedule sch, PanelScheduleRet ret) {
+		//Used in callbacks
+		PanelSchedule beme = this;
+		
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0, 0, 0, 0};
 		gridBagLayout.rowHeights = new int[]{0, 0, 150, 0, 21, 0, 0};
@@ -58,6 +81,12 @@ public class PanelSchedule extends JPanel {
 		add(horizontalStrut_1, gbc_horizontalStrut_1);
 		
 		JButton btnSchedules = new JButton("Schedules");
+		btnSchedules.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				ret.ret();
+			}
+		});
 		btnSchedules.setBorder(new RoundedBorder(10));
 		btnSchedules.setBackground(Color.WHITE);
 		btnSchedules.setIcon(new ImageIcon(PanelSchedule.class.getResource("/uk/ac/cam/bizrain/ui/ico/fa-chevron-left-16.png")));
@@ -70,25 +99,6 @@ public class PanelSchedule extends JPanel {
 		gbc_btnSchedules.gridy = 1;
 		add(btnSchedules, gbc_btnSchedules);
 		
-		JPanel pnOverview = new PanelOverview(sch, null);
-		GridBagConstraints gbc_pnOverview = new GridBagConstraints();
-		gbc_pnOverview.insets = new Insets(0, 0, 5, 5);
-		gbc_pnOverview.fill = GridBagConstraints.BOTH;
-		gbc_pnOverview.gridx = 2;
-		gbc_pnOverview.gridy = 2;
-		add(pnOverview, gbc_pnOverview);
-		
-		JButton btnAdd = new JButton("");
-		btnAdd.setBorder(new RoundedBorder(30));
-		btnAdd.setBackground(Color.WHITE);
-		btnAdd.setIcon(new ImageIcon(PanelSchedule.class.getResource("/uk/ac/cam/bizrain/ui/ico/fa-plus-16.png")));
-		GridBagConstraints gbc_btnAdd = new GridBagConstraints();
-		gbc_btnAdd.anchor = GridBagConstraints.EAST;
-		gbc_btnAdd.insets = new Insets(0, 0, 5, 5);
-		gbc_btnAdd.gridx = 2;
-		gbc_btnAdd.gridy = 3;
-		add(btnAdd, gbc_btnAdd);
-		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -98,6 +108,28 @@ public class PanelSchedule extends JPanel {
 		gbc_scrollPane.gridx = 2;
 		gbc_scrollPane.gridy = 4;
 		add(scrollPane, gbc_scrollPane);
+		
+		JButton btnAdd = new JButton("");
+		btnAdd.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				br.setMainPanel(new PanelLocationSearch(br, (place, loc, startTime, endTime) -> {
+					sch.addScheduleItem(new ScheduleItem(place, loc, startTime, endTime));
+					br.sm.getScheduleWeather(sch, br.weatherProv, true);
+					beme.reschedule(br, scrollPane, sch);
+					br.setMainPanel(beme);
+				}));
+			}
+		});
+		btnAdd.setBorder(new RoundedBorder(30));
+		btnAdd.setBackground(Color.WHITE);
+		btnAdd.setIcon(new ImageIcon(PanelSchedule.class.getResource("/uk/ac/cam/bizrain/ui/ico/fa-plus-16.png")));
+		GridBagConstraints gbc_btnAdd = new GridBagConstraints();
+		gbc_btnAdd.anchor = GridBagConstraints.EAST;
+		gbc_btnAdd.insets = new Insets(0, 0, 5, 5);
+		gbc_btnAdd.gridx = 2;
+		gbc_btnAdd.gridy = 3;
+		add(btnAdd, gbc_btnAdd);
 		
 		Component verticalStrut = Box.createVerticalStrut(20);
 		GridBagConstraints gbc_verticalStrut = new GridBagConstraints();
@@ -109,7 +141,22 @@ public class PanelSchedule extends JPanel {
 		reschedule(br, scrollPane, sch);
 	}
 	
+	JPanel pnOverview;
+	
 	public void reschedule(Bizrain br, JScrollPane pan, Schedule sch) {
+		IWeatherData iwd = br.sm.getScheduleCombinedWeather(sch, br.weatherProv, false, 
+				i->LocalDateTime.of(LocalDate.now(ZoneOffset.UTC), i).toEpochSecond(ZoneOffset.UTC));
+		if (pnOverview != null) {
+			remove(pnOverview);
+		}
+		pnOverview = new PanelOverview(sch, iwd);
+		GridBagConstraints gbc_pnOverview = new GridBagConstraints();
+		gbc_pnOverview.insets = new Insets(0, 0, 5, 5);
+		gbc_pnOverview.fill = GridBagConstraints.BOTH;
+		gbc_pnOverview.gridx = 2;
+		gbc_pnOverview.gridy = 2;
+		add(pnOverview, gbc_pnOverview);
+		
 		JPanel panel = new JPanel();
 		pan.setViewportView(panel);
 		GridBagLayout gbl_panel = new GridBagLayout();
@@ -132,7 +179,9 @@ public class PanelSchedule extends JPanel {
 			gbc_rigidArea_2.gridy = 2*pos;
 			panel.add(rigidArea_2, gbc_rigidArea_2);
 			
-			JPanel panel_1 = new PanelLocation(si, null); //TODO get me a thing
+			System.out.println(br.sm.getScheduleItemWeather(sch, br.weatherProv, false, si));
+			//JPanel panel_1 = new PanelLocation(si, br.sm.getScheduleItemWeather(sch, br.weatherProv, false, si));
+			JPanel panel_1 = new PanelLocation(si, br.weatherProv.getWeatherDataFor(si.getLoc()));
 			GridBagConstraints gbc_panel_1 = new GridBagConstraints();
 			gbc_panel_1.insets = new Insets(0, 0, 0, 5);
 			gbc_panel_1.fill = GridBagConstraints.BOTH;
@@ -156,5 +205,9 @@ public class PanelSchedule extends JPanel {
 		gbc_rigidArea_2.gridx = 2;
 		gbc_rigidArea_2.gridy = 2*pos;
 		panel.add(rigidArea_2, gbc_rigidArea_2);
+		
+		invalidate();
+		validate();
+		repaint();
 	}
 }

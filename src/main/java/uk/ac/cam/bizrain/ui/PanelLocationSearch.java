@@ -27,11 +27,13 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
+import uk.ac.cam.bizrain.Bizrain;
 import uk.ac.cam.bizrain.location.IGeocoder;
 import uk.ac.cam.bizrain.location.IPlace;
 import uk.ac.cam.bizrain.location.Location;
 import uk.ac.cam.bizrain.location.StringPlace;
 import uk.ac.cam.bizrain.ui.comp.SwingUtil;
+import uk.ac.cam.bizrain.ui.sub.PanelTimeSelector;
 import uk.ac.cam.bizrain.ui.comp.JClock;
 import uk.ac.cam.bizrain.ui.comp.RoundedBorder;
 
@@ -190,6 +192,8 @@ public class PanelLocationSearch extends JPanel {
 	 * Create the panel.
 	 */
 	public PanelLocationSearch(Bizrain br, LocSearchReturn ret, IPlace defaultLoc) {
+		//Theming
+		//setBackground(Color.decode("0xDDDDDD"));
 		
 		// This reference for callbacks
 		PanelLocationSearch beme = this;

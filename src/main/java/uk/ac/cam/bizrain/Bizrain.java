@@ -9,9 +9,8 @@ import javax.swing.JPanel;
 import uk.ac.cam.bizrain.config.BizrainConfig;
 import uk.ac.cam.bizrain.location.IGeocoder;
 import uk.ac.cam.bizrain.location.photon.PhotonGeocoder;
-import uk.ac.cam.bizrain.schedule.Schedule;
 import uk.ac.cam.bizrain.schedule.ScheduleManager;
-import uk.ac.cam.bizrain.ui.PanelSchedule;
+import uk.ac.cam.bizrain.ui.PanelScheduleList;
 import uk.ac.cam.bizrain.weather.IWeatherProvider;
 import uk.ac.cam.bizrain.weather.darksky.DarkSkyWeatherProvider;
 
@@ -59,6 +58,8 @@ public class Bizrain {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		System.setProperty("awt.useSystemAAFontSettings","on");
+		System.setProperty("swing.aatext", "true");
 		//SynthLookAndFeel laf = new SynthLookAndFeel();
 		/*
 		try {
@@ -88,9 +89,8 @@ public class Bizrain {
 		/*
 		mainPanel = new PanelAddSchedule();
 		*/
-		Schedule s = new Schedule("Test");
-		sm.addSchedule(s);
-		mainPanel = new PanelSchedule(this, s, () -> {});
+		//mainPanel = new PanelSchedule(this, s, () -> {});
+		mainPanel = new PanelScheduleList(this);
 		/*
 		SwingUtil.theme(mainPanel);
 		*/

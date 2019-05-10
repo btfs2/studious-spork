@@ -8,6 +8,11 @@ package uk.ac.cam.bizrain.location;
  */
 public class StringPlace implements IPlace {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3185139912976897715L;
+	
 	String place;
 	
 	/**

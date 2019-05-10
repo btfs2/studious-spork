@@ -7,9 +7,6 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +15,9 @@ import javax.swing.Box;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import uk.ac.cam.bizrain.Bizrain;
 import uk.ac.cam.bizrain.location.IPlaceSpecific;
+import uk.ac.cam.bizrain.schedule.LocalTimeToEpoch;
 import uk.ac.cam.bizrain.schedule.Schedule;
 import uk.ac.cam.bizrain.schedule.Schedule.ScheduleItem;
 import uk.ac.cam.bizrain.ui.comp.RoundedBorder;
@@ -36,7 +35,7 @@ public class PanelOverview extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public PanelOverview(Schedule sch, IWeatherData locWeather) {
+	public PanelOverview(Bizrain br, Schedule sch, IWeatherData locWeather, LocalTimeToEpoch lt2e) {
 		setBorder(new RoundedBorder(30));
 		setBackground(Color.decode("0xDDDDDD"));
 		
@@ -75,7 +74,7 @@ public class PanelOverview extends JPanel {
 			} else {
 				toAdd = schi.getPlace().getDisplayName().split(",")[0];
 			}
-			if (inThing.contains(toAdd)) {
+			if (!inThing.contains(toAdd)) {
 				if (first) {
 					first = false;
 				} else {
@@ -104,11 +103,15 @@ public class PanelOverview extends JPanel {
 		gbc_lblfromto.gridy = 3;
 		add(lblfromto, gbc_lblfromto);
 		
-		long start = LocalDateTime.of(LocalDate.now(ZoneOffset.UTC), sch.getStart()).toEpochSecond(ZoneOffset.UTC);
-		long end = LocalDateTime.of(LocalDate.now(ZoneOffset.UTC), sch.getEnd()).toEpochSecond(ZoneOffset.UTC);
+		long start = lt2e.toEpoch(sch.getStart());
+		long end = lt2e.toEpoch(sch.getEnd());
 		IWeatherBlockWorst worst = locWeather.getWeatherWorstIn(start, end);
 		JLabel lblmax = new JLabel(String.format("%.1f\u00B0C/%.1f\u00B0C",
-				worst.getWeatherMaxTemperature(), worst.getWeatherMinTemperature()));
+				worst.getWeatherMaxTemperature(), 
+				worst.getWeatherMinTemperature()));
+		if (worst.getWeatherMaxTemperature() == -1*Float.MAX_VALUE) {
+			lblmax.setText("No Data");
+		}
 		GridBagConstraints gbc_lblmax = new GridBagConstraints();
 		gbc_lblmax.anchor = GridBagConstraints.SOUTH;
 		gbc_lblmax.gridx = 2;

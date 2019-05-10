@@ -17,6 +17,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import uk.ac.cam.bizrain.Bizrain;
 import uk.ac.cam.bizrain.ui.comp.RoundedBorder;
 
 public class PanelAddSchedule extends JPanel {
@@ -38,7 +39,7 @@ public class PanelAddSchedule extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public PanelAddSchedule(AddSchedBack back, AddSchedReturn ret) {
+	public PanelAddSchedule(Bizrain br ,AddSchedBack back, AddSchedReturn ret) {
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0, 0, 0, 0, 0};
 		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0};

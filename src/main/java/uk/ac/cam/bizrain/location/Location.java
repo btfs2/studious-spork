@@ -1,13 +1,20 @@
 package uk.ac.cam.bizrain.location;
 
+import java.io.Serializable;
+
 /**
  * Stores a location as lat/long
  * 
  * @author btfs2
  *
  */
-public class Location {
+public class Location implements Serializable {
 
+	/**
+	 * Serialised
+	 */
+	private static final long serialVersionUID = 8037703060887149721L;
+	
 	float lat, lng;
 	
 	/**

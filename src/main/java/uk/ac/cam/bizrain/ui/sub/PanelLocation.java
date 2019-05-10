@@ -6,18 +6,12 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
 import javax.swing.Box;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import uk.ac.cam.bizrain.config.BizrainConfig;
 import uk.ac.cam.bizrain.location.IPlace;
 import uk.ac.cam.bizrain.location.IPlaceSpecific;
 import uk.ac.cam.bizrain.schedule.LocalTimeToEpoch;
@@ -26,6 +20,8 @@ import uk.ac.cam.bizrain.ui.comp.RoundedBorder;
 import uk.ac.cam.bizrain.ui.comp.SwingUtil;
 import uk.ac.cam.bizrain.weather.IWeatherData;
 import uk.ac.cam.bizrain.weather.block.IWeatherBlockWorst;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class PanelLocation extends JPanel {
 
@@ -38,8 +34,15 @@ public class PanelLocation extends JPanel {
 	 * Create the panel.
 	 */
 	public PanelLocation(ScheduleItem schi, IWeatherData locWeather, LocalTimeToEpoch lt2e) {
+		addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				//TODO DO THING
+			}
+		});
 		setBorder(new RoundedBorder(30));
 		setBackground(Color.decode("0xDDDDDD"));
+		//TODO map temp to colour and set
 		
 		String line1, line2, line3;
 		IPlace place = schi.getPlace();
@@ -103,19 +106,14 @@ public class PanelLocation extends JPanel {
 		gbc_lblfromto.gridy = 4;
 		add(lblfromto, gbc_lblfromto);
 		
-		//TODO TIMEZONES ARE PAIN
-		//SEE https://docs.oracle.com/javase/tutorial/datetime/iso/timezones.html
-		//BLOOD FOR THE BLOOD GOD
-		//SKULS FOR THE SKULL THRONE
-		//MILK FOR THE KHORNE FLAKES
-		ZoneId zone = ZoneId.of(BizrainConfig.INSTANCE.timeZoneId);
-	    ZonedDateTime zdt = LocalDateTime.now().atZone(zone);
-	    ZoneOffset offset = zdt.getOffset();
-		long start = LocalDateTime.of(LocalDate.now(), schi.getStart()).toEpochSecond(offset);
-		long end = LocalDateTime.of(LocalDate.now(), schi.getEnd()).toEpochSecond(offset);
+		long start = lt2e.toEpoch(schi.getStart());
+		long end = lt2e.toEpoch(schi.getEnd());
 		IWeatherBlockWorst worst = locWeather.getWeatherWorstIn(start, end);
 		JLabel lblmax = new JLabel(String.format("%.1f\u00B0C/%.1f\u00B0C",
 				worst.getWeatherMaxTemperature(), worst.getWeatherMinTemperature()));
+		if (worst.getWeatherMaxTemperature() == -1*Float.MAX_VALUE) {
+			lblmax.setText("No Data");
+		}
 		GridBagConstraints gbc_lblmax = new GridBagConstraints();
 		gbc_lblmax.anchor = GridBagConstraints.SOUTH;
 		gbc_lblmax.gridx = 2;

@@ -1,5 +1,6 @@
 package uk.ac.cam.bizrain.schedule;
 
+import java.io.Serializable;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -9,8 +10,13 @@ import java.util.List;
 import uk.ac.cam.bizrain.location.IPlace;
 import uk.ac.cam.bizrain.location.Location;
 
-public class Schedule {
+public class Schedule implements Serializable {
 
+	/**
+	 * Serialised
+	 */
+	private static final long serialVersionUID = -59247302811135435L;
+	
 	String scheduleName;
 	
 	@SuppressWarnings("unused")
@@ -20,7 +26,12 @@ public class Schedule {
 		this.scheduleName = scheduleName;
 	}
 	
-	public static class ScheduleItem implements Comparable<ScheduleItem> {
+	public static class ScheduleItem implements Comparable<ScheduleItem>, Serializable {
+		/**
+		 * Serialised
+		 */
+		private static final long serialVersionUID = 7549934192264357008L;
+		
 		IPlace place;
 		Location loc;
 		LocalTime start;
@@ -77,7 +88,7 @@ public class Schedule {
 			return -1*Long.compare(i.start.until(i.end, ChronoUnit.MINUTES), j.start.until(j.end, ChronoUnit.MINUTES));
 		});
 		List<ScheduleItem> si = new ArrayList<Schedule.ScheduleItem>();
-		for (int i = 0; i < Math.min(n, si.size()); i++) {
+		for (int i = 0; i < Math.min(n, items.size()); i++) {
 			si.add(items.get(i));
 		}
 		Collections.sort(items);
@@ -96,10 +107,7 @@ public class Schedule {
 	}
 	
 	public LocalTime getEnd() {
-		if (items.size() == 0) {
-			return LocalTime.MAX;
-		}
-		return items.get(items.size()-1).getEnd();
+		return items.stream().map(ScheduleItem::getEnd).max((i, j) -> i.compareTo(j)).orElse(LocalTime.MAX);
 	}
 	
 }

@@ -66,6 +66,7 @@ public class SwingUtil {
 	 * @return Swing icon for that file
 	 */
 	public static ImageIcon getIconOfWeather(IWeatherBlockSummary.IWeatherIcon iwi) {
+		LOG.info("Parsing icon: " + (iwi != null ? iwi.getIconName() : "null"));
 		if (iwi instanceof IWeatherBlockSummary.WeatherIcons) {
 			switch ((IWeatherBlockSummary.WeatherIcons) iwi) {
 			case RAIN:
@@ -84,6 +85,8 @@ public class SwingUtil {
 				return new ImageIcon(SwingUtil.class.getResource("/uk/ac/cam/bizrain/ui/weather/cl-cloud-sun.png"));
 			case PARTLY_CLOUDY_NIGHT:
 				return new ImageIcon(SwingUtil.class.getResource("/uk/ac/cam/bizrain/ui/weather/cl-cloud-moon.png"));
+			case FOG:
+				return new ImageIcon(SwingUtil.class.getResource("/uk/ac/cam/bizrain/ui/weather/cl-fog.png"));
 			default:
 				break;
 			}

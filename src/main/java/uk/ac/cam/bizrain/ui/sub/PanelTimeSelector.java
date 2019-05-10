@@ -10,21 +10,12 @@ import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import javax.swing.Box;
-import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.event.ListDataListener;
-
-import uk.ac.cam.bizrain.location.IGeocoder;
-import uk.ac.cam.bizrain.location.IPlace;
 import uk.ac.cam.bizrain.ui.comp.RoundedBorder;
 import uk.ac.cam.bizrain.ui.comp.SwingUtil;
 
@@ -56,61 +47,6 @@ public class PanelTimeSelector extends JPanel {
 		 * @param time
 		 */
 		public void returnData(LocalTime time);
-	}
-	
-	class IntModel implements ComboBoxModel<Integer> {
-
-		IGeocoder geocoder;
-		List<Integer> ints = new ArrayList<Integer>();
-		Integer selected;
-		List<ListDataListener> ldl = new ArrayList<ListDataListener>();
-		JComboBox<IPlace> cb;
-		
-		IntModel(Integer[] ints) {
-			this.ints.addAll(Arrays.asList(ints));
-		}
-		
-		@Override
-		public int getSize() {
-			synchronized (ints) {
-				return ints.size();
-			}
-		}
-
-		@Override
-		public Integer getElementAt(int index) {
-			synchronized (ints) {
-				return ints.get(index);
-			}
-		}
-
-		@Override
-		public void addListDataListener(ListDataListener l) {
-			ldl.add(l);
-		}
-
-		@Override
-		public void removeListDataListener(ListDataListener l) {
-			ldl.remove(l);
-		}
-
-		@Override
-		public void setSelectedItem(Object anItem) {
-			System.out.println("SETTING ITEM TO: " + anItem);
-			if (anItem instanceof Integer) {
-				selected = (Integer) anItem;
-			} else if(anItem instanceof String) {
-				selected = Integer.parseInt((String) anItem);
-			} else {
-				System.err.println("INVALID TYPE: " + anItem.getClass().getName());
-			}
-		}
-
-		@Override
-		public Object getSelectedItem() {
-			return selected;
-		}
-		
 	}
 	
 	/**

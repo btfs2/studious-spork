@@ -33,6 +33,11 @@ public interface LocalTimeToEpoch {
 	 */
 	public static LocalTimeToEpoch getDefault() {
 		return (lt) -> {
+			//TODO TIMEZONES ARE PAIN
+			//SEE https://docs.oracle.com/javase/tutorial/datetime/iso/timezones.html
+			//BLOOD FOR THE BLOOD GOD
+			//SKULS FOR THE SKULL THRONE
+			//MILK FOR THE KHORNE FLAKES
 			ZoneId zone = ZoneId.of(BizrainConfig.INSTANCE.timeZoneId);
 		    ZonedDateTime zdt = LocalDateTime.now().atZone(zone);
 		    ZoneOffset offset = zdt.getOffset();

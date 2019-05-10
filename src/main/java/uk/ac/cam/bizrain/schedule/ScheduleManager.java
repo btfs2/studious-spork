@@ -1,21 +1,18 @@
 package uk.ac.cam.bizrain.schedule;
 
 import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.Reader;
-import java.io.Writer;
-import java.lang.reflect.Type;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import uk.ac.cam.bizrain.location.IPlace;
 import uk.ac.cam.bizrain.schedule.Schedule.ScheduleItem;
@@ -82,14 +79,23 @@ public class ScheduleManager {
 		if (i == -1) {
 			return null;
 		} else {
+			//TODO Refresh on timeout
+			Map<IPlace, IWeatherData> iwdl;
 			if (regen || i < schWeather.size() || schWeather.get(i) != null) {
-				Map<IPlace, IWeatherData> iwdl = new HashMap<IPlace, IWeatherData>();
+				iwdl = new HashMap<IPlace, IWeatherData>();
 				for (ScheduleItem si : s.getItems()) {
 					iwdl.put(si.place, iwp.getWeatherDataFor(si.loc));
 				}
 				schWeather.add(i, iwdl);
+			} else {
+				iwdl = schWeather.get(i);
+				for (ScheduleItem si : s.getItems()) {
+					if (!iwdl.containsKey(si.place)) {
+						iwdl.put(si.place, iwp.getWeatherDataFor(si.loc));
+					}
+				}
 			}
-			return schWeather.get(i);
+			return iwdl;
 		}
 	}
 	
@@ -140,7 +146,7 @@ public class ScheduleManager {
 	////////////////
 	
 	private static final Logger log = Logger.getLogger("Config");
-	private String schedulesPath = "schedules.json";
+	private String schedulesPath = "schedules.bin";
 	
 	{
 		//Load on instantiation
@@ -157,25 +163,29 @@ public class ScheduleManager {
 				log.log(Level.WARNING, "Failed to create schedules", e);
 			}
 		}
-		Gson g = new Gson();
-		try (Writer r = new FileWriter(configFile)) {
-			g.toJson(schedules, r);
+		try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(configFile))) {
+			oos.writeObject(schedules);
+			oos.flush();
 		} catch (IOException e) {
 			log.log(Level.WARNING, "Failed to save schedules", e);
 		}
 	}
 	
+	@SuppressWarnings("unchecked") // cannot validate casting
 	public void loadSchedules() {
 		File configFile = new File(schedulesPath);
 		if (configFile.exists()) {
-			Gson g = new Gson();
-			//Thanks to stackoverflow: 
-			//https://stackoverflow.com/questions/5554217/google-gson-deserialize-listclass-object-generic-type
-			Type listType = new TypeToken<ArrayList<Schedule>>(){}.getType();
-			try (Reader r = new FileReader(configFile)) {
-				schedules = g.fromJson(r, listType);
+			try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(configFile))) {
+				Object o = ois.readObject();
+				if (o instanceof List<?>) {
+					schedules = (List<Schedule>) o;
+				}
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
 			} catch (IOException e) {
-				log.log(Level.WARNING, "Failed to load config", e);
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
 			}
 			while (schWeather.size() < schedules.size()) {
 				schWeather.add(null);

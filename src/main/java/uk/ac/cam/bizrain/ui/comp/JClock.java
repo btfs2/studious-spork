@@ -25,6 +25,7 @@ public class JClock extends JPanel {
 	LocalTime to = LocalTime.now().plusHours(3);
 	
 	public JClock() {
+		
 	}
 	
 	public JClock(LocalTime from, LocalTime to) {

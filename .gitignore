@@ -53,3 +53,6 @@ replay_pid*.log
 # Hides stuff that might contain, say, API keys
 # Good idea
 config.json
+schedules.json
+/schedules.bin
+/network.bin

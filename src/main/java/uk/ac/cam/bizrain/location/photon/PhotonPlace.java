@@ -14,6 +14,11 @@ import uk.ac.cam.bizrain.location.Location;
  */
 public class PhotonPlace implements IPlaceLocated, IPlaceSpecific {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -833821181395685172L;
+	
 	String name;
 	String country;
 	String city;

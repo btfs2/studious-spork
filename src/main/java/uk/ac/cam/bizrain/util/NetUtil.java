@@ -1,8 +1,15 @@
 package uk.ac.cam.bizrain.util;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Arrays;
@@ -11,6 +18,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 /**
  * Networking utilities
@@ -70,8 +78,31 @@ public class NetUtil {
 		return httpBody(url, "GET", 200, 60000, false);
 	}
 	
-	private static Map<String, String> responseCache   = new ConcurrentHashMap<>();
-	private static Map<String, Long> responseCacheTime = new ConcurrentHashMap<>();
+	/**
+	 * 
+	 * A wrapper for a given http response
+	 * 
+	 * Alows for saving to disk
+	 * 
+	 * @author btfs2
+	 *
+	 */
+	private static class NetworkRepsonse implements Serializable {
+		
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 7423219539011542887L;
+		String body;
+		long time;
+		
+		
+	}
+	
+	//private static Map<String, String> responseCache   = new ConcurrentHashMap<>();
+	//private static Map<String, Long> responseCacheTime = new ConcurrentHashMap<>();
+	
+	private static Map<String, NetworkRepsonse> responseCache   = new ConcurrentHashMap<>();
 	
 	/**
 	 * Sends a http request to a site with the given method, 
@@ -92,37 +123,40 @@ public class NetUtil {
 	 * @return Body of http request, or null if failed
 	 */
 	public static String httpBody(String url, String method, int requestTimeout, long cacheTimeout, boolean flushCache) {
+		//Check cache
 		if (!flushCache && responseCache.containsKey(url)) {
-			if (responseCacheTime.get(url) < System.currentTimeMillis() + cacheTimeout) {
-				return responseCache.get(url);
+			if (responseCache.get(url).time < System.currentTimeMillis() + cacheTimeout) {
+				return responseCache.get(url).body;
 			} else {
-				responseCacheTime.remove(url);
 				responseCache.remove(url);
 			}
 		}
+		//Attempt networking
 		try {
 	        HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
 	        connection.setConnectTimeout(requestTimeout);
 	        connection.setReadTimeout(requestTimeout);
 	        connection.setRequestMethod(method);
-	        connection.setRequestProperty("Accept-Encoding", "identity, gzip");
-	        if (connection.getResponseCode() != 200) {
+	        connection.setRequestProperty("Accept-Encoding", "identity, gzip"); //Specify decodable encodings
+	        if (connection.getResponseCode() != 200) { //Do a read fail
 	        	log.log(Level.WARNING, "HTTP Read failed response code: " + connection.getResponseCode());
 	        	return null; //Read fail
 	        }
 	        else {
 	        	String body = "";
-	        	if (connection.getContentEncoding() == null || connection.getContentEncoding().equalsIgnoreCase("identity")) {
+	        	if (connection.getContentEncoding() == null || connection.getContentEncoding().equalsIgnoreCase("identity")) { // Handle RAW
 		        	body = new BufferedReader(new InputStreamReader(connection.getInputStream())).lines().reduce((a, b) -> a + "\n" + b).get();
-		        	responseCache.put(url, body);
-		        	responseCacheTime.put(url, System.currentTimeMillis());
-	        	} else if (connection.getContentEncoding().equalsIgnoreCase("gzip")) {
+	        	} else if (connection.getContentEncoding().equalsIgnoreCase("gzip")) { // Handle GZIP
 	        		body = new BufferedReader(new InputStreamReader(new GZIPInputStream(connection.getInputStream()))).lines().reduce((a, b) -> a + "\n" + b).get();
-		        	responseCache.put(url, body);
-		        	responseCacheTime.put(url, System.currentTimeMillis());
-	        	} else {
+	        	} else { //Handle invalid; not expected as not passed in accepted
 	        		log.log(Level.WARNING, "INVALID ENCODING: " + connection.getContentEncoding());
 	        	}
+	        	//Cache
+	        	NetworkRepsonse toAdd = new NetworkRepsonse();
+	        	toAdd.body = body;
+	        	toAdd.time = System.currentTimeMillis();
+	        	responseCache.put(url, toAdd);
+	        	saveNetCache();
 	        	return body;
 	        }
 	    } catch (IOException e) {
@@ -130,4 +164,52 @@ public class NetUtil {
 	        return null;
 	    }
 	}
+	
+	// Serialisation
+	////////////////
+	
+	private static String netcachePath = "network.bin";
+	
+	static {
+		//Load on instantiation
+		loadNetCache();
+	}
+	
+	public static void saveNetCache() {
+		File configFile = new File(netcachePath);
+		if (!configFile.exists()) {
+			try {
+				configFile.createNewFile();
+				return;
+			} catch (IOException e) {
+				log.log(Level.WARNING, "Failed to create network cache", e);
+			}
+		}
+		try (ObjectOutputStream oos = new ObjectOutputStream(new GZIPOutputStream(new FileOutputStream(configFile)))) {
+			oos.writeObject(responseCache);
+			oos.flush();
+		} catch (IOException e) {
+			log.log(Level.WARNING, "Failed to save network cache", e);
+		}
+	}
+	
+	@SuppressWarnings("unchecked") // cannot validate casting
+	public static void loadNetCache() {
+		File configFile = new File(netcachePath);
+		if (configFile.exists()) {
+			try (ObjectInputStream ois = new ObjectInputStream(new GZIPInputStream(new FileInputStream(configFile)))) {
+				Object o = ois.readObject();
+				if (o instanceof Map<?, ?>) {
+					responseCache = (Map<String, NetworkRepsonse>) o;
+				}
+			} catch (FileNotFoundException e) {
+				log.log(Level.WARNING, "Failed to load network cache", e);
+			} catch (IOException e) {
+				log.log(Level.WARNING, "Failed to load network cache", e);
+			} catch (ClassNotFoundException e) {
+				log.log(Level.SEVERE, "Failed to load network cache due to class err you TWODLE", e);
+			}
+		}
+	}
+	
 }

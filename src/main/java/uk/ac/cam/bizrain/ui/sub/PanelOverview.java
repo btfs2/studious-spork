@@ -64,7 +64,7 @@ public class PanelOverview extends JPanel {
 		add(lbllocationName, gbc_lbllocationName);
 		
 		StringBuilder majorPlaces = new StringBuilder();
-		List<ScheduleItem> mp = sch.getNLongestItems(3);
+		List<ScheduleItem> mp = sch.getNLongestItems(4);
 		List<String> inThing = new ArrayList<String>();
 		boolean first = true;
 		for (ScheduleItem schi : mp) {
@@ -78,10 +78,13 @@ public class PanelOverview extends JPanel {
 				if (first) {
 					first = false;
 				} else {
-					majorPlaces.append(",");
+					majorPlaces.append(", ");
 				}
 				majorPlaces.append(toAdd);
 				inThing.add(toAdd);
+			}
+			if (majorPlaces.length() > 80) {
+				break;
 			}
 		}
 		JLabel lblMajorplaces = new JLabel(majorPlaces.toString());
@@ -113,7 +116,7 @@ public class PanelOverview extends JPanel {
 			lblmax.setText("No Data");
 		}
 		GridBagConstraints gbc_lblmax = new GridBagConstraints();
-		gbc_lblmax.anchor = GridBagConstraints.SOUTH;
+		gbc_lblmax.anchor = GridBagConstraints.SOUTHEAST;
 		gbc_lblmax.gridx = 2;
 		gbc_lblmax.gridy = 3;
 		add(lblmax, gbc_lblmax);
@@ -121,6 +124,7 @@ public class PanelOverview extends JPanel {
 		JLabel lblIco = new JLabel("");
 		lblIco.setIcon(SwingUtil.getIconOfWeather(worst.getWeatherWorstIcon()));
 		GridBagConstraints gbc_lblIco = new GridBagConstraints();
+		gbc_lblIco.anchor = GridBagConstraints.EAST;
 		gbc_lblIco.gridheight = 3;
 		gbc_lblIco.insets = new Insets(0, 0, 5, 0);
 		gbc_lblIco.gridx = 2;

@@ -71,14 +71,6 @@ public class Schedule implements Serializable {
 	List<ScheduleItem> items = new ArrayList<ScheduleItem>();
 	
 	public boolean doesOverlap(ScheduleItem schi) {
-		/*
-		return items.stream().anyMatch(i -> { 
-				return (i.start.compareTo(schi.start) < 0 && i.end.compareTo(schi.start) > 0) ||
-						(i.start.compareTo(schi.end) < 0 && i.end.compareTo(schi.end) > 0) ||
-						(i.start.compareTo(schi.start) < 0 && i.end.compareTo(schi.end) < 0) ||
-						(i.start.compareTo(schi.start) > 0 && i.end.compareTo(schi.end) > 0);
-			});
-		*/
 		return !items.stream().allMatch(i -> (
 				(i.start.compareTo(schi.start) < 0 && i.end.compareTo(schi.start) < 0 
 						&& i.start.compareTo(schi.end) < 0 && i.end.compareTo(schi.end) < 0)) ||

@@ -38,6 +38,9 @@ public class BizrainConfig {
 	
 	public String darkSkyKey;
 	public String timeZoneId;
+	public boolean isTime12hr;
+	public String units;
+	
 	
 	// SAVE/LOAD
 	////////////

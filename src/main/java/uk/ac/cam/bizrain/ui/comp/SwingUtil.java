@@ -2,6 +2,7 @@ package uk.ac.cam.bizrain.ui.comp;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -17,7 +18,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
+import javax.swing.JSpinner;
 import javax.swing.border.EmptyBorder;
+import javax.swing.plaf.basic.BasicSpinnerUI;
 
 import uk.ac.cam.bizrain.weather.block.IWeatherBlockSummary;
 
@@ -42,7 +45,6 @@ public class SwingUtil {
 		synchronized (combo.getTreeLock()) {
 		for (int i = 0; i < combo.getComponentCount(); i++) 
 		{
-			//System.out.println(combo.getComponent(i).getClass().getCanonicalName());
 		    if (combo.getComponent(i) instanceof JComponent) {
 		        ((JComponent) combo.getComponent(i)).setBorder(new EmptyBorder(0, 0,0,0));
 		    }
@@ -54,6 +56,28 @@ public class SwingUtil {
 		}
 		}
 	}
+	
+	/**
+	 * Removes controls from spinner
+	 * 
+	 * See: https://stackoverflow.com/questions/16284594/disable-up-and-down-arrow-buttons-on-jspinner
+	 * 
+	 * @param spinner
+	 */
+	public static void hideSpinnerArrow(JSpinner spinner) {
+        Dimension d = spinner.getPreferredSize();
+        d.width = 30;
+        spinner.setUI(new BasicSpinnerUI() {
+            protected Component createNextButton() {
+                return null;
+            }
+
+            protected Component createPreviousButton() {
+                return null;
+            }
+        });
+        spinner.setPreferredSize(d);
+    }
 	
 	/**
 	 * Converts an IWeatherIcon into a UI icon

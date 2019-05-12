@@ -1,4 +1,6 @@
 {
 	"darkSkyKey": "INSERT KEY HERE",
-	"timeZoneId": "UTC" 
+	"timeZoneId": "GB" ,
+	"isTime12hr": false,
+	"units": "si"
 }

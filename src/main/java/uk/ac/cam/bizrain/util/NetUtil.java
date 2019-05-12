@@ -12,7 +12,9 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
@@ -75,7 +77,7 @@ public class NetUtil {
 	 * @return Body of response of a GET to url.
 	 */
 	public static String getUrl(String url) {
-		return httpBody(url, "GET", 200, 60000, false);
+		return httpBody(url, "GET", 200, 600000, false);
 	}
 	
 	/**
@@ -103,6 +105,29 @@ public class NetUtil {
 	//private static Map<String, Long> responseCacheTime = new ConcurrentHashMap<>();
 	
 	private static Map<String, NetworkRepsonse> responseCache   = new ConcurrentHashMap<>();
+
+	static long maxCache = 7200000;
+	
+	static {
+		new Thread(() -> {
+			while (true) {
+				List<String> keys = new ArrayList<String>(responseCache.keySet());
+				for (String k : keys) {
+					if (responseCache.get(k) != null) {
+						if (responseCache.get(k).time + maxCache <= System.currentTimeMillis() ) {
+							responseCache.remove(k);
+							log.info("MaxCache age out");
+						}
+					}
+				}
+				try {
+					Thread.sleep(60000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		}).start();
+	}
 	
 	/**
 	 * Sends a http request to a site with the given method, 
@@ -211,6 +236,7 @@ public class NetUtil {
 			} catch (IOException e) {
 				log.log(Level.WARNING, "Failed to load network cache", e);
 			} catch (ClassNotFoundException e) {
+				//Implies we deleted something we shouldn't have
 				log.log(Level.SEVERE, "Failed to load network cache due to class err you TWODLE", e);
 			}
 		}

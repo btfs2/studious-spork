@@ -117,14 +117,12 @@ public class PanelLocation extends JPanel {
 		if (worst.getWeatherMaxTemperature() == -1*Float.MAX_VALUE) {
 			lblmax.setText("No Data");
 		} else {
-			//System.out.println(schi.getEnd());
-			//System.out.println(LocalTime.now(ZoneId.of(BizrainConfig.INSTANCE.timeZoneId)));
 			if (schi.getEnd().isAfter(LocalTime.now(ZoneId.of(BizrainConfig.INSTANCE.timeZoneId)))) {
 				setBackground(SwingUtil.tempToColor((worst.getWeatherMaxTemperature() + worst.getWeatherMinTemperature())/2));
 			}
 		}
 		GridBagConstraints gbc_lblmax = new GridBagConstraints();
-		gbc_lblmax.anchor = GridBagConstraints.SOUTH;
+		gbc_lblmax.anchor = GridBagConstraints.SOUTHEAST;
 		gbc_lblmax.gridx = 2;
 		gbc_lblmax.gridy = 4;
 		add(lblmax, gbc_lblmax);
@@ -134,6 +132,7 @@ public class PanelLocation extends JPanel {
 		JLabel lblIco = new JLabel("");
 		lblIco.setIcon(SwingUtil.getIconOfWeather(worst.getWeatherWorstIcon()));
 		GridBagConstraints gbc_lblIco = new GridBagConstraints();
+		gbc_lblIco.anchor = GridBagConstraints.EAST;
 		gbc_lblIco.gridheight = 4;
 		gbc_lblIco.insets = new Insets(0, 0, 5, 0);
 		gbc_lblIco.gridx = 2;

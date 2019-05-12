@@ -91,11 +91,11 @@ public class PanelSchedule extends JPanel {
 		btnSchedules.setBackground(Color.WHITE);
 		btnSchedules.setIcon(new ImageIcon(PanelSchedule.class.getResource("/uk/ac/cam/bizrain/ui/ico/fa-chevron-left-16.png")));
 		GridBagConstraints gbc_btnSchedules = new GridBagConstraints();
-		gbc_btnSchedules.gridwidth = 3;
+		gbc_btnSchedules.gridwidth = 2;
 		gbc_btnSchedules.ipadx = 5;
 		gbc_btnSchedules.anchor = GridBagConstraints.WEST;
 		gbc_btnSchedules.insets = new Insets(0, 0, 5, 5);
-		gbc_btnSchedules.gridx = 1;
+		gbc_btnSchedules.gridx = 2;
 		gbc_btnSchedules.gridy = 1;
 		add(btnSchedules, gbc_btnSchedules);
 		
@@ -140,6 +140,7 @@ public class PanelSchedule extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				br.setMainPanel(new PanelLocationSearch(br, sch, (si) -> {
 					sch.addScheduleItem(si);
+					br.sm.saveSchedules();
 					beme.reschedule(br, scrollPane, sch, LocalTimeToEpoch.getDefault());
 					br.setMainPanel(beme);
 				}, () -> br.setMainPanel(beme)));

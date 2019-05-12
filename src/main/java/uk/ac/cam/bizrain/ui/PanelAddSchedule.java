@@ -41,10 +41,10 @@ public class PanelAddSchedule extends JPanel {
 	 */
 	public PanelAddSchedule(Bizrain br ,AddSchedBack back, AddSchedReturn ret) {
 		GridBagLayout gridBagLayout = new GridBagLayout();
-		gridBagLayout.columnWidths = new int[]{0, 0, 0, 0, 0, 0};
-		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0};
+		gridBagLayout.columnWidths = new int[]{0, 21, 0, 0, 0, 0};
+		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0};
 		gridBagLayout.columnWeights = new double[]{0.0, 0.0, 1.0, 1.0, 0.0, Double.MIN_VALUE};
-		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE};
+		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE};
 		setLayout(gridBagLayout);
 		
 		Component rigidArea = Box.createRigidArea(new Dimension(20, 20));
@@ -84,10 +84,12 @@ public class PanelAddSchedule extends JPanel {
 		gbc_rigidArea_5.gridy = 2;
 		add(rigidArea_5, gbc_rigidArea_5);
 		
-		JLabel lblName = new JLabel("Name:");
+		JLabel lblName = new JLabel("     Name:");
+		lblName.setFont(new Font("Dialog", Font.BOLD, 12));
 		GridBagConstraints gbc_lblName = new GridBagConstraints();
+		gbc_lblName.gridwidth = 3;
 		gbc_lblName.insets = new Insets(0, 0, 5, 5);
-		gbc_lblName.anchor = GridBagConstraints.EAST;
+		gbc_lblName.anchor = GridBagConstraints.WEST;
 		gbc_lblName.gridx = 1;
 		gbc_lblName.gridy = 3;
 		add(lblName, gbc_lblName);
@@ -96,11 +98,11 @@ public class PanelAddSchedule extends JPanel {
 		textField.setBorder(new RoundedBorder(30));
 		textField.setBackground(Color.WHITE);
 		GridBagConstraints gbc_textField = new GridBagConstraints();
-		gbc_textField.gridwidth = 2;
+		gbc_textField.gridwidth = 3;
 		gbc_textField.insets = new Insets(0, 0, 5, 5);
 		gbc_textField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField.gridx = 2;
-		gbc_textField.gridy = 3;
+		gbc_textField.gridx = 1;
+		gbc_textField.gridy = 4;
 		add(textField, gbc_textField);
 		textField.setColumns(10);
 		
@@ -110,7 +112,7 @@ public class PanelAddSchedule extends JPanel {
 		gbc_panelButtons.insets = new Insets(0, 0, 5, 5);
 		gbc_panelButtons.fill = GridBagConstraints.HORIZONTAL;
 		gbc_panelButtons.gridx = 1;
-		gbc_panelButtons.gridy = 5;
+		gbc_panelButtons.gridy = 6;
 		add(panelButtons, gbc_panelButtons);
 		GridBagLayout gbl_panelButtons = new GridBagLayout();
 		gbl_panelButtons.columnWidths = new int[]{0, 0, 0};
@@ -119,7 +121,7 @@ public class PanelAddSchedule extends JPanel {
 		gbl_panelButtons.rowWeights = new double[]{0.0, Double.MIN_VALUE};
 		panelButtons.setLayout(gbl_panelButtons);
 		
-		JButton btnBack = new JButton("Back");
+		JButton btnBack = new JButton("");
 		btnBack.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -135,7 +137,7 @@ public class PanelAddSchedule extends JPanel {
 		gbc_btnBack.gridy = 0;
 		panelButtons.add(btnBack, gbc_btnBack);
 		
-		JButton btnAdd = new JButton("Ok");
+		JButton btnAdd = new JButton("");
 		btnAdd.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -154,13 +156,13 @@ public class PanelAddSchedule extends JPanel {
 		GridBagConstraints gbc_rigidArea_2 = new GridBagConstraints();
 		gbc_rigidArea_2.insets = new Insets(0, 0, 0, 5);
 		gbc_rigidArea_2.gridx = 0;
-		gbc_rigidArea_2.gridy = 6;
+		gbc_rigidArea_2.gridy = 7;
 		add(rigidArea_2, gbc_rigidArea_2);
 		
 		Component rigidArea_3 = Box.createRigidArea(new Dimension(20, 20));
 		GridBagConstraints gbc_rigidArea_3 = new GridBagConstraints();
 		gbc_rigidArea_3.gridx = 4;
-		gbc_rigidArea_3.gridy = 6;
+		gbc_rigidArea_3.gridy = 7;
 		add(rigidArea_3, gbc_rigidArea_3);
 
 	}

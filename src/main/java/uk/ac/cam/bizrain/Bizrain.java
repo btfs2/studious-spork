@@ -60,40 +60,10 @@ public class Bizrain {
 	private void initialize() {
 		System.setProperty("awt.useSystemAAFontSettings","on");
 		System.setProperty("swing.aatext", "true");
-		//SynthLookAndFeel laf = new SynthLookAndFeel();
-		/*
-		try {
-			UIManager.setLookAndFeel(laf);
-		} catch (UnsupportedLookAndFeelException e) {
-			e.printStackTrace();
-		}
-		*/
 		frame = new JFrame();
 		frame.setBounds(100, 100, 450, 574);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		/*
-		mainPanel = new PanelLocationSearch(this, (place, loc, startTime, endTime) -> {
-			System.out.println("Location entered: " + place.getDisplayName() + 
-					"\nAt: " + loc.toString() + 
-					"\nFrom:" + startTime.format(DateTimeFormatter.ofPattern("HH:mm")) + 
-					"\nTo: " + endTime.format(DateTimeFormatter.ofPattern("HH:mm")));
-			JOptionPane.showMessageDialog(null, "Location entered: " + place.getDisplayName() + 
-					"\nAt: " + loc.toString() + 
-					"\nFrom:" + startTime.format(DateTimeFormatter.ofPattern("HH:mm")) + 
-					"\nTo: " + endTime.format(DateTimeFormatter.ofPattern("HH:mm")));
-			IWeatherData iwd = weatherProv.getWeatherDataFor(loc);
-			JPanel locPan = new PanelLocation(new Schedule.ScheduleItem(place, loc, startTime, endTime), iwd);
-			setMainPanel(locPan);
-		});
-		*/
-		/*
-		mainPanel = new PanelAddSchedule();
-		*/
-		//mainPanel = new PanelSchedule(this, s, () -> {});
 		mainPanel = new PanelScheduleList(this);
-		/*
-		SwingUtil.theme(mainPanel);
-		*/
 		frame.getContentPane().add(mainPanel, BorderLayout.CENTER);
 	}
 

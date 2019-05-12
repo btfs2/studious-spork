@@ -1,6 +1,21 @@
 package uk.ac.cam.bizrain.ui;
 
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+import javax.swing.Box;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 import uk.ac.cam.bizrain.Bizrain;
 import uk.ac.cam.bizrain.schedule.LocalTimeToEpoch;
@@ -8,21 +23,6 @@ import uk.ac.cam.bizrain.schedule.Schedule;
 import uk.ac.cam.bizrain.ui.comp.RoundedBorder;
 import uk.ac.cam.bizrain.ui.sub.PanelOverview;
 import uk.ac.cam.bizrain.weather.IWeatherData;
-
-import java.awt.GridBagLayout;
-import java.awt.Color;
-import java.awt.Component;
-import javax.swing.Box;
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import javax.swing.JLabel;
-import java.awt.Font;
-import javax.swing.JButton;
-import javax.swing.ImageIcon;
-import javax.swing.JScrollPane;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 public class PanelScheduleList extends JPanel {
 
@@ -88,6 +88,7 @@ public class PanelScheduleList extends JPanel {
 		
 		
 		JScrollPane scrollPane = new JScrollPane();
+
 		GridBagConstraints gbc_scrollPane = new GridBagConstraints();
 		gbc_scrollPane.gridwidth = 2;
 		gbc_scrollPane.insets = new Insets(0, 0, 5, 5);
@@ -96,7 +97,7 @@ public class PanelScheduleList extends JPanel {
 		gbc_scrollPane.gridy = 4;
 		add(scrollPane, gbc_scrollPane);
 		
-		JButton btnAdd = new JButton("Add");
+		JButton btnAdd = new JButton("");
 		btnAdd.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {

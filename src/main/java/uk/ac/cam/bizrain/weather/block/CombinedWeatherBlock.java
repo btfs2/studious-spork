@@ -14,6 +14,8 @@ import uk.ac.cam.bizrain.weather.IWeatherProvider;
  */
 public class CombinedWeatherBlock implements IWeatherBlock, IWeatherBlockPrecipitation, IWeatherBlockSummary, IWeatherBlockTempreture, IWeatherBlockDayStats {
 
+	private static Logger LOG = Logger.getLogger("Weather"); 
+	
 	List<IWeatherBlock> blocks;
 	IWeatherProvider prov = null;
 	long time = Long.MIN_VALUE;
@@ -41,9 +43,8 @@ public class CombinedWeatherBlock implements IWeatherBlock, IWeatherBlockPrecipi
 			if (loc == null) {
 				loc = iwb.getWeatherLocation();
 			} else if (!loc.equals(iwb.getWeatherLocation())) {
-				Logger.getLogger("Weather").warning("Mismatched blocks combined");
-				System.out.println(loc.toString());
-				System.out.println(iwb.getWeatherLocation());
+				LOG.warning("Mismatched blocks combined" 
+						+ "\n" + loc.toString() + "\n" + iwb.getWeatherLocation());
 			}
 			if (prov == null) {
 				prov = iwb.getWeatherProvider();

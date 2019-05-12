@@ -33,3 +33,6 @@ Individually completed tasks:
 Submitted Tick 2.
 Went through libraries to use, and work out which individual parts needed to be programmed.
 
+### Between sessions
+Ben and Elanor - edited some UI design stuff.
+

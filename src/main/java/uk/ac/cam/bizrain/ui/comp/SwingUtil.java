@@ -42,7 +42,7 @@ public class SwingUtil {
 		synchronized (combo.getTreeLock()) {
 		for (int i = 0; i < combo.getComponentCount(); i++) 
 		{
-			System.out.println(combo.getComponent(i).getClass().getCanonicalName());
+			//System.out.println(combo.getComponent(i).getClass().getCanonicalName());
 		    if (combo.getComponent(i) instanceof JComponent) {
 		        ((JComponent) combo.getComponent(i)).setBorder(new EmptyBorder(0, 0,0,0));
 		    }
@@ -93,6 +93,37 @@ public class SwingUtil {
 		}
 		return null;
 	}
+	
+	/**
+	 * Turn temerature into a color
+	 * 
+	 * Done by lots of ifs
+	 * 
+	 * TODO: Interpolate
+	 * 
+	 * @param temp Tempreture in Celsius
+	 * @return Color for temp
+	 */
+	public static Color tempToColor(float temp) {
+		if (temp < -5) {
+			return Color.decode("0x70A0D2");
+		}
+		if (temp < 3) {
+			return Color.decode("0x8ac3d8");
+		}
+		if (temp < 13) {
+			return Color.decode("0xCAE5ED");
+		}
+		if (temp < 18) {
+			return Color.decode("0xEDE0CA");
+		}
+		if (temp < 23) {
+			return Color.decode("0xFFB680");
+		}
+		return Color.decode("0xEDE0CA");
+	}
+	
+	
 	
 	@Retention(RetentionPolicy.RUNTIME)
 	@Target(ElementType.TYPE)
@@ -186,4 +217,6 @@ public class SwingUtil {
 					" Array: " + o.getClass().isArray());
 		}
 	}
+	
+	
 }

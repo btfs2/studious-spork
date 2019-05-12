@@ -6,12 +6,15 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.time.LocalTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
 import javax.swing.Box;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import uk.ac.cam.bizrain.config.BizrainConfig;
 import uk.ac.cam.bizrain.location.IPlace;
 import uk.ac.cam.bizrain.location.IPlaceSpecific;
 import uk.ac.cam.bizrain.schedule.LocalTimeToEpoch;
@@ -113,12 +116,20 @@ public class PanelLocation extends JPanel {
 				worst.getWeatherMaxTemperature(), worst.getWeatherMinTemperature()));
 		if (worst.getWeatherMaxTemperature() == -1*Float.MAX_VALUE) {
 			lblmax.setText("No Data");
+		} else {
+			//System.out.println(schi.getEnd());
+			//System.out.println(LocalTime.now(ZoneId.of(BizrainConfig.INSTANCE.timeZoneId)));
+			if (schi.getEnd().isAfter(LocalTime.now(ZoneId.of(BizrainConfig.INSTANCE.timeZoneId)))) {
+				setBackground(SwingUtil.tempToColor((worst.getWeatherMaxTemperature() + worst.getWeatherMinTemperature())/2));
+			}
 		}
 		GridBagConstraints gbc_lblmax = new GridBagConstraints();
 		gbc_lblmax.anchor = GridBagConstraints.SOUTH;
 		gbc_lblmax.gridx = 2;
 		gbc_lblmax.gridy = 4;
 		add(lblmax, gbc_lblmax);
+		
+		
 		
 		JLabel lblIco = new JLabel("");
 		lblIco.setIcon(SwingUtil.getIconOfWeather(worst.getWeatherWorstIcon()));

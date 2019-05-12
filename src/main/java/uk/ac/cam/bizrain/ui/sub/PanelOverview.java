@@ -37,7 +37,7 @@ public class PanelOverview extends JPanel {
 	 */
 	public PanelOverview(Bizrain br, Schedule sch, IWeatherData locWeather, LocalTimeToEpoch lt2e) {
 		setBorder(new RoundedBorder(30));
-		setBackground(Color.decode("0xDDDDDD"));
+		setBackground(Color.WHITE);
 		
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0, 0, 0};

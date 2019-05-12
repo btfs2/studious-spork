@@ -125,11 +125,15 @@ public class NetUtil {
 	public static String httpBody(String url, String method, int requestTimeout, long cacheTimeout, boolean flushCache) {
 		//Check cache
 		if (!flushCache && responseCache.containsKey(url)) {
-			if (responseCache.get(url).time < System.currentTimeMillis() + cacheTimeout) {
+			if (responseCache.get(url).time + cacheTimeout > System.currentTimeMillis() ) {
+				log.info("Cache hit");
 				return responseCache.get(url).body;
 			} else {
 				responseCache.remove(url);
+				log.info("Cache timed out; regenerating");
 			}
+		} else {
+			log.info("No Cache hit");
 		}
 		//Attempt networking
 		try {

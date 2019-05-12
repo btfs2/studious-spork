@@ -67,11 +67,6 @@ public interface IWeatherData {
 			
 			@Override
 			public float getWeatherMaxTemperature() {
-				blocks.stream()
-				.filter(IWeatherBlockTempreture.class::isInstance)
-				.map(i -> (IWeatherBlockTempreture)i)
-				.mapToDouble(IWeatherBlockTempreture::getWeatherTemperature)
-				.forEach(System.out::println);;
 				return (float) blocks.stream()
 						.filter(IWeatherBlockTempreture.class::isInstance)
 						.map(i -> (IWeatherBlockTempreture)i)

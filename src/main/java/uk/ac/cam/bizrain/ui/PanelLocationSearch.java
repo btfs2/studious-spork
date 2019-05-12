@@ -32,11 +32,13 @@ import javax.swing.event.ListDataListener;
 import uk.ac.cam.bizrain.Bizrain;
 import uk.ac.cam.bizrain.location.IGeocoder;
 import uk.ac.cam.bizrain.location.IPlace;
-import uk.ac.cam.bizrain.location.Location;
 import uk.ac.cam.bizrain.location.StringPlace;
+import uk.ac.cam.bizrain.schedule.Schedule;
+import uk.ac.cam.bizrain.schedule.Schedule.ScheduleItem;
 import uk.ac.cam.bizrain.ui.comp.JClock;
 import uk.ac.cam.bizrain.ui.comp.RoundedBorder;
 import uk.ac.cam.bizrain.ui.comp.SwingUtil;
+import uk.ac.cam.bizrain.ui.sub.PanelConfirmOverlap;
 import uk.ac.cam.bizrain.ui.sub.PanelTimeSelector;
 
 public class PanelLocationSearch extends JPanel {
@@ -48,22 +50,42 @@ public class PanelLocationSearch extends JPanel {
 	 */
 	private static final long serialVersionUID = -4832960499617148553L;
 
+	private JButton btnAdd;
+	
+	private Runnable validateAdd = () -> {};
+	
+	/**
+	 * The location searching model
+	 * 
+	 * Appears to work
+	 * 
+	 * @author btfs2
+	 *
+	 */
 	class LocSearchModel implements ComboBoxModel<IPlace> {
 
+		//Stuff stored
 		IGeocoder geocoder;
 		List<IPlace> places = new ArrayList<IPlace>();
 		IPlace selected;
 		List<ListDataListener> ldl = new ArrayList<ListDataListener>();
 		JComboBox<IPlace> cb;
 		
+		/**
+		 * Create a new location search model
+		 * 
+		 * @param geocoder Geolcoder to use
+		 * @param cb Combobox being used to show popup on result return
+		 */
 		LocSearchModel(IGeocoder geocoder, JComboBox<IPlace> cb) {
 			this.geocoder = geocoder;
 			this.cb = cb;
 		}
 		
 		public void search() {
+			// Run search in new thread to avoid locking UI
 			new Thread(() -> {
-				System.out.println("Searching " + selected.getDisplayName());
+				log.log(Level.INFO, "Searching " + selected.getDisplayName());
 				if (!geocoder.isGeocoderAvaliable()) {
 					JOptionPane.showMessageDialog(null, "Cannot connect to geocoder\nplease check network connection", "Networking error", JOptionPane.WARNING_MESSAGE);
 					return;
@@ -187,7 +209,7 @@ public class PanelLocationSearch extends JPanel {
 	}
 	
 	public interface LocSearchReturn {
-		public void returnData(IPlace place, Location loc, LocalTime startTime, LocalTime endTime);
+		public void returnData(ScheduleItem si);
 	}
 	
 	interface LocSearchBack {
@@ -198,23 +220,20 @@ public class PanelLocationSearch extends JPanel {
 	 *
 	 * @wbp.parser.constructor
 	 */
-	public PanelLocationSearch(Bizrain br, LocSearchReturn ret, LocSearchBack bac) {
-		this(br, ret, bac, new StringPlace(""));
+	public PanelLocationSearch(Bizrain br, Schedule sch, LocSearchReturn ret, LocSearchBack bac) {
+		this(br, sch, ret, bac, new StringPlace(""));
 	}
 	
 	/**
 	 * Create the panel.
 	 */
-	public PanelLocationSearch(Bizrain br, LocSearchReturn ret, LocSearchBack bac, IPlace defaultLoc) {
+	public PanelLocationSearch(Bizrain br, Schedule sch, LocSearchReturn ret, LocSearchBack bac, IPlace defaultLoc) {
 		//Theming
 		//setBackground(Color.decode("0xDDDDDD"));
 		
 		// This reference for callbacks
 		PanelLocationSearch beme = this;
-		
-		//Adds dimension fixing blocks to rigidify layout, provide padding, etc.
-		addBlocks();
-		
+				
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0, 16, 0, 0, 0};
 		gridBagLayout.rowHeights = new int[]{0, 0, 0, 37, 0, 0, 0, 0, 0, 0, 0};
@@ -244,6 +263,7 @@ public class PanelLocationSearch extends JPanel {
 			if (e.getActionCommand().equals("comboBoxEdited")) {
 				lsm.search();
 			}
+			validateAdd.run();
 		});
 		//cbSearch.setRenderer(new PlaceCellRenderer()); TODO FIX FOR INTEROPERABILITY; CURRENT SOLUTION IS TO JUST ENSURE TOSTRING WORKS
 		//TODO ADD horisontal scrolling
@@ -286,6 +306,7 @@ public class PanelLocationSearch extends JPanel {
 		spStart.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
 				clock.setFrom(((TimeSpinner) spStart.getModel()).getCurrent());
+				validateAdd.run();
 			}
 		});
 		spStart.setModel(tsStart);
@@ -300,6 +321,7 @@ public class PanelLocationSearch extends JPanel {
 		spEnd.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
 				clock.setTo(((TimeSpinner) spEnd.getModel()).getCurrent());
+				validateAdd.run();
 			}
 		});
 		spEnd.setModel(tsEnd);
@@ -319,7 +341,7 @@ public class PanelLocationSearch extends JPanel {
 		btnStart.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				br.setMainPanel(new PanelTimeSelector(LocalTime.now(), (time) -> {
+				br.setMainPanel(new PanelTimeSelector(((TimeSpinner) spStart.getModel()).getCurrent(), (time) -> {
 					br.setMainPanel(beme);
 					spStart.setValue(time);
 				}));
@@ -339,7 +361,7 @@ public class PanelLocationSearch extends JPanel {
 		btnEnd.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				br.setMainPanel(new PanelTimeSelector(LocalTime.now().plusHours(1), (time) -> {
+				br.setMainPanel(new PanelTimeSelector(((TimeSpinner) spEnd.getModel()).getCurrent(), (time) -> {
 					br.setMainPanel(beme);
 					spEnd.setValue(time);
 				}));
@@ -400,7 +422,7 @@ public class PanelLocationSearch extends JPanel {
 		gbc_btnBack.gridy = 0;
 		panel.add(btnBack, gbc_btnBack);
 		
-		JButton btnAdd = new JButton("");
+		btnAdd = new JButton("");
 		GridBagConstraints gbc_btnAdd = new GridBagConstraints();
 		gbc_btnAdd.gridx = 1;
 		gbc_btnAdd.gridy = 0;
@@ -411,11 +433,26 @@ public class PanelLocationSearch extends JPanel {
 		btnAdd.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				cbSearch.setPopupVisible(false);
-				ret.returnData((IPlace)cbSearch.getSelectedItem(), 
+				if (btnAdd.isEnabled()) {
+					
+					cbSearch.setPopupVisible(false);
+					ScheduleItem si = new ScheduleItem(
+						(IPlace)cbSearch.getSelectedItem(), 
 						br.geocoder.placeToLoc((IPlace) cbSearch.getSelectedItem()), 
 						((TimeSpinner) spStart.getModel()).getCurrent(), 
 						((TimeSpinner) spEnd.getModel()).getCurrent());
+					if (sch.doesOverlap(si)) {
+						br.setMainPanel(new PanelConfirmOverlap((accept) -> {
+							if (accept) {
+								ret.returnData(si);
+							} else {
+								br.setMainPanel(beme);
+							}
+						}));
+					} else {
+						ret.returnData(si);
+					}
+				}
 			}
 		});
 		
@@ -447,10 +484,22 @@ public class PanelLocationSearch extends JPanel {
 		gbc_rigidArea_5.gridx = 4;
 		gbc_rigidArea_5.gridy = 3;
 		add(rigidArea_5, gbc_rigidArea_5);
-	}
-	
-	private void addBlocks() {
-
+		
+		validateAdd = () -> {
+			if (((TimeSpinner) spStart.getModel()).getCurrent()
+					.isBefore(((TimeSpinner) spEnd.getModel()).getCurrent())) {
+				if (cbSearch.getSelectedItem() != null 
+						&& cbSearch.getSelectedItem().toString() != null
+						&& !cbSearch.getSelectedItem().toString().equals("")
+						&& !cbSearch.getSelectedItem().toString().trim().equals("")) {
+					btnAdd.setEnabled(true);
+					return;
+				}
+			}
+			btnAdd.setEnabled(false);
+		};
+		
+		validateAdd.run();
 	}
 
 }

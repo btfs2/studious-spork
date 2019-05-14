@@ -61,7 +61,8 @@ public class Bizrain {
 		System.setProperty("awt.useSystemAAFontSettings","on");
 		System.setProperty("swing.aatext", "true");
 		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 574);
+		frame.setBounds(100, 100, (int)Math.floor(750f/1.7f), (int)Math.floor(1334f/1.7f));
+		frame.setResizable(false);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		mainPanel = new PanelScheduleList(this);
 		frame.getContentPane().add(mainPanel, BorderLayout.CENTER);

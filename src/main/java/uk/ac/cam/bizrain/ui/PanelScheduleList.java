@@ -16,11 +16,13 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.SwingUtilities;
 
 import uk.ac.cam.bizrain.Bizrain;
 import uk.ac.cam.bizrain.schedule.LocalTimeToEpoch;
 import uk.ac.cam.bizrain.schedule.Schedule;
 import uk.ac.cam.bizrain.ui.comp.RoundedBorder;
+import uk.ac.cam.bizrain.ui.comp.SwingUtil;
 import uk.ac.cam.bizrain.ui.sub.PanelOverview;
 import uk.ac.cam.bizrain.weather.IWeatherData;
 
@@ -60,6 +62,7 @@ public class PanelScheduleList extends JPanel {
 		add(rigidArea_1, gbc_rigidArea_1);
 		
 		JLabel lblYourSchedules = new JLabel("Your Schedules");
+		lblYourSchedules.setFont(SwingUtil.getFontTitle());
 		lblYourSchedules.setFont(new Font("Tahoma", Font.BOLD, 20));
 		GridBagConstraints gbc_lblYourSchedules = new GridBagConstraints();
 		gbc_lblYourSchedules.anchor = GridBagConstraints.WEST;

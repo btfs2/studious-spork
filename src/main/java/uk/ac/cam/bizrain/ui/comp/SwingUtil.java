@@ -3,6 +3,9 @@ package uk.ac.cam.bizrain.ui.comp;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontFormatException;
+import java.io.IOException;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -11,6 +14,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.AbstractButton;
@@ -241,6 +245,16 @@ public class SwingUtil {
 					" Array: " + o.getClass().isArray());
 		}
 	}
+	
+	public static Font getFontTitle() {
+		try {
+			return Font.createFont(Font.TRUETYPE_FONT, SwingUtil.class.getResourceAsStream("/uk/ac/cam/bizrain/ui/font/Raleway-Medium.ttf"));
+		} catch (FontFormatException | IOException e) {
+			LOG.log(Level.WARNING, "Failed to load: ", e);
+		}
+		return null;
+	}
+	
 	
 	
 }

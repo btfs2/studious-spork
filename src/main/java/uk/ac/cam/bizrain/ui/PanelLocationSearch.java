@@ -42,6 +42,7 @@ import uk.ac.cam.bizrain.ui.comp.RoundedBorder;
 import uk.ac.cam.bizrain.ui.comp.SwingUtil;
 import uk.ac.cam.bizrain.ui.sub.PanelConfirmOverlap;
 import uk.ac.cam.bizrain.ui.sub.PanelTimeSelector;
+import javax.swing.JLabel;
 
 public class PanelLocationSearch extends JPanel {
 
@@ -237,9 +238,9 @@ public class PanelLocationSearch extends JPanel {
 				
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0, 16, 0, 0, 0};
-		gridBagLayout.rowHeights = new int[]{0, 0, 0, 37, 0, 0, 0, 0, 0, 0, 0};
+		gridBagLayout.rowHeights = new int[]{0, 0, 0, 37, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 		gridBagLayout.columnWeights = new double[]{0.0, 0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE};
-		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, Double.MIN_VALUE};
+		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE};
 		setLayout(gridBagLayout);
 		
 		JClock clock = new JClock();
@@ -398,13 +399,21 @@ public class PanelLocationSearch extends JPanel {
 		gbc_rigidArea_1.gridy = 0;
 		add(rigidArea_1, gbc_rigidArea_1);
 		
+		JLabel lblError = new JLabel("error");
+		lblError.setVisible(false);
+		GridBagConstraints gbc_lblError = new GridBagConstraints();
+		gbc_lblError.insets = new Insets(0, 0, 5, 5);
+		gbc_lblError.gridx = 2;
+		gbc_lblError.gridy = 8;
+		add(lblError, gbc_lblError);
+		
 		JPanel panel = new JPanel();
 		GridBagConstraints gbc_panel_2 = new GridBagConstraints();
 		gbc_panel_2.gridwidth = 3;
 		gbc_panel_2.insets = new Insets(0, 0, 5, 5);
 		gbc_panel_2.fill = GridBagConstraints.BOTH;
 		gbc_panel_2.gridx = 1;
-		gbc_panel_2.gridy = 8;
+		gbc_panel_2.gridy = 10;
 		add(panel, gbc_panel_2);
 		
 		GridBagLayout gbl_panel_2 = new GridBagLayout();
@@ -470,13 +479,13 @@ public class PanelLocationSearch extends JPanel {
 		GridBagConstraints gbc_rigidArea_2 = new GridBagConstraints();
 		gbc_rigidArea_2.insets = new Insets(0, 0, 0, 5);
 		gbc_rigidArea_2.gridx = 0;
-		gbc_rigidArea_2.gridy = 9;
+		gbc_rigidArea_2.gridy = 11;
 		add(rigidArea_2, gbc_rigidArea_2);
 		
 		Component rigidArea_3 = Box.createRigidArea(new Dimension(20, 20));
 		GridBagConstraints gbc_rigidArea_3 = new GridBagConstraints();
 		gbc_rigidArea_3.gridx = 4;
-		gbc_rigidArea_3.gridy = 9;
+		gbc_rigidArea_3.gridy = 11;
 		add(rigidArea_3, gbc_rigidArea_3);
 		
 		

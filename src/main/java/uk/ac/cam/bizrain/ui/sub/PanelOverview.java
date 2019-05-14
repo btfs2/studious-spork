@@ -7,6 +7,8 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.time.LocalTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +18,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import uk.ac.cam.bizrain.Bizrain;
+import uk.ac.cam.bizrain.config.BizrainConfig;
 import uk.ac.cam.bizrain.location.IPlaceSpecific;
 import uk.ac.cam.bizrain.schedule.LocalTimeToEpoch;
 import uk.ac.cam.bizrain.schedule.Schedule;
@@ -114,6 +117,9 @@ public class PanelOverview extends JPanel {
 				worst.getWeatherMinTemperature()));
 		if (worst.getWeatherMaxTemperature() == -1*Float.MAX_VALUE) {
 			lblmax.setText("No Data");
+		}
+		if (sch.getEnd().isBefore(LocalTime.now(ZoneId.of(BizrainConfig.INSTANCE.timeZoneId)))) {
+			lblmax.setText("Event has Passed");
 		}
 		GridBagConstraints gbc_lblmax = new GridBagConstraints();
 		gbc_lblmax.anchor = GridBagConstraints.SOUTHEAST;

@@ -59,7 +59,7 @@ public class JClock extends JPanel {
 		
 		g2.drawOval(Math.floorDiv(pad, 2), Math.floorDiv(pad, 2), diam, diam);
 		
-		double arc144 = Math.PI/144f;
+		double arc144 = Math.PI/72f;
 		if (from != null && to != null) {
 			int startPos = 12*from.getHour()+from.getMinute()/5;
 			int endPos = 12*to.getHour()+to.getMinute()/5;

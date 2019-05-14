@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.RenderingHints;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -23,8 +24,6 @@ import uk.ac.cam.bizrain.ui.comp.RoundedBorder;
 import uk.ac.cam.bizrain.ui.comp.SwingUtil;
 import uk.ac.cam.bizrain.weather.IWeatherData;
 import uk.ac.cam.bizrain.weather.block.IWeatherBlockWorst;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 public class PanelLocation extends JPanel {
 
@@ -37,15 +36,8 @@ public class PanelLocation extends JPanel {
 	 * Create the panel.
 	 */
 	public PanelLocation(ScheduleItem schi, IWeatherData locWeather, LocalTimeToEpoch lt2e) {
-		addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				//TODO DO THING
-			}
-		});
 		setBorder(new RoundedBorder(30));
 		setBackground(Color.decode("0xDDDDDD"));
-		//TODO map temp to colour and set
 		
 		String line1, line2, line3;
 		IPlace place = schi.getPlace();
@@ -121,6 +113,9 @@ public class PanelLocation extends JPanel {
 				setBackground(SwingUtil.tempToColor((worst.getWeatherMaxTemperature() + worst.getWeatherMinTemperature())/2));
 			}
 		}
+		if (schi.getEnd().isBefore(LocalTime.now(ZoneId.of(BizrainConfig.INSTANCE.timeZoneId)))) {
+			lblmax.setText("Event has Passed");
+		}
 		GridBagConstraints gbc_lblmax = new GridBagConstraints();
 		gbc_lblmax.anchor = GridBagConstraints.SOUTHEAST;
 		gbc_lblmax.gridx = 2;
@@ -140,5 +135,6 @@ public class PanelLocation extends JPanel {
 		add(lblIco, gbc_lblIco);
 
 	}
+	
 
 }

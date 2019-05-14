@@ -5,7 +5,7 @@
 ### Things to do (12/05):
 - Settings
 - Font
-- Location edit
+- Location edit - remove bin
 - Location detailed view
 
 - Read me

@@ -7,3 +7,6 @@
 - Font
 - Location edit
 - Location detailed view
+
+- Read me
+- Changes

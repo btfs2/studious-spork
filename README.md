@@ -43,3 +43,9 @@ To build single fatjar containing all dependencies
 2. In your terminal type `gradlew fatJar`
 3. Watch the magic of gradle do it's thing
 4. The fatJar in `./build/libs`
+
+## Libraries and Tools used
+
+We employed the following external tools in our project:
+- Darksky weather API: https://darksky.net/
+- Photon location service: https://github.com/komoot/photon

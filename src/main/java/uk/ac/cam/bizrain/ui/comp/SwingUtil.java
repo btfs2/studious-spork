@@ -255,6 +255,24 @@ public class SwingUtil {
 		return null;
 	}
 	
+	public static Font getFontSub() {
+		try {
+			return Font.createFont(Font.TRUETYPE_FONT, SwingUtil.class.getResourceAsStream("/uk/ac/cam/bizrain/ui/font/Raleway-Regular.ttf"));
+		} catch (FontFormatException | IOException e) {
+			LOG.log(Level.WARNING, "Failed to load: ", e);
+		}
+		return null;
+	}
+	
+	public static Font getFontNum() {
+		try {
+			return Font.createFont(Font.TRUETYPE_FONT, SwingUtil.class.getResourceAsStream("/uk/ac/cam/bizrain/ui/font/Roboto-Regular.ttf"));
+		} catch (FontFormatException | IOException e) {
+			LOG.log(Level.WARNING, "Failed to load: ", e);
+		}
+		return null;
+	}
+	
 	
 	
 }

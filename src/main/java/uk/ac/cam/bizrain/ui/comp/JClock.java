@@ -23,7 +23,7 @@ public class JClock extends JPanel {
             RenderingHints.VALUE_ANTIALIAS_ON);
 	
 	LocalTime from = LocalTime.now();
-	LocalTime to = LocalTime.now().plusHours(3);
+	LocalTime to = LocalTime.now().plusHours(1);
 	
 	public JClock() {
 		
@@ -36,10 +36,12 @@ public class JClock extends JPanel {
 	
 	public void setFrom(LocalTime from) {
 		this.from = from;
+		repaint();
 	}
 	
 	public void setTo(LocalTime to) {
 		this.to = to;
+		repaint();
 	}
 	
 	@Override

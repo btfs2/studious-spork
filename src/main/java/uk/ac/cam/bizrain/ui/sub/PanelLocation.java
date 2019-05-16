@@ -3,10 +3,10 @@ package uk.ac.cam.bizrain.ui.sub;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.RenderingHints;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -43,8 +43,8 @@ public class PanelLocation extends JPanel {
 		IPlace place = schi.getPlace();
 		if (place instanceof IPlaceSpecific) {
 			line1 = ((IPlaceSpecific) place).getName();
-			line2 = ((IPlaceSpecific) place).getCity();
-			line3 = ((IPlaceSpecific) place).getCountry();
+			line2 = ((IPlaceSpecific) place).getCity() == null ? ((IPlaceSpecific) place).getCountry() : ((IPlaceSpecific) place).getCity();
+			line3 = ((IPlaceSpecific) place).getCity() == null ?  null : ((IPlaceSpecific) place).getCountry();
 		} else {
 			String[] stuff = place.getDisplayName().split(",");
 			line1 = stuff[0];
@@ -59,7 +59,7 @@ public class PanelLocation extends JPanel {
 		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		setLayout(gridBagLayout);
 		
-		Component rigidArea = Box.createRigidArea(new Dimension(20, 100));
+		Component rigidArea = Box.createRigidArea(new Dimension(20, 110));
 		GridBagConstraints gbc_rigidArea = new GridBagConstraints();
 		gbc_rigidArea.gridheight = 5;
 		gbc_rigidArea.insets = new Insets(0, 0, 0, 5);
@@ -68,6 +68,7 @@ public class PanelLocation extends JPanel {
 		add(rigidArea, gbc_rigidArea);
 		
 		JLabel lbllocationName = new JLabel(line1);
+		lbllocationName.setFont(SwingUtil.getFontTitle().deriveFont(22f));
 		GridBagConstraints gbc_lbllocationName = new GridBagConstraints();
 		gbc_lbllocationName.anchor = GridBagConstraints.WEST;
 		gbc_lbllocationName.insets = new Insets(0, 0, 5, 5);
@@ -76,6 +77,7 @@ public class PanelLocation extends JPanel {
 		add(lbllocationName, gbc_lbllocationName);
 		
 		JLabel lbllocationCity = new JLabel(line2);
+		lbllocationCity.setFont(SwingUtil.getFontSub().deriveFont(14f));
 		GridBagConstraints gbc_lbllocationCity = new GridBagConstraints();
 		gbc_lbllocationCity.anchor = GridBagConstraints.WEST;
 		gbc_lbllocationCity.insets = new Insets(0, 0, 5, 5);
@@ -84,6 +86,7 @@ public class PanelLocation extends JPanel {
 		add(lbllocationCity, gbc_lbllocationCity);
 		
 		JLabel lbllocationCountry = new JLabel(line3);
+		lbllocationCountry.setFont(SwingUtil.getFontSub().deriveFont(14f));
 		GridBagConstraints gbc_lbllocationCountry = new GridBagConstraints();
 		gbc_lbllocationCountry.anchor = GridBagConstraints.WEST;
 		gbc_lbllocationCountry.insets = new Insets(0, 0, 5, 5);
@@ -94,6 +97,7 @@ public class PanelLocation extends JPanel {
 		JLabel lblfromto = new JLabel(String.format("%s-%s", 
 				schi.getStart().format(DateTimeFormatter.ofPattern("HH:mm")),
 				schi.getEnd().format(DateTimeFormatter.ofPattern("HH:mm"))));
+		lblfromto.setFont(SwingUtil.getFontNum().deriveFont(15f).deriveFont(Font.BOLD));
 		GridBagConstraints gbc_lblfromto = new GridBagConstraints();
 		gbc_lblfromto.anchor = GridBagConstraints.SOUTHWEST;
 		gbc_lblfromto.insets = new Insets(0, 0, 0, 5);
@@ -104,7 +108,7 @@ public class PanelLocation extends JPanel {
 		long start = lt2e.toEpoch(schi.getStart());
 		long end = lt2e.toEpoch(schi.getEnd());
 		IWeatherBlockWorst worst = locWeather.getWeatherWorstIn(start, end);
-		JLabel lblmax = new JLabel(String.format("%.1f\u00B0C/%.1f\u00B0C",
+		JLabel lblmax = new JLabel(String.format("%.0f\u00B0/%.0f\u00B0",
 				worst.getWeatherMaxTemperature(), worst.getWeatherMinTemperature()));
 		if (worst.getWeatherMaxTemperature() == -1*Float.MAX_VALUE) {
 			lblmax.setText("No Data");
@@ -114,8 +118,9 @@ public class PanelLocation extends JPanel {
 			}
 		}
 		if (schi.getEnd().isBefore(LocalTime.now(ZoneId.of(BizrainConfig.INSTANCE.timeZoneId)))) {
-			lblmax.setText("Event has Passed");
+			lblmax.setText("Complete");
 		}
+		lblmax.setFont(SwingUtil.getFontNum().deriveFont(18f).deriveFont(Font.BOLD));
 		GridBagConstraints gbc_lblmax = new GridBagConstraints();
 		gbc_lblmax.anchor = GridBagConstraints.SOUTHEAST;
 		gbc_lblmax.gridx = 2;

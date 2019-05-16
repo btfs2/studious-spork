@@ -11,6 +11,7 @@ import java.awt.Shape;
 import java.awt.geom.Area;
 import java.awt.geom.RoundRectangle2D;
 
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.border.AbstractBorder;
 
@@ -62,7 +63,11 @@ public class RoundedBorder extends AbstractBorder {
             Graphics g,
             int x, int y,
             int width, int height) {
-
+		
+		if (c instanceof JButton) {
+			((JButton) c).setFocusPainted(false);
+		}
+		
         Graphics2D g2 = (Graphics2D) g;
         Shape baseclip = g2.getClip();
                 

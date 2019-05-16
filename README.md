@@ -24,6 +24,7 @@ To run the current version do the following
 1. Open to the directory of this repo, i.e. the one with the README in it, in a terminal
 2. In your terminal type `gradlew run`
 3. Watch the magic of gradle do it's thing
+4. Close the window open the config and put in your darksky key; In a user ready distro this will be included
 
 ## Building
 

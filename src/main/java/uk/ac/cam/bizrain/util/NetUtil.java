@@ -106,7 +106,7 @@ public class NetUtil {
 	
 	private static Map<String, NetworkRepsonse> responseCache   = new ConcurrentHashMap<>();
 
-	static long maxCache = 7200000;
+	static long maxCache = 72000000;
 	
 	static {
 		new Thread(() -> {

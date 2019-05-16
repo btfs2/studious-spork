@@ -3,6 +3,7 @@ package uk.ac.cam.bizrain.ui;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -21,6 +22,7 @@ import uk.ac.cam.bizrain.schedule.LocalTimeToEpoch;
 import uk.ac.cam.bizrain.schedule.Schedule;
 import uk.ac.cam.bizrain.schedule.Schedule.ScheduleItem;
 import uk.ac.cam.bizrain.ui.comp.RoundedBorder;
+import uk.ac.cam.bizrain.ui.comp.SwingUtil;
 import uk.ac.cam.bizrain.ui.sub.PanelConfirmDelete;
 import uk.ac.cam.bizrain.ui.sub.PanelLocation;
 import uk.ac.cam.bizrain.ui.sub.PanelOverview;
@@ -87,9 +89,10 @@ public class PanelSchedule extends JPanel {
 				ret.ret();
 			}
 		});
-		btnSchedules.setBorder(new RoundedBorder(10, new Insets(0, 3, 0, 6)));
+		btnSchedules.setBorder(new RoundedBorder(10, new Insets(0, 3, 0, 3)));
 		btnSchedules.setBackground(Color.WHITE);
 		btnSchedules.setIcon(new ImageIcon(PanelSchedule.class.getResource("/uk/ac/cam/bizrain/ui/ico/fa-chevron-left-16.png")));
+		btnSchedules.setFont(SwingUtil.getFontTitle().deriveFont(12f).deriveFont(Font.BOLD));
 		GridBagConstraints gbc_btnSchedules = new GridBagConstraints();
 		gbc_btnSchedules.gridwidth = 2;
 		gbc_btnSchedules.ipadx = 5;
@@ -169,6 +172,8 @@ public class PanelSchedule extends JPanel {
 	JPanel pnOverview;
 	
 	public void reschedule(Bizrain br, JScrollPane pan, Schedule sch, LocalTimeToEpoch lt2e) {
+		PanelSchedule beme = this;
+		
 		IWeatherData iwd = br.sm.getScheduleCombinedWeather(sch, br.weatherProv, false, 
 				LocalTimeToEpoch.getDefault());
 		if (pnOverview != null) {
@@ -213,6 +218,15 @@ public class PanelSchedule extends JPanel {
 			gbc_panel_1.gridx = 1;
 			gbc_panel_1.gridy = 2*pos+1;
 			panel.add(panel_1, gbc_panel_1);
+			panel_1.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					br.setMainPanel(new PanelLocationEdit(br, sch, si, () -> {
+						beme.reschedule(br, pan, sch, LocalTimeToEpoch.getDefault());
+						br.setMainPanel(beme);
+					}));
+				}
+			});
 			
 			pos++;
 		}

@@ -3,7 +3,6 @@ package uk.ac.cam.bizrain.ui;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -16,7 +15,6 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.SwingUtilities;
 
 import uk.ac.cam.bizrain.Bizrain;
 import uk.ac.cam.bizrain.schedule.LocalTimeToEpoch;
@@ -62,8 +60,8 @@ public class PanelScheduleList extends JPanel {
 		add(rigidArea_1, gbc_rigidArea_1);
 		
 		JLabel lblYourSchedules = new JLabel("Your Schedules");
-		lblYourSchedules.setFont(SwingUtil.getFontTitle());
-		lblYourSchedules.setFont(new Font("Tahoma", Font.BOLD, 20));
+		lblYourSchedules.setFont(SwingUtil.getFontTitle().deriveFont(28f));
+		//lblYourSchedules.setFont(new Font("Tahoma", Font.BOLD, 20));
 		GridBagConstraints gbc_lblYourSchedules = new GridBagConstraints();
 		gbc_lblYourSchedules.anchor = GridBagConstraints.WEST;
 		gbc_lblYourSchedules.insets = new Insets(0, 0, 5, 5);
@@ -72,6 +70,14 @@ public class PanelScheduleList extends JPanel {
 		add(lblYourSchedules, gbc_lblYourSchedules);
 		
 		JButton btnSettings = new JButton("");
+		btnSettings.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				br.setMainPanel(new PanelSettings(() -> {
+					br.setMainPanel(beme);
+				}));
+			}
+		});
 		btnSettings.setBackground(Color.WHITE);
 		btnSettings.setBorder(new RoundedBorder(30));
 		btnSettings.setIcon(new ImageIcon(PanelScheduleList.class.getResource("/uk/ac/cam/bizrain/ui/ico/fa-cogs-16.png")));

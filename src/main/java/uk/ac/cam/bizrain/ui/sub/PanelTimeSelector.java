@@ -10,12 +10,13 @@ import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.time.LocalTime;
+
 import javax.swing.Box;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import uk.ac.cam.bizrain.ui.comp.JTimeSelect;
 import uk.ac.cam.bizrain.ui.comp.RoundedBorder;
 import uk.ac.cam.bizrain.ui.comp.SwingUtil;
 
@@ -56,8 +57,8 @@ public class PanelTimeSelector extends JPanel {
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0, 25, 0, 0, 0};
 		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0};
-		gridBagLayout.columnWeights = new double[]{0.0, 4.0, 1.0, 4.0, 0.0, Double.MIN_VALUE};
-		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE};
+		gridBagLayout.columnWeights = new double[]{0.0, 1.0, 1.0, 4.0, 0.0, Double.MIN_VALUE};
+		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, Double.MIN_VALUE};
 		setLayout(gridBagLayout);
 		
 		Component rigidArea = Box.createRigidArea(new Dimension(20, 20));
@@ -75,6 +76,7 @@ public class PanelTimeSelector extends JPanel {
 		add(rigidArea_1, gbc_rigidArea_1);
 		
 		JLabel lblEnterTime = new JLabel("Enter Time");
+		lblEnterTime.setFont(SwingUtil.getFontTitle().deriveFont(20f).deriveFont(Font.BOLD));
 		lblEnterTime.setFont(new Font("Tahoma", Font.BOLD, 20));
 		GridBagConstraints gbc_lblEnterTime = new GridBagConstraints();
 		gbc_lblEnterTime.gridwidth = 3;
@@ -97,6 +99,7 @@ public class PanelTimeSelector extends JPanel {
 		gbc_rigidArea_7.gridy = 2;
 		add(rigidArea_7, gbc_rigidArea_7);
 		
+		/*
 		JComboBox<Integer> cbHour = new JComboBox<Integer>();
 		cbHour.setBorder(new RoundedBorder(30));
 		cbHour.setBackground(Color.WHITE);
@@ -131,6 +134,16 @@ public class PanelTimeSelector extends JPanel {
 		gbc_cbMinute.gridy = 3;
 		add(cbMinute, gbc_cbMinute);
 		SwingUtil.fixCbBorder(cbMinute);
+		*/
+		
+		JTimeSelect timeSelector = new JTimeSelect(null); //TODO FIXME
+		GridBagConstraints gbc_timeSelector = new GridBagConstraints();
+		gbc_timeSelector.gridwidth = 3;
+		gbc_timeSelector.insets = new Insets(0, 0, 5, 5);
+		gbc_timeSelector.fill = GridBagConstraints.BOTH;
+		gbc_timeSelector.gridx = 1;
+		gbc_timeSelector.gridy = 3;
+		add(timeSelector, gbc_timeSelector);
 		
 		JButton btnOk = new JButton("OK");
 		btnOk.setToolTipText("Accept time");
@@ -139,9 +152,12 @@ public class PanelTimeSelector extends JPanel {
 		btnOk.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				ret.returnData(LocalTime.of((int) cbHour.getModel().getSelectedItem(), (int) cbMinute.getModel().getSelectedItem()));
+				//ret.returnData(LocalTime.of((int) cbHour.getModel().getSelectedItem(), (int) cbMinute.getModel().getSelectedItem()));
+				ret.returnData(timeSelector.getTime());
 			}
 		});
+		
+		
 		btnOk.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		GridBagConstraints gbc_btnOk = new GridBagConstraints();
 		gbc_btnOk.fill = GridBagConstraints.HORIZONTAL;

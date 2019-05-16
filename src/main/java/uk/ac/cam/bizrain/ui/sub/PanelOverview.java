@@ -58,7 +58,8 @@ public class PanelOverview extends JPanel {
 		add(rigidArea, gbc_rigidArea);
 		
 		JLabel lbllocationName = new JLabel(sch.getScheduleName());
-		lbllocationName.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		//lbllocationName.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lbllocationName.setFont(SwingUtil.getFontNum().deriveFont(22f).deriveFont(Font.BOLD));
 		GridBagConstraints gbc_lbllocationName = new GridBagConstraints();
 		gbc_lbllocationName.anchor = GridBagConstraints.WEST;
 		gbc_lbllocationName.insets = new Insets(0, 0, 5, 5);
@@ -86,22 +87,25 @@ public class PanelOverview extends JPanel {
 				majorPlaces.append(toAdd);
 				inThing.add(toAdd);
 			}
-			if (majorPlaces.length() > 80) {
+			if (majorPlaces.length() > 70) {
 				break;
 			}
 		}
 		JLabel lblMajorplaces = new JLabel(majorPlaces.toString());
+		lblMajorplaces.setFont(SwingUtil.getFontSub().deriveFont(14f));
 		GridBagConstraints gbc_lblMajorplaces = new GridBagConstraints();
 		gbc_lblMajorplaces.anchor = GridBagConstraints.WEST;
 		gbc_lblMajorplaces.insets = new Insets(0, 0, 5, 5);
 		gbc_lblMajorplaces.gridx = 0;
 		gbc_lblMajorplaces.gridy = 1;
+		gbc_lblMajorplaces.gridwidth = 2;
 		add(lblMajorplaces, gbc_lblMajorplaces);
 		
 		
 		JLabel lblfromto = new JLabel(String.format("%s-%s", 
 				sch.getStart().format(DateTimeFormatter.ofPattern("HH:mm")),
 				sch.getEnd().format(DateTimeFormatter.ofPattern("HH:mm"))));
+		lblfromto.setFont(SwingUtil.getFontNum().deriveFont(15f).deriveFont(Font.BOLD));
 		GridBagConstraints gbc_lblfromto = new GridBagConstraints();
 		gbc_lblfromto.anchor = GridBagConstraints.SOUTHWEST;
 		gbc_lblfromto.insets = new Insets(0, 0, 0, 5);
@@ -112,15 +116,16 @@ public class PanelOverview extends JPanel {
 		long start = lt2e.toEpoch(sch.getStart());
 		long end = lt2e.toEpoch(sch.getEnd());
 		IWeatherBlockWorst worst = locWeather.getWeatherWorstIn(start, end);
-		JLabel lblmax = new JLabel(String.format("%.1f\u00B0C/%.1f\u00B0C",
+		JLabel lblmax = new JLabel(String.format("%.0f\u00B0/%.0f\u00B0",
 				worst.getWeatherMaxTemperature(), 
 				worst.getWeatherMinTemperature()));
 		if (worst.getWeatherMaxTemperature() == -1*Float.MAX_VALUE) {
 			lblmax.setText("No Data");
 		}
 		if (sch.getEnd().isBefore(LocalTime.now(ZoneId.of(BizrainConfig.INSTANCE.timeZoneId)))) {
-			lblmax.setText("Event has Passed");
+			lblmax.setText("Complete");
 		}
+		lblmax.setFont(SwingUtil.getFontNum().deriveFont(18f).deriveFont(Font.BOLD));
 		GridBagConstraints gbc_lblmax = new GridBagConstraints();
 		gbc_lblmax.anchor = GridBagConstraints.SOUTHEAST;
 		gbc_lblmax.gridx = 2;

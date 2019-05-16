@@ -11,7 +11,7 @@ To do this please do the following:
 1. Move into this directory `cd studious-spork`
 1. Run either `gradlew eclipse` or `gradlew idea` depending on your IDE preference
 	* If you have a local gradle install you can use `gradle` instead of `gradlew`
-5. Load into your prefered IDE and start programming
+1. Load into your prefered IDE and start programming
 
 ## Running and bundling
 

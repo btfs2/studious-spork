@@ -46,39 +46,40 @@ import uk.ac.cam.bizrain.ui.sub.PanelTimeSelector;
 
 public class PanelLocationSearch extends JPanel {
 
-	private static final Logger log = Logger.getLogger("LocationSearch"); 
-	
+	private static final Logger log = Logger.getLogger("LocationSearch");
+
 	/**
 	 * Serialised
 	 */
 	private static final long serialVersionUID = -4832960499617148553L;
 
 	private JButton btnAdd;
-	
-	private Runnable validateAdd = () -> {};
-	
+
+	private Runnable validateAdd = () -> {
+	};
+
 	/**
-	 * The location searching model
+	 * The location searching model searches for the location needed
 	 * 
-	 * Appears to work
+	 * This process is speeded up by the network caching
 	 * 
 	 * @author btfs2
 	 *
 	 */
 	class LocSearchModel implements ComboBoxModel<IPlace> {
 
-		//Stuff stored
+		// Stuff stored
 		IGeocoder geocoder;
 		List<IPlace> places = new ArrayList<IPlace>();
 		IPlace selected;
 		List<ListDataListener> ldl = new ArrayList<ListDataListener>();
 		JComboBox<IPlace> cb;
-		
+
 		/**
 		 * Create a new location search model
 		 * 
 		 * @param geocoder Geolcoder to use
-		 * @param cb Combobox being used to show popup on result return
+		 * @param cb       Combobox being used to show popup on result return
 		 */
 		LocSearchModel(IGeocoder geocoder, JComboBox<IPlace> cb) {
 			this.geocoder = geocoder;
@@ -138,8 +139,9 @@ public class PanelLocationSearch extends JPanel {
 		public void setSelectedItem(Object anItem) {
 			if (anItem instanceof IPlace) {
 				selected = (IPlace) anItem;
-			} else if(anItem instanceof String) {
-				selected = places.stream().filter(i -> i.getDisplayName().equals(anItem)).findFirst().orElse(new StringPlace((String) anItem));
+			} else if (anItem instanceof String) {
+				selected = places.stream().filter(i -> i.getDisplayName().equals(anItem)).findFirst()
+						.orElse(new StringPlace((String) anItem));
 			} else {
 				System.err.println("INVALID TYPE: " + anItem.getClass().getName());
 			}
@@ -149,28 +151,32 @@ public class PanelLocationSearch extends JPanel {
 		public Object getSelectedItem() {
 			return selected;
 		}
-		
+
 	}
-	
+
+	/*
+	 * TimeSpinner is used to display start and end time, what makes it a valuable
+	 * tool for debugging
+	 */
 	class TimeSpinner implements SpinnerModel {
 
 		LocalTime time;
 		List<ChangeListener> csl = new ArrayList<ChangeListener>();
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm");
-		
+
 		TimeSpinner() {
 			this(LocalTime.now());
 		}
-		
+
 		TimeSpinner(LocalTime time) {
 			this.time = time;
 		}
-		
+
 		@Override
 		public Object getValue() {
 			return time.format(dtf);
 		}
-		
+
 		public LocalTime getCurrent() {
 			return time;
 		}
@@ -180,7 +186,7 @@ public class PanelLocationSearch extends JPanel {
 			if (value instanceof LocalTime) {
 				time = (LocalTime) value;
 			} else if (value instanceof String) {
-				time = LocalTime.parse((String)value);
+				time = LocalTime.parse((String) value);
 			} else {
 				log.warning("INVALID TYPE");
 			}
@@ -209,15 +215,15 @@ public class PanelLocationSearch extends JPanel {
 		}
 
 	}
-	
+
 	public interface LocSearchReturn {
 		public void returnData(ScheduleItem si);
 	}
-	
+
 	interface LocSearchBack {
 		public void back();
 	}
-	
+
 	/**
 	 *
 	 * @wbp.parser.constructor
@@ -225,25 +231,25 @@ public class PanelLocationSearch extends JPanel {
 	public PanelLocationSearch(Bizrain br, Schedule sch, LocSearchReturn ret, LocSearchBack bac) {
 		this(br, sch, ret, bac, new StringPlace(""));
 	}
-	
+
 	/**
 	 * Create the panel.
 	 */
 	public PanelLocationSearch(Bizrain br, Schedule sch, LocSearchReturn ret, LocSearchBack bac, IPlace defaultLoc) {
-		//Theming
-		//setBackground(Color.decode("0xDDDDDD"));
-		
+		// Theming
+		// setBackground(Color.decode("0xDDDDDD"));
+
 		// This reference for callbacks
 		PanelLocationSearch beme = this;
-	
-				
+
 		GridBagLayout gridBagLayout = new GridBagLayout();
-		gridBagLayout.columnWidths = new int[]{0, 0, 16, 0, 0, 0};
-		gridBagLayout.rowHeights = new int[]{0, 0, 0, 37, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-		gridBagLayout.columnWeights = new double[]{0.0, 0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE};
-		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE};
+		gridBagLayout.columnWidths = new int[] { 0, 0, 16, 0, 0, 0 };
+		gridBagLayout.rowHeights = new int[] { 0, 0, 0, 37, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+		gridBagLayout.columnWeights = new double[] { 0.0, 0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE };
+		gridBagLayout.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 0.0, 0.0,
+				Double.MIN_VALUE };
 		setLayout(gridBagLayout);
-		
+
 		JLabel lblSearching = new JLabel("Searching...");
 		lblSearching.setVisible(false);
 		GridBagConstraints gbc_lblSearching = new GridBagConstraints();
@@ -251,7 +257,7 @@ public class PanelLocationSearch extends JPanel {
 		gbc_lblSearching.gridx = 2;
 		gbc_lblSearching.gridy = 1;
 		add(lblSearching, gbc_lblSearching);
-		
+
 		JClock clock = new JClock();
 		GridBagConstraints gbc_panel = new GridBagConstraints();
 		gbc_panel.gridheight = 3;
@@ -260,7 +266,7 @@ public class PanelLocationSearch extends JPanel {
 		gbc_panel.gridx = 2;
 		gbc_panel.gridy = 4;
 		add(clock, gbc_panel);
-		
+
 		JComboBox<IPlace> cbSearch = new JComboBox<IPlace>();
 		cbSearch.setBorder(new RoundedBorder(30));
 		cbSearch.setBackground(Color.WHITE);
@@ -275,9 +281,10 @@ public class PanelLocationSearch extends JPanel {
 			}
 			validateAdd.run();
 		});
-		//cbSearch.setRenderer(new PlaceCellRenderer()); TODO FIX FOR INTEROPERABILITY; CURRENT SOLUTION IS TO JUST ENSURE TOSTRING WORKS
-		//TODO ADD horisontal scrolling
-		//cbSearch.setToolTipText("Location Search");
+		// cbSearch.setRenderer(new PlaceCellRenderer()); TODO FIX FOR INTEROPERABILITY;
+		// CURRENT SOLUTION IS TO JUST ENSURE TOSTRING WORKS
+		// TODO ADD horisontal scrolling
+		// cbSearch.setToolTipText("Location Search");
 		GridBagConstraints gbc_cbSearch = new GridBagConstraints();
 		gbc_cbSearch.gridwidth = 2;
 		gbc_cbSearch.insets = new Insets(0, 0, 5, 5);
@@ -286,9 +293,7 @@ public class PanelLocationSearch extends JPanel {
 		gbc_cbSearch.gridy = 2;
 		add(cbSearch, gbc_cbSearch);
 		SwingUtil.fixCbBorder(cbSearch);
-		
-		
-		
+
 		JButton btnSearch = new JButton("");
 		btnSearch.setBackground(Color.WHITE);
 		btnSearch.setBorder(new RoundedBorder(30));
@@ -298,20 +303,20 @@ public class PanelLocationSearch extends JPanel {
 				lsm.search();
 			}
 		});
-		//btnSearch.setToolTipText("Search");
-		btnSearch.setIcon(new ImageIcon(PanelLocationSearch.class.getResource("/uk/ac/cam/bizrain/ui/ico/fa-search-16.png")));
+		// btnSearch.setToolTipText("Search");
+		btnSearch.setIcon(
+				new ImageIcon(PanelLocationSearch.class.getResource("/uk/ac/cam/bizrain/ui/ico/fa-search-16.png")));
 		GridBagConstraints gbc_btnSearch = new GridBagConstraints();
 		gbc_btnSearch.fill = GridBagConstraints.BOTH;
 		gbc_btnSearch.insets = new Insets(0, 0, 5, 5);
 		gbc_btnSearch.gridx = 3;
 		gbc_btnSearch.gridy = 2;
 		add(btnSearch, gbc_btnSearch);
-		
+
 		TimeSpinner tsStart = new TimeSpinner();
-		
+
 		TimeSpinner tsEnd = new TimeSpinner(LocalTime.now().plusHours(1));
 
-		
 		JSpinner spStart = new JSpinner();
 		spStart.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
@@ -320,17 +325,18 @@ public class PanelLocationSearch extends JPanel {
 			}
 		});
 		SwingUtil.hideSpinnerArrow(spStart);
-		//Centers text: https://stackoverflow.com/questions/22702014/how-to-center-text-of-a-jspinner
-		((JSpinner.DefaultEditor)spStart.getEditor()).getTextField().setHorizontalAlignment(JTextField.CENTER);
+		// Centers text:
+		// https://stackoverflow.com/questions/22702014/how-to-center-text-of-a-jspinner
+		((JSpinner.DefaultEditor) spStart.getEditor()).getTextField().setHorizontalAlignment(JTextField.CENTER);
 		spStart.setModel(tsStart);
 		GridBagConstraints gbc_spStart = new GridBagConstraints();
 		gbc_spStart.fill = GridBagConstraints.HORIZONTAL;
 		gbc_spStart.insets = new Insets(0, 0, 5, 5);
 		gbc_spStart.gridx = 1;
 		gbc_spStart.gridy = 5;
-		//spStart.setVisible(false);
+		// spStart.setVisible(false);
 		add(spStart, gbc_spStart);
-		
+
 		JSpinner spEnd = new JSpinner();
 		spEnd.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
@@ -338,8 +344,9 @@ public class PanelLocationSearch extends JPanel {
 				validateAdd.run();
 			}
 		});
-		//Centers text: https://stackoverflow.com/questions/22702014/how-to-center-text-of-a-jspinner
-		((JSpinner.DefaultEditor)spEnd.getEditor()).getTextField().setHorizontalAlignment(JTextField.CENTER);
+		// Centers text:
+		// https://stackoverflow.com/questions/22702014/how-to-center-text-of-a-jspinner
+		((JSpinner.DefaultEditor) spEnd.getEditor()).getTextField().setHorizontalAlignment(JTextField.CENTER);
 		SwingUtil.hideSpinnerArrow(spEnd);
 		spEnd.setModel(tsEnd);
 		GridBagConstraints gbc_spEnd = new GridBagConstraints();
@@ -347,12 +354,9 @@ public class PanelLocationSearch extends JPanel {
 		gbc_spEnd.insets = new Insets(0, 0, 5, 5);
 		gbc_spEnd.gridx = 3;
 		gbc_spEnd.gridy = 5;
-		//spEnd.setVisible(false);
+		// spEnd.setVisible(false);
 		add(spEnd, gbc_spEnd);
-		
-		
 
-		
 		JButton btnStart = new JButton("Start");
 		btnStart.setBorder(new RoundedBorder(30));
 		btnStart.setBackground(Color.WHITE);
@@ -365,14 +369,15 @@ public class PanelLocationSearch extends JPanel {
 				}));
 			}
 		});
-		btnStart.setIcon(new ImageIcon(PanelLocationSearch.class.getResource("/uk/ac/cam/bizrain/ui/ico/fa-clock-16.png")));
+		btnStart.setIcon(
+				new ImageIcon(PanelLocationSearch.class.getResource("/uk/ac/cam/bizrain/ui/ico/fa-clock-16.png")));
 		GridBagConstraints gbc_btnStart = new GridBagConstraints();
 		gbc_btnStart.fill = GridBagConstraints.BOTH;
 		gbc_btnStart.insets = new Insets(0, 0, 5, 5);
 		gbc_btnStart.gridx = 1;
 		gbc_btnStart.gridy = 4;
 		add(btnStart, gbc_btnStart);
-		
+
 		JButton btnEnd = new JButton("End");
 		btnEnd.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 		btnEnd.setBorder(new RoundedBorder(30));
@@ -386,28 +391,29 @@ public class PanelLocationSearch extends JPanel {
 				}));
 			}
 		});
-		btnEnd.setIcon(new ImageIcon(PanelLocationSearch.class.getResource("/uk/ac/cam/bizrain/ui/ico/fa-clock-16.png")));
+		btnEnd.setIcon(
+				new ImageIcon(PanelLocationSearch.class.getResource("/uk/ac/cam/bizrain/ui/ico/fa-clock-16.png")));
 		GridBagConstraints gbc_btnEnd = new GridBagConstraints();
 		gbc_btnEnd.fill = GridBagConstraints.BOTH;
 		gbc_btnEnd.insets = new Insets(0, 0, 5, 5);
 		gbc_btnEnd.gridx = 3;
 		gbc_btnEnd.gridy = 4;
 		add(btnEnd, gbc_btnEnd);
-		
+
 		Component rigidArea = Box.createRigidArea(new Dimension(20, 20));
 		GridBagConstraints gbc_rigidArea = new GridBagConstraints();
 		gbc_rigidArea.insets = new Insets(0, 0, 5, 5);
 		gbc_rigidArea.gridx = 0;
 		gbc_rigidArea.gridy = 0;
 		add(rigidArea, gbc_rigidArea);
-		
+
 		Component rigidArea_1 = Box.createRigidArea(new Dimension(20, 20));
 		GridBagConstraints gbc_rigidArea_1 = new GridBagConstraints();
 		gbc_rigidArea_1.insets = new Insets(0, 0, 5, 0);
 		gbc_rigidArea_1.gridx = 4;
 		gbc_rigidArea_1.gridy = 0;
 		add(rigidArea_1, gbc_rigidArea_1);
-		
+
 		JLabel lblError = new JLabel("error");
 		lblError.setVisible(false);
 		GridBagConstraints gbc_lblError = new GridBagConstraints();
@@ -416,7 +422,7 @@ public class PanelLocationSearch extends JPanel {
 		gbc_lblError.gridx = 1;
 		gbc_lblError.gridy = 8;
 		add(lblError, gbc_lblError);
-		
+
 		JPanel panel = new JPanel();
 		GridBagConstraints gbc_panel_2 = new GridBagConstraints();
 		gbc_panel_2.gridwidth = 3;
@@ -425,14 +431,14 @@ public class PanelLocationSearch extends JPanel {
 		gbc_panel_2.gridx = 1;
 		gbc_panel_2.gridy = 10;
 		add(panel, gbc_panel_2);
-		
+
 		GridBagLayout gbl_panel_2 = new GridBagLayout();
-		gbl_panel_2.columnWidths = new int[]{0, 0, 0};
-		gbl_panel_2.rowHeights = new int[]{0, 0};
-		gbl_panel_2.columnWeights = new double[]{1.0, 1.0, Double.MIN_VALUE};
-		gbl_panel_2.rowWeights = new double[]{0.0, Double.MIN_VALUE};
+		gbl_panel_2.columnWidths = new int[] { 0, 0, 0 };
+		gbl_panel_2.rowHeights = new int[] { 0, 0 };
+		gbl_panel_2.columnWeights = new double[] { 1.0, 1.0, Double.MIN_VALUE };
+		gbl_panel_2.rowWeights = new double[] { 0.0, Double.MIN_VALUE };
 		panel.setLayout(gbl_panel_2);
-		
+
 		JButton btnBack = new JButton("");
 		btnBack.addMouseListener(new MouseAdapter() {
 			@Override
@@ -443,13 +449,14 @@ public class PanelLocationSearch extends JPanel {
 		});
 		btnBack.setBorder(new RoundedBorder(30));
 		btnBack.setBackground(Color.WHITE);
-		btnBack.setIcon(new ImageIcon(PanelLocationSearch.class.getResource("/uk/ac/cam/bizrain/ui/ico/fa-chevron-left-16.png")));
+		btnBack.setIcon(new ImageIcon(
+				PanelLocationSearch.class.getResource("/uk/ac/cam/bizrain/ui/ico/fa-chevron-left-16.png")));
 		GridBagConstraints gbc_btnBack = new GridBagConstraints();
 		gbc_btnBack.insets = new Insets(0, 0, 0, 5);
 		gbc_btnBack.gridx = 0;
 		gbc_btnBack.gridy = 0;
 		panel.add(btnBack, gbc_btnBack);
-		
+
 		btnAdd = new JButton("");
 		GridBagConstraints gbc_btnAdd = new GridBagConstraints();
 		gbc_btnAdd.gridx = 1;
@@ -457,18 +464,18 @@ public class PanelLocationSearch extends JPanel {
 		panel.add(btnAdd, gbc_btnAdd);
 		btnAdd.setBorder(new RoundedBorder(30));
 		btnAdd.setBackground(Color.WHITE);
-		btnAdd.setIcon(new ImageIcon(PanelLocationSearch.class.getResource("/uk/ac/cam/bizrain/ui/ico/fa-plus-16.png")));
+		btnAdd.setIcon(
+				new ImageIcon(PanelLocationSearch.class.getResource("/uk/ac/cam/bizrain/ui/ico/fa-plus-16.png")));
 		btnAdd.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (btnAdd.isEnabled()) {
-					
+
 					cbSearch.setPopupVisible(false);
-					ScheduleItem si = new ScheduleItem(
-						(IPlace)cbSearch.getSelectedItem(), 
-						br.geocoder.placeToLoc((IPlace) cbSearch.getSelectedItem()), 
-						((TimeSpinner) spStart.getModel()).getCurrent(), 
-						((TimeSpinner) spEnd.getModel()).getCurrent());
+					ScheduleItem si = new ScheduleItem((IPlace) cbSearch.getSelectedItem(),
+							br.geocoder.placeToLoc((IPlace) cbSearch.getSelectedItem()),
+							((TimeSpinner) spStart.getModel()).getCurrent(),
+							((TimeSpinner) spEnd.getModel()).getCurrent());
 					if (sch.doesOverlap(si)) {
 						br.setMainPanel(new PanelConfirmOverlap((accept) -> {
 							if (accept) {
@@ -483,55 +490,52 @@ public class PanelLocationSearch extends JPanel {
 				}
 			}
 		});
-		
-		
+
 		Component rigidArea_2 = Box.createRigidArea(new Dimension(20, 20));
 		GridBagConstraints gbc_rigidArea_2 = new GridBagConstraints();
 		gbc_rigidArea_2.insets = new Insets(0, 0, 0, 5);
 		gbc_rigidArea_2.gridx = 0;
 		gbc_rigidArea_2.gridy = 11;
 		add(rigidArea_2, gbc_rigidArea_2);
-		
+
 		Component rigidArea_3 = Box.createRigidArea(new Dimension(20, 20));
 		GridBagConstraints gbc_rigidArea_3 = new GridBagConstraints();
 		gbc_rigidArea_3.gridx = 4;
 		gbc_rigidArea_3.gridy = 11;
 		add(rigidArea_3, gbc_rigidArea_3);
-		
-		
+
 		Component rigidArea_4 = Box.createRigidArea(new Dimension(20, 20));
 		GridBagConstraints gbc_rigidArea_4 = new GridBagConstraints();
 		gbc_rigidArea_4.insets = new Insets(0, 0, 5, 5);
 		gbc_rigidArea_4.gridx = 0;
 		gbc_rigidArea_4.gridy = 3;
 		add(rigidArea_4, gbc_rigidArea_4);
-		
+
 		Component rigidArea_5 = Box.createRigidArea(new Dimension(20, 20));
 		GridBagConstraints gbc_rigidArea_5 = new GridBagConstraints();
 		gbc_rigidArea_5.insets = new Insets(0, 0, 5, 0);
 		gbc_rigidArea_5.gridx = 4;
 		gbc_rigidArea_5.gridy = 3;
 		add(rigidArea_5, gbc_rigidArea_5);
-		
+
 		validateAdd = () -> {
 			clock.setFrom(((TimeSpinner) spStart.getModel()).getCurrent());
 			clock.setTo(((TimeSpinner) spEnd.getModel()).getCurrent());
-			if (cbSearch.getSelectedItem() != null 
-					&& cbSearch.getSelectedItem().toString() != null
+			if (cbSearch.getSelectedItem() != null && cbSearch.getSelectedItem().toString() != null
 					&& !cbSearch.getSelectedItem().toString().equals("")
 					&& !cbSearch.getSelectedItem().toString().trim().equals("")) {
 				if (((TimeSpinner) spStart.getModel()).getCurrent()
 						.isBefore(((TimeSpinner) spEnd.getModel()).getCurrent())) {
-					
-						btnAdd.setEnabled(true);
-						return;
-					}
+
+					btnAdd.setEnabled(true);
+					return;
+				}
 			} else {
-				
+
 			}
 			btnAdd.setEnabled(false);
 		};
-		
+
 		validateAdd.run();
 	}
 

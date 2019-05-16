@@ -1,6 +1,6 @@
 # studious-spork
 
-Is thing
+This repository implements a multi-location weather app for traveling business people (but does not solve the TSP). It let's users create schedules that take them to multiple cities or countries throughout their busy days. The app then provides an easy-to-read weather summary for _their_ schedule, instead of a location.
 
 ## Setting up DevEnvironment
 

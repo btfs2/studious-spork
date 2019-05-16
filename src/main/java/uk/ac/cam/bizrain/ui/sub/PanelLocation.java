@@ -33,32 +33,33 @@ public class PanelLocation extends JPanel {
 	private static final long serialVersionUID = 5858012430000486336L;
 
 	/**
-	 * Create the panel.
+	 * Create the panel for each individual location in schedule
 	 */
 	public PanelLocation(ScheduleItem schi, IWeatherData locWeather, LocalTimeToEpoch lt2e) {
 		setBorder(new RoundedBorder(30));
 		setBackground(Color.decode("0xDDDDDD"));
-		
+
 		String line1, line2, line3;
 		IPlace place = schi.getPlace();
 		if (place instanceof IPlaceSpecific) {
 			line1 = ((IPlaceSpecific) place).getName();
-			line2 = ((IPlaceSpecific) place).getCity() == null ? ((IPlaceSpecific) place).getCountry() : ((IPlaceSpecific) place).getCity();
-			line3 = ((IPlaceSpecific) place).getCity() == null ?  null : ((IPlaceSpecific) place).getCountry();
+			line2 = ((IPlaceSpecific) place).getCity() == null ? ((IPlaceSpecific) place).getCountry()
+					: ((IPlaceSpecific) place).getCity();
+			line3 = ((IPlaceSpecific) place).getCity() == null ? null : ((IPlaceSpecific) place).getCountry();
 		} else {
 			String[] stuff = place.getDisplayName().split(",");
 			line1 = stuff[0];
 			line2 = stuff.length > 1 ? stuff[1] : "";
 			line3 = stuff.length > 2 ? stuff[2] : "";
 		}
-		
+
 		GridBagLayout gridBagLayout = new GridBagLayout();
-		gridBagLayout.columnWidths = new int[]{0, 0, 0, 0};
-		gridBagLayout.rowHeights = new int[]{0, 0, 0, 17, 7, 0};
-		gridBagLayout.columnWeights = new double[]{1.0, 0.0, 1.0, Double.MIN_VALUE};
-		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gridBagLayout.columnWidths = new int[] { 0, 0, 0, 0 };
+		gridBagLayout.rowHeights = new int[] { 0, 0, 0, 17, 7, 0 };
+		gridBagLayout.columnWeights = new double[] { 1.0, 0.0, 1.0, Double.MIN_VALUE };
+		gridBagLayout.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
 		setLayout(gridBagLayout);
-		
+
 		Component rigidArea = Box.createRigidArea(new Dimension(20, 110));
 		GridBagConstraints gbc_rigidArea = new GridBagConstraints();
 		gbc_rigidArea.gridheight = 5;
@@ -66,7 +67,7 @@ public class PanelLocation extends JPanel {
 		gbc_rigidArea.gridx = 1;
 		gbc_rigidArea.gridy = 0;
 		add(rigidArea, gbc_rigidArea);
-		
+
 		JLabel lbllocationName = new JLabel(line1);
 		lbllocationName.setFont(SwingUtil.getFontTitle().deriveFont(22f));
 		GridBagConstraints gbc_lbllocationName = new GridBagConstraints();
@@ -75,7 +76,7 @@ public class PanelLocation extends JPanel {
 		gbc_lbllocationName.gridx = 0;
 		gbc_lbllocationName.gridy = 0;
 		add(lbllocationName, gbc_lbllocationName);
-		
+
 		JLabel lbllocationCity = new JLabel(line2);
 		lbllocationCity.setFont(SwingUtil.getFontSub().deriveFont(14f));
 		GridBagConstraints gbc_lbllocationCity = new GridBagConstraints();
@@ -84,7 +85,7 @@ public class PanelLocation extends JPanel {
 		gbc_lbllocationCity.gridx = 0;
 		gbc_lbllocationCity.gridy = 1;
 		add(lbllocationCity, gbc_lbllocationCity);
-		
+
 		JLabel lbllocationCountry = new JLabel(line3);
 		lbllocationCountry.setFont(SwingUtil.getFontSub().deriveFont(14f));
 		GridBagConstraints gbc_lbllocationCountry = new GridBagConstraints();
@@ -93,10 +94,10 @@ public class PanelLocation extends JPanel {
 		gbc_lbllocationCountry.gridx = 0;
 		gbc_lbllocationCountry.gridy = 2;
 		add(lbllocationCountry, gbc_lbllocationCountry);
-		
-		JLabel lblfromto = new JLabel(String.format("%s-%s", 
-				schi.getStart().format(DateTimeFormatter.ofPattern("HH:mm")),
-				schi.getEnd().format(DateTimeFormatter.ofPattern("HH:mm"))));
+
+		JLabel lblfromto = new JLabel(
+				String.format("%s-%s", schi.getStart().format(DateTimeFormatter.ofPattern("HH:mm")),
+						schi.getEnd().format(DateTimeFormatter.ofPattern("HH:mm"))));
 		lblfromto.setFont(SwingUtil.getFontNum().deriveFont(15f).deriveFont(Font.BOLD));
 		GridBagConstraints gbc_lblfromto = new GridBagConstraints();
 		gbc_lblfromto.anchor = GridBagConstraints.SOUTHWEST;
@@ -104,17 +105,18 @@ public class PanelLocation extends JPanel {
 		gbc_lblfromto.gridx = 0;
 		gbc_lblfromto.gridy = 4;
 		add(lblfromto, gbc_lblfromto);
-		
+
 		long start = lt2e.toEpoch(schi.getStart());
 		long end = lt2e.toEpoch(schi.getEnd());
 		IWeatherBlockWorst worst = locWeather.getWeatherWorstIn(start, end);
-		JLabel lblmax = new JLabel(String.format("%.0f\u00B0/%.0f\u00B0",
-				worst.getWeatherMaxTemperature(), worst.getWeatherMinTemperature()));
-		if (worst.getWeatherMaxTemperature() == -1*Float.MAX_VALUE) {
+		JLabel lblmax = new JLabel(String.format("%.0f\u00B0/%.0f\u00B0", worst.getWeatherMaxTemperature(),
+				worst.getWeatherMinTemperature()));
+		if (worst.getWeatherMaxTemperature() == -1 * Float.MAX_VALUE) {
 			lblmax.setText("No Data");
 		} else {
 			if (schi.getEnd().isAfter(LocalTime.now(ZoneId.of(BizrainConfig.INSTANCE.timeZoneId)))) {
-				setBackground(SwingUtil.tempToColor((worst.getWeatherMaxTemperature() + worst.getWeatherMinTemperature())/2));
+				setBackground(SwingUtil
+						.tempToColor((worst.getWeatherMaxTemperature() + worst.getWeatherMinTemperature()) / 2));
 			}
 		}
 		if (schi.getEnd().isBefore(LocalTime.now(ZoneId.of(BizrainConfig.INSTANCE.timeZoneId)))) {
@@ -126,9 +128,7 @@ public class PanelLocation extends JPanel {
 		gbc_lblmax.gridx = 2;
 		gbc_lblmax.gridy = 4;
 		add(lblmax, gbc_lblmax);
-		
-		
-		
+
 		JLabel lblIco = new JLabel("");
 		lblIco.setIcon(SwingUtil.getIconOfWeather(worst.getWeatherWorstIcon()));
 		GridBagConstraints gbc_lblIco = new GridBagConstraints();
@@ -140,6 +140,5 @@ public class PanelLocation extends JPanel {
 		add(lblIco, gbc_lblIco);
 
 	}
-	
 
 }

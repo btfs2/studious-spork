@@ -269,12 +269,6 @@ public class PanelLocationSearch extends JPanel {
 		cbSearch.setSelectedItem(defaultLoc);
 		cbSearch.setMaximumRowCount(14);
 		cbSearch.setEditable(true);
-		cbSearch.addActionListener(e -> {
-			if (e.getActionCommand().equals("comboBoxEdited")) {
-				lsm.search();
-			}
-			validateAdd.run();
-		});
 		//cbSearch.setRenderer(new PlaceCellRenderer()); TODO FIX FOR INTEROPERABILITY; CURRENT SOLUTION IS TO JUST ENSURE TOSTRING WORKS
 		//TODO ADD horisontal scrolling
 		//cbSearch.setToolTipText("Location Search");
@@ -377,15 +371,6 @@ public class PanelLocationSearch extends JPanel {
 		btnEnd.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 		btnEnd.setBorder(new RoundedBorder(30));
 		btnEnd.setBackground(Color.WHITE);
-		btnEnd.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				br.setMainPanel(new PanelTimeSelector(((TimeSpinner) spEnd.getModel()).getCurrent(), (time) -> {
-					br.setMainPanel(beme);
-					spEnd.setValue(time);
-				}));
-			}
-		});
 		btnEnd.setIcon(new ImageIcon(PanelLocationSearch.class.getResource("/uk/ac/cam/bizrain/ui/ico/fa-clock-16.png")));
 		GridBagConstraints gbc_btnEnd = new GridBagConstraints();
 		gbc_btnEnd.fill = GridBagConstraints.BOTH;
@@ -434,13 +419,6 @@ public class PanelLocationSearch extends JPanel {
 		panel.setLayout(gbl_panel_2);
 		
 		JButton btnBack = new JButton("");
-		btnBack.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				cbSearch.setPopupVisible(false);
-				bac.back();
-			}
-		});
 		btnBack.setBorder(new RoundedBorder(30));
 		btnBack.setBackground(Color.WHITE);
 		btnBack.setIcon(new ImageIcon(PanelLocationSearch.class.getResource("/uk/ac/cam/bizrain/ui/ico/fa-chevron-left-16.png")));
@@ -458,32 +436,6 @@ public class PanelLocationSearch extends JPanel {
 		btnAdd.setBorder(new RoundedBorder(30));
 		btnAdd.setBackground(Color.WHITE);
 		btnAdd.setIcon(new ImageIcon(PanelLocationSearch.class.getResource("/uk/ac/cam/bizrain/ui/ico/fa-plus-16.png")));
-		btnAdd.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if (btnAdd.isEnabled()) {
-					
-					cbSearch.setPopupVisible(false);
-					ScheduleItem si = new ScheduleItem(
-						(IPlace)cbSearch.getSelectedItem(), 
-						br.geocoder.placeToLoc((IPlace) cbSearch.getSelectedItem()), 
-						((TimeSpinner) spStart.getModel()).getCurrent(), 
-						((TimeSpinner) spEnd.getModel()).getCurrent());
-					if (sch.doesOverlap(si)) {
-						br.setMainPanel(new PanelConfirmOverlap((accept) -> {
-							if (accept) {
-								ret.returnData(si);
-							} else {
-								br.setMainPanel(beme);
-							}
-						}));
-					} else {
-						ret.returnData(si);
-					}
-				}
-			}
-		});
-		
 		
 		Component rigidArea_2 = Box.createRigidArea(new Dimension(20, 20));
 		GridBagConstraints gbc_rigidArea_2 = new GridBagConstraints();
@@ -513,6 +465,60 @@ public class PanelLocationSearch extends JPanel {
 		gbc_rigidArea_5.gridy = 3;
 		add(rigidArea_5, gbc_rigidArea_5);
 		
+		// CONTROLLER
+		/////////////
+		
+		cbSearch.addActionListener(e -> {
+			if (e.getActionCommand().equals("comboBoxEdited")) {
+				lsm.search();
+			}
+			validateAdd.run();
+		});
+		
+		btnAdd.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (btnAdd.isEnabled()) {
+					
+					cbSearch.setPopupVisible(false);
+					ScheduleItem si = new ScheduleItem(
+						(IPlace)cbSearch.getSelectedItem(), 
+						br.geocoder.placeToLoc((IPlace) cbSearch.getSelectedItem()), 
+						((TimeSpinner) spStart.getModel()).getCurrent(), 
+						((TimeSpinner) spEnd.getModel()).getCurrent());
+					if (sch.doesOverlap(si)) {
+						br.setMainPanel(new PanelConfirmOverlap((accept) -> {
+							if (accept) {
+								ret.returnData(si);
+							} else {
+								br.setMainPanel(beme);
+							}
+						}));
+					} else {
+						ret.returnData(si);
+					}
+				}
+			}
+		});
+		
+		btnBack.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				cbSearch.setPopupVisible(false);
+				bac.back();
+			}
+		});
+		
+		btnEnd.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				br.setMainPanel(new PanelTimeSelector(((TimeSpinner) spEnd.getModel()).getCurrent(), (time) -> {
+					br.setMainPanel(beme);
+					spEnd.setValue(time);
+				}));
+			}
+		});
+		
 		validateAdd = () -> {
 			clock.setFrom(((TimeSpinner) spStart.getModel()).getCurrent());
 			clock.setTo(((TimeSpinner) spEnd.getModel()).getCurrent());
@@ -534,5 +540,7 @@ public class PanelLocationSearch extends JPanel {
 		
 		validateAdd.run();
 	}
+	
+	
 
 }

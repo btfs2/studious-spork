@@ -29,7 +29,7 @@ import uk.ac.cam.bizrain.config.BizrainConfig;
 import uk.ac.cam.bizrain.location.IPlace;
 import uk.ac.cam.bizrain.location.IPlaceSpecific;
 import uk.ac.cam.bizrain.schedule.LocalTimeToEpoch;
-import uk.ac.cam.bizrain.schedule.Schedule.ScheduleItem;
+import uk.ac.cam.bizrain.schedule.ScheduleItem;
 import uk.ac.cam.bizrain.ui.comp.SwingUtil;
 import uk.ac.cam.bizrain.weather.IWeatherData;
 import uk.ac.cam.bizrain.weather.block.IWeatherBlockWorst;

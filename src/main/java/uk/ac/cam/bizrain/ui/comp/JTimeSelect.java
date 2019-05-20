@@ -16,6 +16,16 @@ import java.time.format.DateTimeFormatter;
 
 import javax.swing.JPanel;
 
+/**
+ * You know the time selector from android
+ * 
+ * That but shit and made in swing graphics
+ * 
+ * Lots of trig involved here
+ * 
+ * @author btfs2
+ *
+ */
 public class JTimeSelect extends JPanel {
 	
 	
@@ -36,6 +46,7 @@ public class JTimeSelect extends JPanel {
 	}
 	
 	int pad = 3;
+	//Enables AA
 	RenderingHints hints = new RenderingHints(
             RenderingHints.KEY_ANTIALIASING,
             RenderingHints.VALUE_ANTIALIAS_ON);
@@ -56,6 +67,8 @@ public class JTimeSelect extends JPanel {
 	private Color numBG = Color.decode("0xDDDDDD");
 	private Color hilight = Color.decode("0xCAE5ED");
 	
+	//Callbacks for listening to all the mouse moves for drawing
+	//Probably wastes CPU cycles; but at least we aren't electron
 	{
 		addMouseListener(new MouseListener() {
 			
@@ -115,6 +128,10 @@ public class JTimeSelect extends JPanel {
 		
 	}
 	
+	/**
+	 * Gets the current mouse angle
+	 * @return
+	 */
 	private double getMouseAngle() {
 		return Math.atan(mouseY/mouseX) + (mouseX<0 ? Math.PI : 0);
 	}
@@ -123,6 +140,9 @@ public class JTimeSelect extends JPanel {
 		this.setFont(SwingUtil.getFontNum().deriveFont(15f).deriveFont(Font.BOLD));
 	}
 	
+	/**
+	 * Draw the clock face, with all the fancy shenanagins involved
+	 */
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -269,18 +289,40 @@ public class JTimeSelect extends JPanel {
 		g2.setTransform(at);
 	}
 	
+	/**
+	 * Check if clock is currently in start state
+	 */
 	public boolean isStart() {
 		return stage == 0;
 	}
 	
+	/**
+	 * Go back a stage, to start
+	 */
 	public void decreaseStage() {
 		stage = Math.max(stage-1, 0);
 	}
 	
+	/**
+	 * Check if clock is in final stage
+	 * 
+	 * I.e. is ready to get time from
+	 * 
+	 * @return
+	 */
 	public boolean isDone() {
 		return stage == 2;
 	}
 	
+	/**
+	 * Get time from clock
+	 * 
+	 * Should only be called when isDone returns true
+	 * 
+	 * @see {@link #isDone()}
+	 * 
+	 * @return Current time
+	 */
 	public LocalTime getTime() {
 		return LocalTime.of(hour, min);
 	}

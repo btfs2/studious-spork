@@ -15,7 +15,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import uk.ac.cam.bizrain.location.IPlace;
-import uk.ac.cam.bizrain.schedule.Schedule.ScheduleItem;
 import uk.ac.cam.bizrain.weather.IWeatherData;
 import uk.ac.cam.bizrain.weather.IWeatherProvider;
 import uk.ac.cam.bizrain.weather.MergedWeatherData;
@@ -99,6 +98,17 @@ public class ScheduleManager {
 		}
 	}
 	
+	/**
+	 * Gets combined weather data for a schedule
+	 * 
+	 * @see MergedWeatherData
+	 * 
+	 * @param s Schedule
+	 * @param iwp Provider to pull weather from
+	 * @param regen If data should be regenned
+	 * @param lt2e Local time to epoch converter
+	 * @return MergedWeatherData of all data on schedule
+	 */
 	public IWeatherData getScheduleCombinedWeather(Schedule s, IWeatherProvider iwp, boolean regen, LocalTimeToEpoch lt2e) {
 		Map<IPlace, IWeatherData> dataMap = getScheduleWeather(s, iwp, regen);
 		MergedWeatherData out = new MergedWeatherData();
@@ -108,6 +118,17 @@ public class ScheduleManager {
 		return out;
 	}
 	
+	
+	/**
+	 * Gets weather data for an item on a schedule
+	 * 
+	 * 
+	 * @param s Schedule
+	 * @param iwp Provider to pull weather from
+	 * @param regen If data should be regenned
+	 * @param si Item to get data for
+
+	 */
 	public IWeatherData getScheduleItemWeather(Schedule s, IWeatherProvider iwp, boolean regen, ScheduleItem si) {
 		return getScheduleWeather(s, iwp, regen).get(si.place);
 	}
@@ -153,6 +174,11 @@ public class ScheduleManager {
 		loadSchedules();
 	}
 	
+	/**
+	 * Save the data to given file
+	 * 
+	 * Uses javas built in serialisation
+	 */
 	public void saveSchedules() {
 		File configFile = new File(schedulesPath);
 		if (!configFile.exists()) {
@@ -171,6 +197,11 @@ public class ScheduleManager {
 		}
 	}
 	
+	/**
+	 * Load the data to given file
+	 * 
+	 * Uses javas built in serialisation
+	 */
 	@SuppressWarnings("unchecked") // cannot validate casting
 	public void loadSchedules() {
 		File configFile = new File(schedulesPath);

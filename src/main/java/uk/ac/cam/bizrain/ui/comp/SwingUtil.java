@@ -6,14 +6,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.io.IOException;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -21,7 +13,6 @@ import javax.swing.AbstractButton;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
-import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.basic.BasicSpinnerUI;
@@ -151,101 +142,11 @@ public class SwingUtil {
 		return Color.decode("0xFF5C3C");
 	}
 	
-	
-	
-	@Retention(RetentionPolicy.RUNTIME)
-	@Target(ElementType.TYPE)
-	public static @interface DontTouchMe {}
-	
 	/**
-	 * Theme a thing and all sub things
-	 * 
-	 * Uses ungodly amounts of reflection
-	 * 
-	 * Isn't the fastest, so is best suited for testing
-	 * 
-	 * @param comp Component to theme
+	 * Get the application title font
+	 * 	
+	 * @return title font
 	 */
-	public static void theme(Component comp) {
-		try {
-			recursiveTheme(comp, new HashSet<Object>());
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	/**
-	 * A recursive patching function for updating lots of things
-	 * 
-	 * In this case; theme patching
-	 * 
-	 * This IS taken from one of my other projects.
-	 * 
-	 * Next gen reflection hacking (it is in fact not; that is bytecode hacking)
-	 * 
-	 * @param o Object to patch
-	 * @param dedupe Set of things already patched
-	 * @throws IllegalArgumentException
-	 * @throws IllegalAccessException
-	 */
-	private static void recursiveTheme(Object o, Set<Object> dedupe) throws IllegalArgumentException, IllegalAccessException {
-		try {
-		if (o == null || o.getClass() == null || o.getClass().getName() == null) {
-			return;
-		}
-		if (o instanceof Number || o instanceof Boolean || o instanceof Class<?> || o instanceof String 
-				|| o instanceof boolean[] || o instanceof char[] || o instanceof byte[] 
-				|| o instanceof short[] || o instanceof int[] || o instanceof long[] 
-				|| o instanceof float[] || o instanceof double[] || o.getClass().getSuperclass() == null) {
-			return;
-		}
-		if (dedupe.contains(o)) {
-			return;
-		}
-		dedupe.add(o);
-		if (o.getClass().isArray() && !o.getClass().isPrimitive()) {
-			for (Object p : (Object[]) o) {
-				recursiveTheme(p, dedupe);
-			}
-			return;
-		}
-		if (!o.getClass().isAnnotationPresent(DontTouchMe.class)) {
-			if (o instanceof Component) {
-				((Component)o).setBackground(Color.WHITE);
-				((Component)o).setForeground(Color.BLACK);
-			}
-			if (o instanceof JPanel) {
-				((JPanel)o).setBackground(Color.LIGHT_GRAY);
-			}
-		}
-		Class<?> c = o.getClass();
-		for (Field f : c.getFields()) {
-			if ((f.getModifiers() & Modifier.STATIC) == Modifier.STATIC) {
-				continue;
-			}
-			f.setAccessible(true);
-			recursiveTheme(f.get(o), dedupe);
-		}
-		while (c.getSuperclass() != null) {
-			for (Field f : c.getDeclaredFields()) {
-				if ((f.getModifiers() & Modifier.STATIC) == Modifier.STATIC) {
-					continue;
-				}
-				f.setAccessible(true);
-				recursiveTheme(f.get(o), dedupe);
-			}
-			c = c.getSuperclass();
-		}
-		} catch (Exception e) {
-			e.printStackTrace();
-			LOG.warning("Failed on class: " + o.getClass());
-			LOG.warning("Class: Primitive: " + o.getClass().isPrimitive() + 
-					" Array: " + o.getClass().isArray());
-		}
-	}
-	
 	public static Font getFontTitle() {
 		try {
 			return Font.createFont(Font.TRUETYPE_FONT, SwingUtil.class.getResourceAsStream("/uk/ac/cam/bizrain/ui/font/Raleway-Medium.ttf"));
@@ -255,6 +156,11 @@ public class SwingUtil {
 		return null;
 	}
 	
+	/**
+	 * Get the application body font
+	 * 	
+	 * @return body font
+	 */
 	public static Font getFontSub() {
 		try {
 			return Font.createFont(Font.TRUETYPE_FONT, SwingUtil.class.getResourceAsStream("/uk/ac/cam/bizrain/ui/font/Raleway-Regular.ttf"));
@@ -264,6 +170,13 @@ public class SwingUtil {
 		return null;
 	}
 	
+	/**
+	 * Get the application number font
+	 * 
+	 * Ends up being most of the body
+	 * 	
+	 * @return number font
+	 */
 	public static Font getFontNum() {
 		try {
 			return Font.createFont(Font.TRUETYPE_FONT, SwingUtil.class.getResourceAsStream("/uk/ac/cam/bizrain/ui/font/Roboto-Regular.ttf"));

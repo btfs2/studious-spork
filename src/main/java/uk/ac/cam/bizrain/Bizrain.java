@@ -58,12 +58,17 @@ public class Bizrain {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		//Try to make text not shit
 		System.setProperty("awt.useSystemAAFontSettings","on");
 		System.setProperty("swing.aatext", "true");
 		frame = new JFrame();
+		//Use phone screen size; looks as would on IPhone, if scaled up 1.7x
 		frame.setBounds(100, 100, (int)Math.floor(750f/1.7f), (int)Math.floor(1334f/1.7f));
+		//Lock size
 		frame.setResizable(false);
+		//Dont leave phantom java open
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//Setup main window
 		mainPanel = new PanelScheduleList(this);
 		frame.getContentPane().add(mainPanel, BorderLayout.CENTER);
 	}
@@ -84,9 +89,9 @@ public class Bizrain {
 	 */
 	public void setMainPanel(JPanel newPanel) {
 		frame.getContentPane().remove(mainPanel);
-		//SwingUtil.theme(newPanel);
 		frame.getContentPane().add(newPanel, BorderLayout.CENTER);
 		mainPanel = newPanel;
+		//Ensure full redraw
 		frame.invalidate();
 		frame.validate();
 		frame.repaint();

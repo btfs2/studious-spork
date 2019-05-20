@@ -12,6 +12,12 @@ import java.time.LocalTime;
 
 import javax.swing.JPanel;
 
+/**
+ * Display start and end times in a user fiendly, clocklike manor
+ * 
+ * @author btfs2
+ *
+ */
 public class JClock extends JPanel {
 
 	/**
@@ -31,25 +37,46 @@ public class JClock extends JPanel {
 		
 	}
 	
+	/**
+	 * Create new clock with given start and end positions
+	 * 
+	 * @param from Start
+	 * @param to End
+	 */
 	public JClock(LocalTime from, LocalTime to) {
 		this.from = from;
 		this.to = to;
 	}
 	
+	/**
+	 * Set start point and repaint
+	 * 
+	 * @param from Start time
+	 */
 	public void setFrom(LocalTime from) {
 		this.from = from;
 		repaint();
 	}
 	
+	/**
+	 * Set end point and repaint
+	 * 
+	 * @param to End point
+	 */
 	public void setTo(LocalTime to) {
 		this.to = to;
 		repaint();
 	}
 	
+	/**
+	 * Meat of the code, draws a clock
+	 */
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		
+		//INITIAL
+		/////////
 		Graphics2D g2 = (Graphics2D) g;
 		//Base transform to restore to
 		AffineTransform at = g2.getTransform();
@@ -76,6 +103,8 @@ public class JClock extends JPanel {
 		int pad = 2;
 		g2.fillOval(-(3*rad/5)+pad, -(3*rad/5)+pad, 2*(3*rad/5)-2*pad, 2*(3*rad/5)-2*pad);
 				
+		//Region DRAWING
+		////////////////
 		double arc144 = Math.PI/72f;
 		if (from != null && to != null) {
 			int startPos = 12*from.getHour()+from.getMinute()/5;
@@ -86,7 +115,6 @@ public class JClock extends JPanel {
 				x = (int) (thisRad*Math.cos(ang2));
 				y = (int) (thisRad*Math.sin(ang2));
 				Polygon p = new Polygon();
-				//p.addPoint(0, 0);
 				p.addPoint(x, y);
 				for (int i = startPos; i <= Math.min(144, endPos); i+=1) {
 					ang2 = arc144*(i)-Math.PI/2;
@@ -182,6 +210,8 @@ public class JClock extends JPanel {
 			g2.setStroke(stroke);
 		}
 		
+		//Draws times on clock face
+		////////////
 		g.setColor(getForeground());
 		double arc6 = Math.PI/6f;
 		for (int i = 1; i<=12; i++) {

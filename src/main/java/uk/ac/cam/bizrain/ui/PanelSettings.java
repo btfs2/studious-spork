@@ -26,19 +26,35 @@ import javax.swing.ImageIcon;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+/**
+ * Displays settings
+ * 
+ * Currently very sparse, as there isn't much to configure
+ * 
+ * @author btfs2, Paulina (docs)
+ *
+ */
 public class PanelSettings extends JPanel {
 
 	/**
-	 * 
+	 * Serialisation
 	 */
 	private static final long serialVersionUID = -7690662687510294733L;
 
+	/**
+	 * Called on return
+	 * 
+	 * @author btfs2
+	 *
+	 */
 	public interface SettingsReturn {
 		public void ret();
 	}
 	
 	/**
 	 * Create the panel.
+	 * 
+	 * Initialise swing and add control code
 	 */
 	public PanelSettings(SettingsReturn ret) {
 		GridBagLayout gridBagLayout = new GridBagLayout();

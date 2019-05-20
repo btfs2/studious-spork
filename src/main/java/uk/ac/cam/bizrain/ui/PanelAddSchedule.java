@@ -19,27 +19,57 @@ import javax.swing.JTextField;
 
 import uk.ac.cam.bizrain.Bizrain;
 import uk.ac.cam.bizrain.ui.comp.RoundedBorder;
+import uk.ac.cam.bizrain.ui.comp.SwingUtil;
 
+/**
+ * Panel that adds schedules
+ * 
+ * Contains name entry box, and add button, and a back button
+ * 
+ * @author btfs2, Paulina (docs)
+ *
+ */
 public class PanelAddSchedule extends JPanel {
+	
 	/**
-	 * 
+	 * Deals with serialisation warning 
 	 */
 	private static final long serialVersionUID = 8783712046635389519L;
 	
+	/**
+	 * Text field used for containing name
+	 */
 	private JTextField textField;
 
+	/**
+	 * Called when new schedule is to be added
+	 * 
+	 * @author btfs2
+	 *
+	 */
 	interface AddSchedReturn {
 		public void ret(String name);
 	}
 	
+	/**
+	 * Called when canceling
+	 * 
+	 * @author btfs2
+	 *
+	 */
 	interface AddSchedBack {
 		public void back();
 	}
 	
 	/**
 	 * Create the panel.
+	 * 
+	 * Sets up swing and stuff
 	 */
 	public PanelAddSchedule(Bizrain br ,AddSchedBack back, AddSchedReturn ret) {
+		
+		//View
+		//////
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 21, 0, 0, 0, 0};
 		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0};
@@ -62,7 +92,7 @@ public class PanelAddSchedule extends JPanel {
 		add(rigidArea_1, gbc_rigidArea_1);
 		
 		JLabel lblNewSchedule = new JLabel("NEW SCHEDULE");
-		lblNewSchedule.setFont(new Font("Tahoma", Font.BOLD, 20));
+		lblNewSchedule.setFont(SwingUtil.getFontTitle().deriveFont(20f).deriveFont(Font.BOLD));
 		GridBagConstraints gbc_lblNewSchedule = new GridBagConstraints();
 		gbc_lblNewSchedule.gridwidth = 3;
 		gbc_lblNewSchedule.insets = new Insets(0, 0, 5, 5);
@@ -85,7 +115,7 @@ public class PanelAddSchedule extends JPanel {
 		add(rigidArea_5, gbc_rigidArea_5);
 		
 		JLabel lblName = new JLabel("     Name:");
-		lblName.setFont(new Font("Dialog", Font.BOLD, 12));
+		lblName.setFont(SwingUtil.getFontSub().deriveFont(12f).deriveFont(Font.BOLD));
 		GridBagConstraints gbc_lblName = new GridBagConstraints();
 		gbc_lblName.gridwidth = 3;
 		gbc_lblName.insets = new Insets(0, 0, 5, 5);
@@ -97,6 +127,7 @@ public class PanelAddSchedule extends JPanel {
 		textField = new JTextField();
 		textField.setBorder(new RoundedBorder(30));
 		textField.setBackground(Color.WHITE);
+		textField.setFont(SwingUtil.getFontNum().deriveFont(12f).deriveFont(Font.BOLD));
 		GridBagConstraints gbc_textField = new GridBagConstraints();
 		gbc_textField.gridwidth = 3;
 		gbc_textField.insets = new Insets(0, 0, 5, 5);

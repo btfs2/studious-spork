@@ -20,7 +20,7 @@ import javax.swing.ScrollPaneConstants;
 import uk.ac.cam.bizrain.Bizrain;
 import uk.ac.cam.bizrain.schedule.LocalTimeToEpoch;
 import uk.ac.cam.bizrain.schedule.Schedule;
-import uk.ac.cam.bizrain.schedule.Schedule.ScheduleItem;
+import uk.ac.cam.bizrain.schedule.ScheduleItem;
 import uk.ac.cam.bizrain.ui.comp.RoundedBorder;
 import uk.ac.cam.bizrain.ui.comp.SwingUtil;
 import uk.ac.cam.bizrain.ui.sub.PanelConfirmDelete;
@@ -28,6 +28,18 @@ import uk.ac.cam.bizrain.ui.sub.PanelLocation;
 import uk.ac.cam.bizrain.ui.sub.PanelOverview;
 import uk.ac.cam.bizrain.weather.IWeatherData;
 
+/**
+ * 
+ * Displays items in a schedule
+ * 
+ * Uses scroll panel for display
+ * 
+ * @see PanelLocation
+ * @see PanelOverview
+ * 
+ * @author btfs2, Paulina (docs)
+ *
+ */
 public class PanelSchedule extends JPanel {
 
 	/**

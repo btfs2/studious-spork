@@ -24,25 +24,46 @@ import javax.swing.event.ChangeListener;
 
 import uk.ac.cam.bizrain.Bizrain;
 import uk.ac.cam.bizrain.schedule.Schedule;
-import uk.ac.cam.bizrain.schedule.Schedule.ScheduleItem;
+import uk.ac.cam.bizrain.schedule.ScheduleItem;
 import uk.ac.cam.bizrain.ui.PanelLocationSearch.TimeSpinner;
 import uk.ac.cam.bizrain.ui.comp.JClock;
+import uk.ac.cam.bizrain.ui.comp.JTimeSelect;
 import uk.ac.cam.bizrain.ui.comp.RoundedBorder;
 import uk.ac.cam.bizrain.ui.comp.SwingUtil;
 import uk.ac.cam.bizrain.ui.sub.PanelConfirmOverlap;
 import uk.ac.cam.bizrain.ui.sub.PanelTimeSelector;
 
+/**
+ * Panel for editing location
+ * 
+ * Contains static place name, and time entry screens
+ * 
+ * @see JClock
+ * @see JTimeSelect
+ * 
+ * @author btfs2, Paulina (docs)
+ *
+ */
 public class PanelLocationEdit extends JPanel {
 	
 	/**
 	 * Serialised
 	 */
 	private static final long serialVersionUID = -4832960499617148553L;
-
+	
 	private JButton btnEdit;
 	
+	/**
+	 * Used to validate ok button
+	 */
 	private Runnable validateAdd = () -> {};
 	
+	/**
+	 * Return CB
+	 * 
+	 * @author btfs2
+	 *
+	 */
 	interface LocEditBack {
 		public void back();
 	}

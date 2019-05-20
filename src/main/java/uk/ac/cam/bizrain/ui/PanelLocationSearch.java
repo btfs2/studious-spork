@@ -37,13 +37,27 @@ import uk.ac.cam.bizrain.location.IGeocoder;
 import uk.ac.cam.bizrain.location.IPlace;
 import uk.ac.cam.bizrain.location.StringPlace;
 import uk.ac.cam.bizrain.schedule.Schedule;
-import uk.ac.cam.bizrain.schedule.Schedule.ScheduleItem;
+import uk.ac.cam.bizrain.schedule.ScheduleItem;
 import uk.ac.cam.bizrain.ui.comp.JClock;
+import uk.ac.cam.bizrain.ui.comp.JTimeSelect;
 import uk.ac.cam.bizrain.ui.comp.RoundedBorder;
 import uk.ac.cam.bizrain.ui.comp.SwingUtil;
 import uk.ac.cam.bizrain.ui.sub.PanelConfirmOverlap;
 import uk.ac.cam.bizrain.ui.sub.PanelTimeSelector;
 
+/**
+ * 
+ * Panel for searching location
+ * 
+ * Much like LocationEdit, but also contains a search box
+ * 
+ * @see PanelLocationEdit
+ * @see JClock
+ * @see JTimeSelect
+ * 
+ * @author btfs2, Paulina (docs)
+ *
+ */
 public class PanelLocationSearch extends JPanel {
 
 	private static final Logger log = Logger.getLogger("LocationSearch"); 
@@ -55,12 +69,19 @@ public class PanelLocationSearch extends JPanel {
 
 	private JButton btnAdd;
 	
+	/**
+	 * 
+	 */
 	private Runnable validateAdd = () -> {};
 	
 	/**
 	 * The location searching model
 	 * 
 	 * Appears to work
+	 * 
+	 * May search for the same thing multiple times, but requests are cached and geocoding is free
+	 * 
+	 * TODO: Stop multi-calling
 	 * 
 	 * @author btfs2
 	 *
@@ -85,37 +106,37 @@ public class PanelLocationSearch extends JPanel {
 			this.cb = cb;
 		}
 
-		private Thread running = null;
+		boolean searching = false;
 		
 		/**
 		 * Searches for a location
 		 */
 		public void search() {
 			// Run search in new thread to avoid locking UI
-			running = new Thread(() -> {
+			new Thread(() -> {
 				log.log(Level.INFO, "Searching " + selected.getDisplayName());
 				if (!geocoder.isGeocoderAvaliable()) {
 					JOptionPane.showMessageDialog(null, "Cannot connect to geocoder\nplease check network connection",
 							"Networking error", JOptionPane.WARNING_MESSAGE);
 					return;
 				}
+				searching = true;
+				validateAdd.run();
 				List<IPlace> nplaces = geocoder.predict(selected);
-				if (running != Thread.currentThread()) {
-					synchronized (places) {
-						places = nplaces;
-					}
-					LocSearchModel beme = this;
-					ldl.forEach(i -> i
-							.contentsChanged(new ListDataEvent(beme, ListDataEvent.CONTENTS_CHANGED, 0, beme.getSize())));
-					log.info("Search complete");
-					try {
-						cb.setPopupVisible(true);
-					} catch (IllegalStateException ise) {
-						log.log(Level.INFO, "Failed to show popup as component not on screen", ise);
-					}
+				searching = false;
+				synchronized (places) {
+					places = nplaces;
 				}
-			});
-			running.start();
+				LocSearchModel beme = this;
+				ldl.forEach(i -> i
+						.contentsChanged(new ListDataEvent(beme, ListDataEvent.CONTENTS_CHANGED, 0, beme.getSize())));
+				log.info("Search complete");
+				try {
+					cb.setPopupVisible(true);
+				} catch (IllegalStateException ise) {
+					log.log(Level.INFO, "Failed to show popup as component not on screen", ise);
+				}
+			}).start();
 		}
 
 		@Override
@@ -160,16 +181,31 @@ public class PanelLocationSearch extends JPanel {
 		
 	}
 	
+	/**
+	 * Spinner control for time
+	 * 
+	 * Not really used anymore, just for displaying time
+	 * 
+	 * @author btfs2
+	 *
+	 */
 	static class TimeSpinner implements SpinnerModel {
 
 		LocalTime time;
 		List<ChangeListener> csl = new ArrayList<ChangeListener>();
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm");
 		
+		/**
+		 * Create one now
+		 */
 		TimeSpinner() {
 			this(LocalTime.now());
 		}
 		
+		/**
+		 * Create on at given time
+		 * @param time given time
+		 */
 		TimeSpinner(LocalTime time) {
 			this.time = time;
 		}
@@ -179,6 +215,10 @@ public class PanelLocationSearch extends JPanel {
 			return time.format(dtf);
 		}
 		
+		/**
+		 * Get current value as Local time rather than string
+		 * @return
+		 */
 		public LocalTime getCurrent() {
 			return time;
 		}
@@ -218,30 +258,33 @@ public class PanelLocationSearch extends JPanel {
 
 	}
 	
+	/**
+	 * CB for additive return
+	 * 
+	 * @author btfs2
+	 *
+	 */
 	public interface LocSearchReturn {
 		public void returnData(ScheduleItem si);
 	}
 	
+	/**
+	 * CB for back without adding
+	 * @author btfs2
+	 *
+	 */
 	interface LocSearchBack {
 		public void back();
 	}
 	
 	/**
-	 *
-	 * @wbp.parser.constructor
-	 */
-	public PanelLocationSearch(Bizrain br, Schedule sch, LocSearchReturn ret, LocSearchBack bac) {
-		this(br, sch, ret, bac, new StringPlace(""));
-	}
-	
-	/**
 	 * Create the panel.
 	 */
-	public PanelLocationSearch(Bizrain br, Schedule sch, LocSearchReturn ret, LocSearchBack bac, IPlace defaultLoc) {
+	public PanelLocationSearch(Bizrain br, Schedule sch, LocSearchReturn ret, LocSearchBack bac) {
 		// This reference for callbacks
 		PanelLocationSearch beme = this;
 	
-		//ModelView
+		//View
 		///////////
 		
 		//Setup Layout
@@ -274,7 +317,7 @@ public class PanelLocationSearch extends JPanel {
 		cbSearch.setBackground(Color.WHITE);
 		LocSearchModel lsm = new LocSearchModel(br.geocoder, cbSearch);
 		cbSearch.setModel(lsm);
-		cbSearch.setSelectedItem(defaultLoc);
+		cbSearch.setSelectedItem(new StringPlace(""));
 		cbSearch.setMaximumRowCount(14);
 		cbSearch.setEditable(true);
 		GridBagConstraints gbc_cbSearch = new GridBagConstraints();
@@ -531,12 +574,23 @@ public class PanelLocationSearch extends JPanel {
 						.isBefore(((TimeSpinner) spEnd.getModel()).getCurrent())) {
 					
 						btnAdd.setEnabled(true);
-						return;
-					}
+						lblError.setVisible(false);
+				} else {
+					lblError.setText("Start time is before end time");
+					lblError.setVisible(true);
+					btnAdd.setEnabled(false);
+				}
 			} else {
-				
+				lblError.setText("No place entered; try searching for one");
+				lblError.setVisible(true);
+				btnAdd.setEnabled(false);
 			}
-			btnAdd.setEnabled(false);
+			System.out.println(((LocSearchModel)cbSearch.getModel()).searching);
+			if (((LocSearchModel)cbSearch.getModel()).searching) {
+				System.out.println("HAI");
+				lblError.setText("Searching...");
+				lblError.setVisible(true);
+			}
 		};
 		
 		validateAdd.run();

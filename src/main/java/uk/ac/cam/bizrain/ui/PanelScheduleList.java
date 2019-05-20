@@ -24,6 +24,16 @@ import uk.ac.cam.bizrain.ui.comp.SwingUtil;
 import uk.ac.cam.bizrain.ui.sub.PanelOverview;
 import uk.ac.cam.bizrain.weather.IWeatherData;
 
+/**
+ * Displays all schedules
+ * 
+ * Basically the start screen for the app
+ * 
+ * @see PanelOverview
+ * 
+ * @author btfs2, Paulina (docs)
+ *
+ */
 public class PanelScheduleList extends JPanel {
 
 	/**
@@ -33,6 +43,7 @@ public class PanelScheduleList extends JPanel {
 
 	/**
 	 * Create the panel.
+	 * 
 	 */
 	public PanelScheduleList(Bizrain br) {
 		PanelScheduleList beme = this;

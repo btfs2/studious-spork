@@ -18,6 +18,14 @@ import javax.swing.ImageIcon;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+/**
+ * Panel for confirming delete
+ * 
+ * Displays warning, and does stuff
+ * 
+ * @author btfs2, Paulina (docs)
+ *
+ */
 public class PanelConfirmDelete extends JPanel {
 
 	/**
@@ -25,6 +33,12 @@ public class PanelConfirmDelete extends JPanel {
 	 */
 	private static final long serialVersionUID = -7777377584656583227L;
 
+	/**
+	 * Return CB
+	 * 
+	 * @author btfs2
+	 *
+	 */
 	public interface ConfirmDeleteReturn {
 		public void ret(boolean accept);
 	}

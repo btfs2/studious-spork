@@ -16,8 +16,11 @@ import javax.swing.JComboBox;
 import javax.swing.border.AbstractBorder;
 
 /**
+ * Round border that makes things look nice
  * 
+ * A lot of the code is taken from stack overflow
  * 
+ * But was modified to fix fatal flaws
  * 
  * @author btfs2
  *
@@ -48,6 +51,11 @@ public class RoundedBorder extends AbstractBorder {
 		init();
 	}
 	
+	/**
+	 * Setup graphics hints
+	 * 
+	 * Enables AA so it doesn't look shit
+	 */
 	private void init() {
 		hints = new RenderingHints(
                 RenderingHints.KEY_ANTIALIASING,
@@ -64,6 +72,15 @@ public class RoundedBorder extends AbstractBorder {
         return getBorderInsets(c);
     }
 	
+	/**
+	 * Draw rounded border
+	 * 
+	 * Basically hack that just draws the parents background color where corners should be
+	 * 
+	 * Would fail in fancy scenario, but not here
+	 * 
+	 * Again taken partly from stack overflow
+	 */
 	@Override
     public void paintBorder(
             Component c,

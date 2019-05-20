@@ -34,6 +34,16 @@ import uk.ac.cam.bizrain.ui.comp.SwingUtil;
 import uk.ac.cam.bizrain.weather.IWeatherData;
 import uk.ac.cam.bizrain.weather.block.IWeatherBlockWorst;
 
+/**
+ * The sub panel that displays a Schedule Item
+ * 
+ * This contains code from the rounded border, which was needed to ensure the rain gif would paint successfully
+ * 
+ * @see ScheduleItem
+ * 
+ * @author btfs2, Paulina (docs)
+ *
+ */
 public class PanelLocation extends JPanel {
 
 	/**
@@ -47,6 +57,7 @@ public class PanelLocation extends JPanel {
 	int rad = 30;
 	private static RenderingHints hints;
 	
+	//Setup render hints to alias cornes so they don't look shit
 	static {
 		hints = new RenderingHints(
                 RenderingHints.KEY_ANTIALIASING,
@@ -59,7 +70,8 @@ public class PanelLocation extends JPanel {
 	 * Create the panel.
 	 */
 	public PanelLocation(ScheduleItem schi, IWeatherData locWeather, LocalTimeToEpoch lt2e) {
-		//setBorder(new RoundedBorder(30));
+		// Creates correct insets
+		// Does nothing else
 		setBorder(new AbstractBorder() {
 
 			/**
@@ -79,8 +91,10 @@ public class PanelLocation extends JPanel {
 		            int x, int y,
 		            int width, int height) {
 				//DO NOTHING
+				//Ensures this does nothing
 			}
 		});
+		//Default background
 		setBackground(Color.decode("0xDDDDDD"));
 		
 		String line1, line2, line3;

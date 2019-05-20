@@ -7,6 +7,14 @@ import uk.ac.cam.bizrain.weather.block.IWeatherBlockPrecipitation;
 import uk.ac.cam.bizrain.weather.block.IWeatherBlockSummary;
 import uk.ac.cam.bizrain.weather.darksky.datapoint.DarkskyDayDataPoint;
 
+/**
+ * Darksky day res datablock
+ * 
+ * @see DarkskyDayDataPoint
+ * 
+ * @author btfs2
+ *
+ */
 public class DarkSkyDayBlock implements IWeatherBlockPrecipitation, IWeatherBlockSummary, IWeatherBlockDayStats {
 
 	IWeatherProvider provider;

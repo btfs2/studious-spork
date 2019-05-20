@@ -160,7 +160,6 @@ public class JClock extends JPanel {
 					g2.fill(p);
 				}
 			} else {
-				System.out.println("TEST");
 				double thisRad = (3*rad/5);
 				x = (int) (thisRad*Math.cos(ang2));
 				y = (int) (thisRad*Math.sin(ang2));

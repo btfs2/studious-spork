@@ -10,6 +10,8 @@ import uk.ac.cam.bizrain.weather.darksky.datapoint.DarkskyDataPoint;
  * 
  * Darksky only provides minutely resolution for precip
  * 
+ * @see DarkskyDataPoint
+ * 
  * @author btfs2
  *
  */

@@ -28,6 +28,17 @@ import uk.ac.cam.bizrain.ui.comp.SwingUtil;
 import uk.ac.cam.bizrain.weather.IWeatherData;
 import uk.ac.cam.bizrain.weather.block.IWeatherBlockWorst;
 
+/**
+ * 
+ * Sub panel that displays an overview of a full Schedule
+ * 
+ * Basically the same as Panel Location, but for schedules
+ * 
+ * @see Schedule
+ * 
+ * @author btfs2, Paulina (docs)
+ *
+ */
 public class PanelOverview extends JPanel {
 
 	/**

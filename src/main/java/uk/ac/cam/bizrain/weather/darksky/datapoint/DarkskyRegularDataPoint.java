@@ -1,5 +1,13 @@
 package uk.ac.cam.bizrain.weather.darksky.datapoint;
 
+/**
+ * An regular datapoint from darksky as defined in docs. Formed by having a load of the common stuff
+ * 
+ * @see <a href="https://darksky.net/dev/docs#response-format">Darksky Docs</a>
+ * 
+ * @author btfs2
+ *
+ */
 public class DarkskyRegularDataPoint extends DarkskyDataPoint {
 
 	//General

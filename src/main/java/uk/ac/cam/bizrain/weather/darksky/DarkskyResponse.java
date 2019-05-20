@@ -17,6 +17,13 @@ import uk.ac.cam.bizrain.weather.darksky.datapoint.DarkskyHourlyDataPoint;
  */
 public class DarkskyResponse {
 
+	/**
+	 * Part of the standard response defined in the docs
+	 * 
+	 * @author btfs2
+	 *
+	 * @param <T> Type of datapoint
+	 */
 	public class DarkskyDataBlock<T extends DarkskyDataPoint> {
 		public List<T> data;
 		public String summary;

@@ -18,6 +18,17 @@ import javax.swing.ImageIcon;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+/**
+ * 
+ * Panel that propts to confirm overlap
+ * 
+ * Ideally it would be bundled with confirm delete
+ * 
+ * But that would be effort when you can just duplicate code
+ * 
+ * @author btfs2, Paulina (docs)
+ *
+ */
 public class PanelConfirmOverlap extends JPanel {
 
 	/**
@@ -25,6 +36,12 @@ public class PanelConfirmOverlap extends JPanel {
 	 */
 	private static final long serialVersionUID = -7777377584656583227L;
 
+	/**
+	 * Return CB
+	 * 
+	 * @author btfs2
+	 *
+	 */
 	public interface ConfirmOverlapReturn {
 		public void ret(boolean accept);
 	}

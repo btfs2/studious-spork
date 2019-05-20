@@ -12,12 +12,26 @@ import uk.ac.cam.bizrain.weather.darksky.datapoint.DarkskyDataPoint;
 import uk.ac.cam.bizrain.weather.darksky.datapoint.DarkskyDayDataPoint;
 import uk.ac.cam.bizrain.weather.darksky.datapoint.DarkskyHourlyDataPoint;
 
+/**
+ * Darksky weather data
+ * 
+ * Just auto-parses from the backing response
+ * 
+ * @author btfs2
+ *
+ */
 public class DarkSkyWeatherData implements IWeatherData {
 
 	List<DarkSkyMinuteBlock> minblk;
 	List<DarkSkyHourBlock> hrblk;
 	List<DarkSkyDayBlock> dblk;
 	
+	/**
+	 * Create a new one from a given provider and response
+	 * 
+	 * @param dsp DarkSky Provider from which data came
+	 * @param dsr DarkSky response to take data from
+	 */
 	public DarkSkyWeatherData(DarkSkyWeatherProvider dsp, DarkskyResponse dsr) {
 		minblk = new ArrayList<DarkSkyMinuteBlock>();
 		if (dsr.minutely != null && dsr.minutely.data != null) {

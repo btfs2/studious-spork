@@ -25,6 +25,10 @@ import java.util.zip.GZIPOutputStream;
 /**
  * Networking utilities
  * 
+ * Provides HTTP/S networking, and provides a cache
+ * 
+ * Apears to work
+ * 
  * @author btfs2
  *
  */
@@ -101,13 +105,11 @@ public class NetUtil {
 		
 	}
 	
-	//private static Map<String, String> responseCache   = new ConcurrentHashMap<>();
-	//private static Map<String, Long> responseCacheTime = new ConcurrentHashMap<>();
-	
 	private static Map<String, NetworkRepsonse> responseCache   = new ConcurrentHashMap<>();
 
 	static long maxCache = 72000000;
 	
+	// Cache purging thread; used to ensure cache doesn't bloat
 	static {
 		new Thread(() -> {
 			while (true) {
@@ -204,6 +206,11 @@ public class NetUtil {
 		loadNetCache();
 	}
 	
+	/**
+	 * Save cache network to disk, compressing on the fly
+	 * 
+	 * Uses java seralisation
+	 */
 	public static void saveNetCache() {
 		File configFile = new File(netcachePath);
 		if (!configFile.exists()) {
@@ -222,6 +229,15 @@ public class NetUtil {
 		}
 	}
 	
+	/**
+	 * Load cache network from disk, decompressing on the fly
+	 * 
+	 * Uses java seralisation
+	 * 
+	 * May throw casting warnings, as I cannot validate the casting to a map
+	 * 
+	 * Because REASONS
+	 */
 	@SuppressWarnings("unchecked") // cannot validate casting
 	public static void loadNetCache() {
 		File configFile = new File(netcachePath);
@@ -232,8 +248,10 @@ public class NetUtil {
 					responseCache = (Map<String, NetworkRepsonse>) o;
 				}
 			} catch (FileNotFoundException e) {
+				//Shoudn't hit as has an exists check
 				log.log(Level.WARNING, "Failed to load network cache", e);
 			} catch (IOException e) {
+				//Implies something went wrong in an expected manor
 				log.log(Level.WARNING, "Failed to load network cache", e);
 			} catch (ClassNotFoundException e) {
 				//Implies we deleted something we shouldn't have

@@ -585,9 +585,7 @@ public class PanelLocationSearch extends JPanel {
 				lblError.setVisible(true);
 				btnAdd.setEnabled(false);
 			}
-			System.out.println(((LocSearchModel)cbSearch.getModel()).searching);
 			if (((LocSearchModel)cbSearch.getModel()).searching) {
-				System.out.println("HAI");
 				lblError.setText("Searching...");
 				lblError.setVisible(true);
 			}

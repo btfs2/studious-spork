@@ -7,16 +7,26 @@ import uk.ac.cam.bizrain.location.Location;
 import uk.ac.cam.bizrain.weather.IWeatherProvider;
 
 /**
- * TODO THIS IS A MERGING OF MULTIPLE DATA POINTS FOR MAXIMUM DATA AT A GIVEN TIME AT HIGHEST RES
+ * 
+ * This merges the highest resolution data from multiple blocks
+ * 
+ * It powers a load of things
+ * 
+ * It is very fancy
+ * 
+ * It pre-fills it's own data from highest to lowest resolution for a time period, then uses those values
  * 
  * @author btfs2
  *
  */
 public class CombinedWeatherBlock implements IWeatherBlock, IWeatherBlockPrecipitation, IWeatherBlockSummary, IWeatherBlockTempreture, IWeatherBlockDayStats {
 
+	//Logger
 	private static Logger LOG = Logger.getLogger("Weather"); 
 	
+	//Backing blocks
 	List<IWeatherBlock> blocks;
+	//ALL THE VARS; initialised to null values
 	IWeatherProvider prov = null;
 	long time = Long.MIN_VALUE;
 	long extent = Long.MIN_VALUE;
@@ -33,11 +43,19 @@ public class CombinedWeatherBlock implements IWeatherBlock, IWeatherBlockPrecipi
 	long sunset = Long.MIN_VALUE;
 	float luna = -1*Float.MAX_VALUE;
 	
+	/**
+	 * Create a new combined datablock out of the passed blocks
+	 * 
+	 * @param blocks Blocks, sorted from high res to low res
+	 */
 	public CombinedWeatherBlock(List<IWeatherBlock> blocks) {
 		this.blocks = blocks;
 		init();
 	}
 	
+	/**
+	 * Initialise this blocks data; so we aren't continuously rescanning
+	 */
 	private void init() {
 		for (IWeatherBlock iwb : blocks) {
 			if (loc == null) {

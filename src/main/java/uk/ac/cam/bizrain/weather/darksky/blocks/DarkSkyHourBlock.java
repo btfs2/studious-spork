@@ -8,6 +8,14 @@ import uk.ac.cam.bizrain.weather.block.IWeatherBlockSummary;
 import uk.ac.cam.bizrain.weather.block.IWeatherBlockTempreture;
 import uk.ac.cam.bizrain.weather.darksky.datapoint.DarkskyHourlyDataPoint;
 
+/**
+ * Darksky hour res datablock
+ * 
+ * @see DarkskyHourlyDataPoint
+ * 
+ * @author btfs2
+ *
+ */
 public class DarkSkyHourBlock implements IWeatherBlockPrecipitation, IWeatherBlockTempreture, IWeatherBlockSummary, IWeatherBlockAtmospherics {
 
 	IWeatherProvider provider;

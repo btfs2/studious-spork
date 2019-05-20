@@ -14,24 +14,71 @@ import uk.ac.cam.bizrain.weather.block.IWeatherBlockSummary.IWeatherIcon;
 import uk.ac.cam.bizrain.weather.block.IWeatherBlockTempreture;
 import uk.ac.cam.bizrain.weather.block.IWeatherBlockWorst;
 
+/**
+ * A class that contains weather data
+ * 
+ * I.e. a large amount of IWeatherBlocks and subtypes
+ * 
+ * @see IWeatherBlock
+ * 
+ * @author btfs2
+ *
+ */
 public interface IWeatherData {
 
+	/**
+	 * Get combination of all weather data at given time
+	 * 
+	 * @see CombinedWeatherBlock
+	 * @param time Epoch time to check
+	 * @return Combined weather data at time given
+	 */
 	public default IWeatherBlock getWeatherDataAt(long time) {
 		List<IWeatherBlock> blocks = getWeatherAllDataAt(time);
 		if (blocks == null) { return null; }
 		return new CombinedWeatherBlock(blocks);
 	}
 	
+	/**
+	 * Get all the stored weather data at time
+	 * 
+	 * Should be ordered from highest resolution to lowest resolution/relevence
+	 * 
+	 * @param time Time to check in unix epoch
+	 * @return All weather data at time, sorted by resolution/relevence
+	 */
 	public List<IWeatherBlock> getWeatherAllDataAt(long time);
 	
+	/**
+	 * Get the location of this weather data at a given time
+	 * 
+	 * If at multiple, return the most relevent one
+	 * 
+	 * @param time Time to check in EPOCH time
+	 * @return Location the data is from at a time
+	 */
 	public default Location getWeatherLocationAt(long time) {
 		IWeatherBlock blk = getWeatherDataAt(time);
 		if (blk == null) { return null; }
 		return getWeatherDataAt(time).getWeatherLocation();
 	}
 	
+	/**
+	 * Get all data in a period
+	 * 
+	 * @param start Epoch time of start
+	 * @param end Epoch time of end
+	 * @return All data valid in period
+	 */
 	public List<IWeatherBlock> getWeatherAllDataIn(long start, long end);
 	
+	/**
+	 * Get a worst case weather block over a period
+	 *  
+	 * @param start Start of period in Epoch
+	 * @param end End of time in epoch
+	 * @return Worst case data within period
+	 */
 	public default IWeatherBlockWorst getWeatherWorstIn(long start, long end) {
 		List<IWeatherBlock> blocks = getWeatherAllDataIn(start, end);
 		return new IWeatherBlockWorst() {

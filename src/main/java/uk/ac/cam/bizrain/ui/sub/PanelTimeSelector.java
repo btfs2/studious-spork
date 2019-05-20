@@ -26,7 +26,9 @@ import javax.swing.ImageIcon;
  * 
  * Just gets time from user and returns it
  * 
- * @author btfs2
+ * @see JTimeSelect
+ * 
+ * @author btfs2, Paulina (docs)
  *
  */
 public class PanelTimeSelector extends JPanel {

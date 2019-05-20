@@ -78,7 +78,7 @@ public class PanelOverview extends JPanel {
 			} else {
 				toAdd = schi.getPlace().getDisplayName().split(",")[0];
 			}
-			if (!inThing.contains(toAdd)) {
+			if (!inThing.contains(toAdd) && majorPlaces.length()+toAdd.length() < 35) {
 				if (first) {
 					first = false;
 				} else {

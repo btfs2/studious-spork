@@ -18,7 +18,7 @@ public class Scratchpad {
 		}
 		*/
 		JFrame frame = new JFrame();
-		frame.getContentPane().add(new JClock(LocalTime.now(), LocalTime.now().plusHours(3)), BorderLayout.CENTER);
+		frame.getContentPane().add(new JClock(LocalTime.of(2, 45), LocalTime.of(13, 25)), BorderLayout.CENTER);
 		frame.setBounds(100, 100, 200, 200);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

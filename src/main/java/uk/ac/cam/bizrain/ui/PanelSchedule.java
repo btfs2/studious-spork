@@ -224,6 +224,7 @@ public class PanelSchedule extends JPanel {
 					br.setMainPanel(new PanelLocationEdit(br, sch, si, () -> {
 						beme.reschedule(br, pan, sch, LocalTimeToEpoch.getDefault());
 						br.setMainPanel(beme);
+						br.sm.saveSchedules();
 					}));
 				}
 			});

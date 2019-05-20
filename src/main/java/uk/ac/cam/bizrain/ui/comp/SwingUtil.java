@@ -148,7 +148,7 @@ public class SwingUtil {
 		if (temp < 23) {
 			return Color.decode("0xFFB680");
 		}
-		return Color.decode("0xEDE0CA");
+		return Color.decode("0xFF5C3C");
 	}
 	
 	

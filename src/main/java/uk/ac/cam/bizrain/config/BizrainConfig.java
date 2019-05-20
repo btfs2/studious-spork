@@ -52,6 +52,9 @@ public class BizrainConfig {
 		loadConfig();
 	}
 	
+	/**
+	 * Saves config
+	 */
 	public static void saveConfig() {
 		File configFile = new File(configPath);
 		Gson g = new Gson();
@@ -62,6 +65,11 @@ public class BizrainConfig {
 		}
 	}
 	
+	/**
+	 * Loads config from disk
+	 * 
+	 * Creates a default one if one doesn't exist
+	 */
 	public static void loadConfig() {
 		File configFile = new File(configPath);
 		if (!configFile.exists()) {

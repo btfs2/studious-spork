@@ -128,7 +128,6 @@ public class JTimeSelect extends JPanel {
 		super.paintComponent(g);
 		
 		Graphics2D g2 = (Graphics2D) g;
-		//g2.setFont();
 		AffineTransform at = g2.getTransform();
 		g2.setRenderingHints(hints);
 		
@@ -224,7 +223,7 @@ public class JTimeSelect extends JPanel {
 			double arc6 = Math.PI/6f;
 			for (int i = 0; i<=11; i++) {
 				String s = String.format("%02d", i*5);
-				double ang2 = arc6*(i+1)-Math.PI/2;
+				double ang2 = arc6*(i)-Math.PI/2;
 				double thisRad = (3*rad/5);
 				x = (int) (thisRad*Math.cos(ang2));
 				y = (int) (thisRad*Math.sin(ang2));
@@ -268,6 +267,14 @@ public class JTimeSelect extends JPanel {
 		//g2.fill(ct);
 		
 		g2.setTransform(at);
+	}
+	
+	public boolean isStart() {
+		return stage == 0;
+	}
+	
+	public void decreaseStage() {
+		stage = Math.max(stage-1, 0);
 	}
 	
 	public boolean isDone() {

@@ -122,12 +122,6 @@ public class PanelAddSchedule extends JPanel {
 		panelButtons.setLayout(gbl_panelButtons);
 		
 		JButton btnBack = new JButton("");
-		btnBack.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				back.back();
-			}
-		});
 		btnBack.setBorder(new RoundedBorder(30));
 		btnBack.setBackground(Color.WHITE);
 		btnBack.setIcon(new ImageIcon(PanelAddSchedule.class.getResource("/uk/ac/cam/bizrain/ui/ico/fa-chevron-left-16.png")));
@@ -138,12 +132,6 @@ public class PanelAddSchedule extends JPanel {
 		panelButtons.add(btnBack, gbc_btnBack);
 		
 		JButton btnAdd = new JButton("");
-		btnAdd.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				ret.ret(textField.getText());
-			}
-		});
 		btnAdd.setBorder(new RoundedBorder(30));
 		btnAdd.setBackground(Color.WHITE);
 		btnAdd.setIcon(new ImageIcon(PanelAddSchedule.class.getResource("/uk/ac/cam/bizrain/ui/ico/fa-plus-16.png")));
@@ -165,6 +153,22 @@ public class PanelAddSchedule extends JPanel {
 		gbc_rigidArea_3.gridy = 7;
 		add(rigidArea_3, gbc_rigidArea_3);
 
+		// CONTROLLER
+		/////////////
+		
+		btnAdd.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				ret.ret(textField.getText());
+			}
+		});
+		
+		btnBack.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				back.back();
+			}
+		});
 	}
 
 }

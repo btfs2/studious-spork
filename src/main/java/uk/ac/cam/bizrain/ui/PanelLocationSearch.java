@@ -85,9 +85,14 @@ public class PanelLocationSearch extends JPanel {
 			this.cb = cb;
 		}
 
+		private Thread running = null;
+		
+		/**
+		 * Searches for a location
+		 */
 		public void search() {
 			// Run search in new thread to avoid locking UI
-			new Thread(() -> {
+			running = new Thread(() -> {
 				log.log(Level.INFO, "Searching " + selected.getDisplayName());
 				if (!geocoder.isGeocoderAvaliable()) {
 					JOptionPane.showMessageDialog(null, "Cannot connect to geocoder\nplease check network connection",
@@ -95,19 +100,22 @@ public class PanelLocationSearch extends JPanel {
 					return;
 				}
 				List<IPlace> nplaces = geocoder.predict(selected);
-				synchronized (places) {
-					places = nplaces;
+				if (running != Thread.currentThread()) {
+					synchronized (places) {
+						places = nplaces;
+					}
+					LocSearchModel beme = this;
+					ldl.forEach(i -> i
+							.contentsChanged(new ListDataEvent(beme, ListDataEvent.CONTENTS_CHANGED, 0, beme.getSize())));
+					log.info("Search complete");
+					try {
+						cb.setPopupVisible(true);
+					} catch (IllegalStateException ise) {
+						log.log(Level.INFO, "Failed to show popup as component not on screen", ise);
+					}
 				}
-				LocSearchModel beme = this;
-				ldl.forEach(i -> i
-						.contentsChanged(new ListDataEvent(beme, ListDataEvent.CONTENTS_CHANGED, 0, beme.getSize())));
-				log.info("Search complete");
-				try {
-					cb.setPopupVisible(true);
-				} catch (IllegalStateException ise) {
-					log.log(Level.INFO, "Failed to show popup as component not on screen", ise);
-				}
-			}).start();
+			});
+			running.start();
 		}
 
 		@Override
@@ -152,7 +160,7 @@ public class PanelLocationSearch extends JPanel {
 		
 	}
 	
-	class TimeSpinner implements SpinnerModel {
+	static class TimeSpinner implements SpinnerModel {
 
 		LocalTime time;
 		List<ChangeListener> csl = new ArrayList<ChangeListener>();
@@ -230,13 +238,13 @@ public class PanelLocationSearch extends JPanel {
 	 * Create the panel.
 	 */
 	public PanelLocationSearch(Bizrain br, Schedule sch, LocSearchReturn ret, LocSearchBack bac, IPlace defaultLoc) {
-		//Theming
-		//setBackground(Color.decode("0xDDDDDD"));
-		
 		// This reference for callbacks
 		PanelLocationSearch beme = this;
 	
-				
+		//ModelView
+		///////////
+		
+		//Setup Layout
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0, 16, 0, 0, 0};
 		gridBagLayout.rowHeights = new int[]{0, 0, 0, 37, 0, 0, 0, 0, 0, 0, 0, 0, 0};
@@ -269,9 +277,6 @@ public class PanelLocationSearch extends JPanel {
 		cbSearch.setSelectedItem(defaultLoc);
 		cbSearch.setMaximumRowCount(14);
 		cbSearch.setEditable(true);
-		//cbSearch.setRenderer(new PlaceCellRenderer()); TODO FIX FOR INTEROPERABILITY; CURRENT SOLUTION IS TO JUST ENSURE TOSTRING WORKS
-		//TODO ADD horisontal scrolling
-		//cbSearch.setToolTipText("Location Search");
 		GridBagConstraints gbc_cbSearch = new GridBagConstraints();
 		gbc_cbSearch.gridwidth = 2;
 		gbc_cbSearch.insets = new Insets(0, 0, 5, 5);
@@ -281,18 +286,9 @@ public class PanelLocationSearch extends JPanel {
 		add(cbSearch, gbc_cbSearch);
 		SwingUtil.fixCbBorder(cbSearch);
 		
-		
-		
 		JButton btnSearch = new JButton("");
 		btnSearch.setBackground(Color.WHITE);
 		btnSearch.setBorder(new RoundedBorder(30));
-		btnSearch.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				lsm.search();
-			}
-		});
-		//btnSearch.setToolTipText("Search");
 		btnSearch.setIcon(new ImageIcon(PanelLocationSearch.class.getResource("/uk/ac/cam/bizrain/ui/ico/fa-search-16.png")));
 		GridBagConstraints gbc_btnSearch = new GridBagConstraints();
 		gbc_btnSearch.fill = GridBagConstraints.BOTH;
@@ -307,12 +303,6 @@ public class PanelLocationSearch extends JPanel {
 
 		
 		JSpinner spStart = new JSpinner();
-		spStart.addChangeListener(new ChangeListener() {
-			public void stateChanged(ChangeEvent e) {
-				clock.setFrom(((TimeSpinner) spStart.getModel()).getCurrent());
-				validateAdd.run();
-			}
-		});
 		SwingUtil.hideSpinnerArrow(spStart);
 		//Centers text: https://stackoverflow.com/questions/22702014/how-to-center-text-of-a-jspinner
 		((JSpinner.DefaultEditor)spStart.getEditor()).getTextField().setHorizontalAlignment(JTextField.CENTER);
@@ -322,16 +312,9 @@ public class PanelLocationSearch extends JPanel {
 		gbc_spStart.insets = new Insets(0, 0, 5, 5);
 		gbc_spStart.gridx = 1;
 		gbc_spStart.gridy = 5;
-		//spStart.setVisible(false);
 		add(spStart, gbc_spStart);
 		
 		JSpinner spEnd = new JSpinner();
-		spEnd.addChangeListener(new ChangeListener() {
-			public void stateChanged(ChangeEvent e) {
-				clock.setTo(((TimeSpinner) spEnd.getModel()).getCurrent());
-				validateAdd.run();
-			}
-		});
 		//Centers text: https://stackoverflow.com/questions/22702014/how-to-center-text-of-a-jspinner
 		((JSpinner.DefaultEditor)spEnd.getEditor()).getTextField().setHorizontalAlignment(JTextField.CENTER);
 		SwingUtil.hideSpinnerArrow(spEnd);
@@ -341,24 +324,11 @@ public class PanelLocationSearch extends JPanel {
 		gbc_spEnd.insets = new Insets(0, 0, 5, 5);
 		gbc_spEnd.gridx = 3;
 		gbc_spEnd.gridy = 5;
-		//spEnd.setVisible(false);
 		add(spEnd, gbc_spEnd);
-		
-		
-
 		
 		JButton btnStart = new JButton("Start");
 		btnStart.setBorder(new RoundedBorder(30));
 		btnStart.setBackground(Color.WHITE);
-		btnStart.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				br.setMainPanel(new PanelTimeSelector(((TimeSpinner) spStart.getModel()).getCurrent(), (time) -> {
-					br.setMainPanel(beme);
-					spStart.setValue(time);
-				}));
-			}
-		});
 		btnStart.setIcon(new ImageIcon(PanelLocationSearch.class.getResource("/uk/ac/cam/bizrain/ui/ico/fa-clock-16.png")));
 		GridBagConstraints gbc_btnStart = new GridBagConstraints();
 		gbc_btnStart.fill = GridBagConstraints.BOTH;
@@ -468,11 +438,35 @@ public class PanelLocationSearch extends JPanel {
 		// CONTROLLER
 		/////////////
 		
+		btnSearch.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				lsm.search();
+			}
+		});
+		
+		spEnd.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				clock.setTo(((TimeSpinner) spEnd.getModel()).getCurrent());
+				validateAdd.run();
+			}
+		});
+		
 		cbSearch.addActionListener(e -> {
 			if (e.getActionCommand().equals("comboBoxEdited")) {
 				lsm.search();
 			}
 			validateAdd.run();
+		});
+		
+		btnStart.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				br.setMainPanel(new PanelTimeSelector(((TimeSpinner) spStart.getModel()).getCurrent(), (time) -> {
+					br.setMainPanel(beme);
+					spStart.setValue(time);
+				}));
+			}
 		});
 		
 		btnAdd.addMouseListener(new MouseAdapter() {
@@ -498,6 +492,13 @@ public class PanelLocationSearch extends JPanel {
 						ret.returnData(si);
 					}
 				}
+			}
+		});
+		
+		spStart.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent e) {
+				clock.setFrom(((TimeSpinner) spStart.getModel()).getCurrent());
+				validateAdd.run();
 			}
 		});
 		

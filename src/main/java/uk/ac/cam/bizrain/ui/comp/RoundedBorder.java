@@ -15,6 +15,13 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.border.AbstractBorder;
 
+/**
+ * 
+ * 
+ * 
+ * @author btfs2
+ *
+ */
 public class RoundedBorder extends AbstractBorder {
 
 	/**

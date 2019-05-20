@@ -11,10 +11,6 @@ import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Logger;
 
 import javax.swing.Box;
 import javax.swing.ImageIcon;
@@ -23,13 +19,13 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
-import javax.swing.SpinnerModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import uk.ac.cam.bizrain.Bizrain;
 import uk.ac.cam.bizrain.schedule.Schedule;
 import uk.ac.cam.bizrain.schedule.Schedule.ScheduleItem;
+import uk.ac.cam.bizrain.ui.PanelLocationSearch.TimeSpinner;
 import uk.ac.cam.bizrain.ui.comp.JClock;
 import uk.ac.cam.bizrain.ui.comp.RoundedBorder;
 import uk.ac.cam.bizrain.ui.comp.SwingUtil;
@@ -37,8 +33,6 @@ import uk.ac.cam.bizrain.ui.sub.PanelConfirmOverlap;
 import uk.ac.cam.bizrain.ui.sub.PanelTimeSelector;
 
 public class PanelLocationEdit extends JPanel {
-
-	private static final Logger log = Logger.getLogger("LocationSearch"); 
 	
 	/**
 	 * Serialised
@@ -48,64 +42,6 @@ public class PanelLocationEdit extends JPanel {
 	private JButton btnEdit;
 	
 	private Runnable validateAdd = () -> {};
-	
-	class TimeSpinner implements SpinnerModel {
-
-		LocalTime time;
-		List<ChangeListener> csl = new ArrayList<ChangeListener>();
-		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm");
-		
-		TimeSpinner() {
-			this(LocalTime.now());
-		}
-		
-		TimeSpinner(LocalTime time) {
-			this.time = time;
-		}
-		
-		@Override
-		public Object getValue() {
-			return time.format(dtf);
-		}
-		
-		public LocalTime getCurrent() {
-			return time;
-		}
-
-		@Override
-		public void setValue(Object value) {
-			if (value instanceof LocalTime) {
-				time = (LocalTime) value;
-			} else if (value instanceof String) {
-				time = LocalTime.parse((String)value);
-			} else {
-				log.warning("INVALID TYPE");
-			}
-			TimeSpinner beme = this;
-			csl.forEach(i -> i.stateChanged(new ChangeEvent(beme)));
-		}
-
-		@Override
-		public Object getNextValue() {
-			return time.plusMinutes(1);
-		}
-
-		@Override
-		public Object getPreviousValue() {
-			return time.plusMinutes(-1);
-		}
-
-		@Override
-		public void addChangeListener(ChangeListener l) {
-			csl.add(l);
-		}
-
-		@Override
-		public void removeChangeListener(ChangeListener l) {
-			csl.remove(l);
-		}
-
-	}
 	
 	interface LocEditBack {
 		public void back();
@@ -212,7 +148,7 @@ public class PanelLocationEdit extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				br.setMainPanel(new PanelTimeSelector(((TimeSpinner) spStart.getModel()).getCurrent(), (time) -> {
 					br.setMainPanel(beme);
-					spStart.setValue(time);
+					if (time != null) spStart.setValue(time);
 				}));
 			}
 		});
@@ -233,7 +169,7 @@ public class PanelLocationEdit extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				br.setMainPanel(new PanelTimeSelector(((TimeSpinner) spEnd.getModel()).getCurrent(), (time) -> {
 					br.setMainPanel(beme);
-					spEnd.setValue(time);
+					if (time != null) spEnd.setValue(time);
 				}));
 			}
 		});

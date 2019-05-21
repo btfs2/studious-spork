@@ -319,7 +319,7 @@ public class JTimeSelect extends JPanel {
 	 * 
 	 * Should only be called when isDone returns true
 	 * 
-	 * @see {@link #isDone()}
+	 * {@link #isDone()}
 	 * 
 	 * @return Current time
 	 */

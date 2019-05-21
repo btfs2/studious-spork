@@ -8,7 +8,7 @@ apply plugin: 'application'
 sourceCompatibility = 1.8
 
 //Specifies version of app
-version = '1.0.1'
+version = '1.0.2'
 
 //This specifies the main class
 mainClassName = "uk.ac.cam.bizrain.Bizrain"

@@ -289,7 +289,7 @@ public class PanelLocationEdit extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (btnEdit.isEnabled()) {
-					
+					//Check for overlaps
 					LocalTime oldStart = schi.getStart(), oldEnd = schi.getEnd();
 					schi.setStart(((TimeSpinner) spStart.getModel()).getCurrent());
 					schi.setEnd(((TimeSpinner) spEnd.getModel()).getCurrent());

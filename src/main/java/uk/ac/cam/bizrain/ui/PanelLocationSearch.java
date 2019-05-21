@@ -26,7 +26,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
-import javax.swing.JTextField;
 import javax.swing.SpinnerModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -116,12 +115,14 @@ public class PanelLocationSearch extends JPanel {
 			// Run search in new thread to avoid locking UI
 			new Thread(() -> {
 				log.log(Level.INFO, "Searching " + selected.getDisplayName());
+				//Check geocoder avaliability
 				if (!geocoder.isGeocoderAvaliable()) {
 					JOptionPane.showMessageDialog(null, "Cannot connect to geocoder\nplease check network connection",
 							"Networking error", JOptionPane.WARNING_MESSAGE);
 					return;
 				}
 				searching = true;
+				//Prompt user that searching is in effect
 				validateAdd.run();
 				List<IPlace> nplaces = geocoder.predict(selected);
 				searching = false;
@@ -129,9 +130,11 @@ public class PanelLocationSearch extends JPanel {
 					places = nplaces;
 				}
 				LocSearchModel beme = this;
+				//Set data and fire updates
 				ldl.forEach(i -> i
 						.contentsChanged(new ListDataEvent(beme, ListDataEvent.CONTENTS_CHANGED, 0, beme.getSize())));
 				log.info("Search complete");
+				//Try show popup; will fail if not on screen; fortunately, we don't care
 				try {
 					cb.setPopupVisible(true);
 				} catch (IllegalStateException ise) {
@@ -226,6 +229,7 @@ public class PanelLocationSearch extends JPanel {
 
 		@Override
 		public void setValue(Object value) {
+			//Parse input value
 			if (value instanceof LocalTime) {
 				time = (LocalTime) value;
 			} else if (value instanceof String) {
@@ -296,6 +300,7 @@ public class PanelLocationSearch extends JPanel {
 		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE};
 		setLayout(gridBagLayout);
 		
+		//Notice label for searching/ error information
 		JLabel lblSearching = new JLabel("Searching...");
 		lblSearching.setFont(SwingUtil.getFontTitle().deriveFont(15f).deriveFont(Font.BOLD));
 		lblSearching.setVisible(false);
@@ -305,6 +310,7 @@ public class PanelLocationSearch extends JPanel {
 		gbc_lblSearching.gridy = 1;
 		add(lblSearching, gbc_lblSearching);
 		
+		//Clock for displaying time
 		JClock clock = new JClock();
 		GridBagConstraints gbc_panel = new GridBagConstraints();
 		gbc_panel.gridheight = 3;
@@ -314,6 +320,7 @@ public class PanelLocationSearch extends JPanel {
 		gbc_panel.gridy = 4;
 		add(clock, gbc_panel);
 		
+		//Search box with all relevent code
 		JComboBox<IPlace> cbSearch = new JComboBox<IPlace>();
 		cbSearch.setBorder(new RoundedBorder(30));
 		cbSearch.setBackground(Color.WHITE);
@@ -331,6 +338,7 @@ public class PanelLocationSearch extends JPanel {
 		add(cbSearch, gbc_cbSearch);
 		SwingUtil.fixCbBorder(cbSearch);
 		
+		//Search button
 		JButton btnSearch = new JButton("");
 		btnSearch.setBackground(Color.WHITE);
 		btnSearch.setBorder(new RoundedBorder(30));
@@ -342,15 +350,14 @@ public class PanelLocationSearch extends JPanel {
 		gbc_btnSearch.gridy = 2;
 		add(btnSearch, gbc_btnSearch);
 		
+		//Time things
 		TimeSpinner tsStart = new TimeSpinner();
 		
 		TimeSpinner tsEnd = new TimeSpinner(LocalTime.now().plusHours(1));
 
-		
+		//Time display; can be used for manually entering time if needed in fallback
 		JSpinner spStart = new JSpinner();
 		SwingUtil.hideSpinnerArrow(spStart);
-		//Centers text: https://stackoverflow.com/questions/22702014/how-to-center-text-of-a-jspinner
-		((JSpinner.DefaultEditor)spStart.getEditor()).getTextField().setHorizontalAlignment(JTextField.CENTER);
 		spStart.setModel(tsStart);
 		GridBagConstraints gbc_spStart = new GridBagConstraints();
 		gbc_spStart.fill = GridBagConstraints.HORIZONTAL;
@@ -359,9 +366,8 @@ public class PanelLocationSearch extends JPanel {
 		gbc_spStart.gridy = 5;
 		add(spStart, gbc_spStart);
 		
+		//DITTO
 		JSpinner spEnd = new JSpinner();
-		//Centers text: https://stackoverflow.com/questions/22702014/how-to-center-text-of-a-jspinner
-		((JSpinner.DefaultEditor)spEnd.getEditor()).getTextField().setHorizontalAlignment(JTextField.CENTER);
 		SwingUtil.hideSpinnerArrow(spEnd);
 		spEnd.setModel(tsEnd);
 		GridBagConstraints gbc_spEnd = new GridBagConstraints();
@@ -371,6 +377,7 @@ public class PanelLocationSearch extends JPanel {
 		gbc_spEnd.gridy = 5;
 		add(spEnd, gbc_spEnd);
 		
+		//Start time prompt button
 		JButton btnStart = new JButton("Start");
 		btnStart.setBorder(new RoundedBorder(30));
 		btnStart.setBackground(Color.WHITE);
@@ -382,6 +389,7 @@ public class PanelLocationSearch extends JPanel {
 		gbc_btnStart.gridy = 4;
 		add(btnStart, gbc_btnStart);
 		
+		//End time prompt button
 		JButton btnEnd = new JButton("End");
 		btnEnd.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 		btnEnd.setBorder(new RoundedBorder(30));
@@ -394,6 +402,7 @@ public class PanelLocationSearch extends JPanel {
 		gbc_btnEnd.gridy = 4;
 		add(btnEnd, gbc_btnEnd);
 		
+		//Padding
 		Component rigidArea = Box.createRigidArea(new Dimension(20, 20));
 		GridBagConstraints gbc_rigidArea = new GridBagConstraints();
 		gbc_rigidArea.insets = new Insets(0, 0, 5, 5);
@@ -408,7 +417,9 @@ public class PanelLocationSearch extends JPanel {
 		gbc_rigidArea_1.gridy = 0;
 		add(rigidArea_1, gbc_rigidArea_1);
 		
+		//Error label
 		JLabel lblError = new JLabel("error");
+		lblError.setFont(SwingUtil.getFontSub().deriveFont(15f).deriveFont(Font.BOLD));
 		lblError.setVisible(false);
 		GridBagConstraints gbc_lblError = new GridBagConstraints();
 		gbc_lblError.gridwidth = 3;

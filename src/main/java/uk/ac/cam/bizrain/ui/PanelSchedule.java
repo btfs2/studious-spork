@@ -72,6 +72,7 @@ public class PanelSchedule extends JPanel {
 		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 1.0, 0.0, Double.MIN_VALUE};
 		setLayout(gridBagLayout);
 		
+		//Set up bounding boxes to fix screen padding
 		Component rigidArea = Box.createRigidArea(new Dimension(20, 5));
 		GridBagConstraints gbc_rigidArea = new GridBagConstraints();
 		gbc_rigidArea.gridwidth = 2;
@@ -94,6 +95,7 @@ public class PanelSchedule extends JPanel {
 		gbc_horizontalStrut_1.gridy = 1;
 		add(horizontalStrut_1, gbc_horizontalStrut_1);
 		
+		//Back button
 		JButton btnSchedules = new JButton("Schedules");
 		btnSchedules.addMouseListener(new MouseAdapter() {
 			@Override
@@ -115,6 +117,7 @@ public class PanelSchedule extends JPanel {
 		gbc_btnSchedules.gridy = 1;
 		add(btnSchedules, gbc_btnSchedules);
 		
+		//Delete button
 		JButton btnDelete = new JButton("");
 		btnDelete.addMouseListener(new MouseAdapter() {
 			@Override
@@ -140,6 +143,7 @@ public class PanelSchedule extends JPanel {
 		gbc_btnDelete.gridy = 3;
 		add(btnDelete, gbc_btnDelete);
 		
+		//Main scroll panel
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -151,6 +155,7 @@ public class PanelSchedule extends JPanel {
 		gbc_scrollPane.gridy = 4;
 		add(scrollPane, gbc_scrollPane);
 		
+		//Add button
 		JButton btnAdd = new JButton("");
 		btnAdd.addMouseListener(new MouseAdapter() {
 			@Override
@@ -180,6 +185,7 @@ public class PanelSchedule extends JPanel {
 		gbc_verticalStrut.gridy = 5;
 		add(verticalStrut, gbc_verticalStrut);
 		
+		//Draw items in schedule
 		reschedule(br, scrollPane, sch, LocalTimeToEpoch.getDefault());
 	}
 	
@@ -235,19 +241,11 @@ public class PanelSchedule extends JPanel {
 			panel_1.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
-					/**/
 					br.setMainPanel(new PanelLocationEdit(br, sch, si, (delete) -> {
 						beme.reschedule(br, pan, sch, LocalTimeToEpoch.getDefault());
 						br.setMainPanel(beme);
 						br.sm.saveSchedules();
 					}));
-					/*
-					br.setMainPanel(new PanelMoreInfo(br, sch, si, lt2e, () -> {
-						beme.reschedule(br, pan, sch, LocalTimeToEpoch.getDefault());
-						br.setMainPanel(beme);
-						br.sm.saveSchedules();
-					}));
-					*/
 				}
 			});
 			

@@ -81,6 +81,7 @@ public class PanelAddSchedule extends JPanel {
 		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE};
 		setLayout(gridBagLayout);
 		
+		//Window padding
 		Component rigidArea = Box.createRigidArea(new Dimension(20, 20));
 		GridBagConstraints gbc_rigidArea = new GridBagConstraints();
 		gbc_rigidArea.insets = new Insets(0, 0, 5, 5);
@@ -95,7 +96,8 @@ public class PanelAddSchedule extends JPanel {
 		gbc_rigidArea_1.gridy = 0;
 		add(rigidArea_1, gbc_rigidArea_1);
 		
-		JLabel lblNewSchedule = new JLabel("NEW SCHEDULE");
+		//Title 
+		JLabel lblNewSchedule = new JLabel("New Schedule");
 		lblNewSchedule.setFont(SwingUtil.getFontTitle().deriveFont(20f).deriveFont(Font.BOLD));
 		GridBagConstraints gbc_lblNewSchedule = new GridBagConstraints();
 		gbc_lblNewSchedule.gridwidth = 3;
@@ -104,6 +106,7 @@ public class PanelAddSchedule extends JPanel {
 		gbc_lblNewSchedule.gridy = 1;
 		add(lblNewSchedule, gbc_lblNewSchedule);
 		
+		//Padding
 		Component rigidArea_4 = Box.createRigidArea(new Dimension(20, 20));
 		GridBagConstraints gbc_rigidArea_4 = new GridBagConstraints();
 		gbc_rigidArea_4.insets = new Insets(0, 0, 5, 5);
@@ -144,6 +147,7 @@ public class PanelAddSchedule extends JPanel {
 		add(textField, gbc_textField);
 		textField.setColumns(10);
 		
+		//Warning prompt for user
 		JLabel lblError = new JLabel("No name entered");
 		lblError.setFont(SwingUtil.getFontTitle().deriveFont(15f).deriveFont(Font.BOLD));
 		GridBagConstraints gbc_lblError = new GridBagConstraints();
@@ -219,6 +223,7 @@ public class PanelAddSchedule extends JPanel {
 			}
 		});
 		
+		//Entry validator to ensure you don't get schedules with no name
 		textField.getDocument().addDocumentListener(new DocumentListener() {
 			
 			@Override

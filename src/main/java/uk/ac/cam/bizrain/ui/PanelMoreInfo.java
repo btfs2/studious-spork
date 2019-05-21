@@ -117,23 +117,6 @@ public class PanelMoreInfo extends JPanel {
 		gbc_clock.gridy = 3;
 		add(clock, gbc_clock);
 		
-		JLabel lblMinTemp = new JLabel(String.format("Min Temp %.0f\u00B0", iwbw.getWeatherMinTemperature()));
-		lblMinTemp.setFont(SwingUtil.getFontNum().deriveFont(15f));
-		if (iwbw.getWeatherMinTemperature() == -1*Float.MAX_VALUE) {
-			lblMinTemp.setText("No Min Temp Data");
-		}
-		GridBagConstraints gbc_lblMinTemp = new GridBagConstraints();
-		gbc_lblMinTemp.insets = new Insets(0, 0, 5, 5);
-		gbc_lblMinTemp.gridx = 1;
-		gbc_lblMinTemp.gridy = 5;
-		add(lblMinTemp, gbc_lblMinTemp);
-		
-		JLabel lblMaxTemp = new JLabel(String.format("Max Temp %.0f\u00B0", iwbw.getWeatherMaxTemperature()));
-		lblMaxTemp.setFont(SwingUtil.getFontNum().deriveFont(15f));
-		if (iwbw.getWeatherMaxTemperature() == -1*Float.MAX_VALUE) {
-			lblMaxTemp.setText("No Max Temp Data");
-		}
-		
 		JPanel minTempPanel = new JPanel();
 		GridBagConstraints gbc_minTempPanel = new GridBagConstraints();
 		gbc_minTempPanel.insets = new Insets(0, 0, 5, 5);
@@ -142,16 +125,61 @@ public class PanelMoreInfo extends JPanel {
 		gbc_minTempPanel.gridy = 5;
 		add(minTempPanel, gbc_minTempPanel);
 		GridBagLayout gbl_minTempPanel = new GridBagLayout();
-		gbl_minTempPanel.columnWidths = new int[]{0};
-		gbl_minTempPanel.rowHeights = new int[]{0};
-		gbl_minTempPanel.columnWeights = new double[]{Double.MIN_VALUE};
-		gbl_minTempPanel.rowWeights = new double[]{Double.MIN_VALUE};
+		gbl_minTempPanel.columnWidths = new int[]{0, 0, 0};
+		gbl_minTempPanel.rowHeights = new int[]{0, 0};
+		gbl_minTempPanel.columnWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
+		gbl_minTempPanel.rowWeights = new double[]{0.0, Double.MIN_VALUE};
 		minTempPanel.setLayout(gbl_minTempPanel);
+		
+		JLabel lblMintico = new JLabel("");
+		lblMintico.setIcon(new ImageIcon(PanelMoreInfo.class.getResource("/uk/ac/cam/bizrain/ui/weather/cl-mintemp.png")));
+		GridBagConstraints gbc_lblMintico = new GridBagConstraints();
+		gbc_lblMintico.insets = new Insets(0, 0, 0, 5);
+		gbc_lblMintico.gridx = 0;
+		gbc_lblMintico.gridy = 0;
+		minTempPanel.add(lblMintico, gbc_lblMintico);
+		
+		JLabel lblMinTemp = new JLabel(String.format("%.0f\u00B0", iwbw.getWeatherMinTemperature()));
+		if (iwbw.getWeatherMinTemperature() == -1*Float.MAX_VALUE) {
+			lblMinTemp.setText("No Data");
+		}
+		GridBagConstraints gbc_lblMinTemp = new GridBagConstraints();
+		gbc_lblMinTemp.gridx = 1;
+		gbc_lblMinTemp.gridy = 0;
+		minTempPanel.add(lblMinTemp, gbc_lblMinTemp);
+		lblMinTemp.setFont(SwingUtil.getFontNum().deriveFont(15f));
+		
+		JPanel maxTempPanel = new JPanel();
+		GridBagConstraints gbc_maxTempPanel = new GridBagConstraints();
+		gbc_maxTempPanel.insets = new Insets(0, 0, 5, 5);
+		gbc_maxTempPanel.fill = GridBagConstraints.BOTH;
+		gbc_maxTempPanel.gridx = 2;
+		gbc_maxTempPanel.gridy = 5;
+		add(maxTempPanel, gbc_maxTempPanel);
+		GridBagLayout gbl_maxTempPanel = new GridBagLayout();
+		gbl_maxTempPanel.columnWidths = new int[]{0, 0, 0};
+		gbl_maxTempPanel.rowHeights = new int[]{0, 0};
+		gbl_maxTempPanel.columnWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
+		gbl_maxTempPanel.rowWeights = new double[]{0.0, Double.MIN_VALUE};
+		maxTempPanel.setLayout(gbl_maxTempPanel);
+		
+		JLabel lblMaxtico = new JLabel("");
+		lblMaxtico.setIcon(new ImageIcon(PanelMoreInfo.class.getResource("/uk/ac/cam/bizrain/ui/weather/cl-maxtemp.png")));
+		GridBagConstraints gbc_lblMaxtico = new GridBagConstraints();
+		gbc_lblMaxtico.insets = new Insets(0, 0, 0, 5);
+		gbc_lblMaxtico.gridx = 0;
+		gbc_lblMaxtico.gridy = 0;
+		maxTempPanel.add(lblMaxtico, gbc_lblMaxtico);
+		
+		JLabel lblMaxTemp = new JLabel(String.format("%.0f\u00B0", iwbw.getWeatherMaxTemperature()));
+		if (iwbw.getWeatherMaxTemperature() == -1*Float.MAX_VALUE) {
+			lblMaxTemp.setText("No Data");
+		}
 		GridBagConstraints gbc_lblMaxTemp = new GridBagConstraints();
-		gbc_lblMaxTemp.insets = new Insets(0, 0, 5, 5);
-		gbc_lblMaxTemp.gridx = 2;
-		gbc_lblMaxTemp.gridy = 5;
-		add(lblMaxTemp, gbc_lblMaxTemp);
+		gbc_lblMaxTemp.gridx = 1;
+		gbc_lblMaxTemp.gridy = 0;
+		maxTempPanel.add(lblMaxTemp, gbc_lblMaxTemp);
+		lblMaxTemp.setFont(SwingUtil.getFontNum().deriveFont(15f));
 		
 		JLabel lblProbabilityOfRain = new JLabel(String.format("Rain Chance: %.1f%%", iwbw.getWeatherMaxPrecipProb()));
 		lblProbabilityOfRain.setFont(SwingUtil.getFontNum().deriveFont(15f));

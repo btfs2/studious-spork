@@ -3,6 +3,7 @@ package uk.ac.cam.bizrain.ui.sub;
 import javax.swing.JPanel;
 
 import uk.ac.cam.bizrain.ui.comp.RoundedBorder;
+import uk.ac.cam.bizrain.ui.comp.SwingUtil;
 
 import java.awt.GridBagLayout;
 import java.awt.Color;
@@ -69,7 +70,7 @@ public class PanelConfirmDelete extends JPanel {
 		add(horizontalStrut, gbc_horizontalStrut);
 		
 		JLabel lblConfirmDelete = new JLabel("Confirm Delete");
-		lblConfirmDelete.setFont(new Font("Tahoma", Font.BOLD, 20));
+		lblConfirmDelete.setFont(SwingUtil.getFontTitle().deriveFont(20f).deriveFont(Font.BOLD));
 		GridBagConstraints gbc_lblConfirmDelete = new GridBagConstraints();
 		gbc_lblConfirmDelete.gridwidth = 2;
 		gbc_lblConfirmDelete.insets = new Insets(0, 0, 5, 5);
@@ -78,7 +79,7 @@ public class PanelConfirmDelete extends JPanel {
 		add(lblConfirmDelete, gbc_lblConfirmDelete);
 		
 		JLabel lblMessage = new JLabel(String.format("You are about to delete %s.", thingDeleted));
-		lblMessage.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblMessage.setFont(SwingUtil.getFontSub().deriveFont(15f).deriveFont(Font.BOLD));
 		GridBagConstraints gbc_lblMessage = new GridBagConstraints();
 		gbc_lblMessage.gridwidth = 2;
 		gbc_lblMessage.insets = new Insets(0, 0, 5, 5);
@@ -87,7 +88,7 @@ public class PanelConfirmDelete extends JPanel {
 		add(lblMessage, gbc_lblMessage);
 		
 		JLabel lblThisActionCannot = new JLabel("This action cannot be undone");
-		lblThisActionCannot.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblThisActionCannot.setFont(SwingUtil.getFontSub().deriveFont(15f).deriveFont(Font.BOLD));
 		GridBagConstraints gbc_lblThisActionCannot = new GridBagConstraints();
 		gbc_lblThisActionCannot.gridwidth = 2;
 		gbc_lblThisActionCannot.insets = new Insets(0, 0, 5, 5);

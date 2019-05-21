@@ -18,7 +18,6 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
-import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -65,20 +64,21 @@ public class PanelLocationEdit extends JPanel {
 	 *
 	 */
 	interface LocEditBack {
-		public void back();
+		public void back(boolean delete);
 	}
 	
 	/**
 	 * Create the panel.
 	 */
 	public PanelLocationEdit(Bizrain br, Schedule sch, ScheduleItem schi, LocEditBack bac) {
-		//Theming
-		//setBackground(Color.decode("0xDDDDDD"));
-		
+
 		// This reference for callbacks
 		PanelLocationEdit beme = this;
 	
-				
+		// View
+		///////
+		
+		//Layout setup
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 0, 16, 0, 0, 0};
 		gridBagLayout.rowHeights = new int[]{0, 0, 37, 0, 0, 0, 0, 0, 0, 0, 0, 0};
@@ -86,6 +86,7 @@ public class PanelLocationEdit extends JPanel {
 		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE};
 		setLayout(gridBagLayout);
 		
+		//Label; with background filled; so it doesn't look wierd
 		JLabel lblLocname = new JLabel(schi.getPlace().getDisplayName()) {
 
 			private static final long serialVersionUID = -1738911771085636850L;
@@ -107,6 +108,7 @@ public class PanelLocationEdit extends JPanel {
 		gbc_lblLocname.gridy = 1;
 		add(lblLocname, gbc_lblLocname);
 		
+		//Clock for displaying time
 		JClock clock = new JClock();
 		GridBagConstraints gbc_panel = new GridBagConstraints();
 		gbc_panel.gridheight = 3;
@@ -116,11 +118,11 @@ public class PanelLocationEdit extends JPanel {
 		gbc_panel.gridy = 3;
 		add(clock, gbc_panel);
 		
+		//Time storage for display
 		TimeSpinner tsStart = new TimeSpinner(schi.getStart());
-		
 		TimeSpinner tsEnd = new TimeSpinner(schi.getEnd());
 
-		
+		//Display spinners; controls are disabled as better UI is in place
 		JSpinner spStart = new JSpinner();
 		spStart.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
@@ -129,17 +131,15 @@ public class PanelLocationEdit extends JPanel {
 			}
 		});
 		SwingUtil.hideSpinnerArrow(spStart);
-		//Centers text: https://stackoverflow.com/questions/22702014/how-to-center-text-of-a-jspinner
-		((JSpinner.DefaultEditor)spStart.getEditor()).getTextField().setHorizontalAlignment(JTextField.CENTER);
 		spStart.setModel(tsStart);
 		GridBagConstraints gbc_spStart = new GridBagConstraints();
 		gbc_spStart.fill = GridBagConstraints.HORIZONTAL;
 		gbc_spStart.insets = new Insets(0, 0, 5, 5);
 		gbc_spStart.gridx = 1;
 		gbc_spStart.gridy = 4;
-		//spStart.setVisible(false);
 		add(spStart, gbc_spStart);
 		
+		//Second spinner
 		JSpinner spEnd = new JSpinner();
 		spEnd.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
@@ -147,8 +147,6 @@ public class PanelLocationEdit extends JPanel {
 				validateAdd.run();
 			}
 		});
-		//Centers text: https://stackoverflow.com/questions/22702014/how-to-center-text-of-a-jspinner
-		((JSpinner.DefaultEditor)spEnd.getEditor()).getTextField().setHorizontalAlignment(JTextField.CENTER);
 		SwingUtil.hideSpinnerArrow(spEnd);
 		spEnd.setModel(tsEnd);
 		GridBagConstraints gbc_spEnd = new GridBagConstraints();
@@ -159,8 +157,7 @@ public class PanelLocationEdit extends JPanel {
 		add(spEnd, gbc_spEnd);
 		
 		
-
-		
+		//Time setting links
 		JButton btnStart = new JButton("Start");
 		btnStart.setBorder(new RoundedBorder(30));
 		btnStart.setBackground(Color.WHITE);
@@ -181,6 +178,7 @@ public class PanelLocationEdit extends JPanel {
 		gbc_btnStart.gridy = 3;
 		add(btnStart, gbc_btnStart);
 		
+		//Same
 		JButton btnEnd = new JButton("End");
 		btnEnd.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 		btnEnd.setBorder(new RoundedBorder(30));
@@ -202,6 +200,7 @@ public class PanelLocationEdit extends JPanel {
 		gbc_btnEnd.gridy = 3;
 		add(btnEnd, gbc_btnEnd);
 		
+		//Offset fixing
 		Component rigidArea = Box.createRigidArea(new Dimension(20, 20));
 		GridBagConstraints gbc_rigidArea = new GridBagConstraints();
 		gbc_rigidArea.insets = new Insets(0, 0, 5, 5);
@@ -216,6 +215,7 @@ public class PanelLocationEdit extends JPanel {
 		gbc_rigidArea_1.gridy = 0;
 		add(rigidArea_1, gbc_rigidArea_1);
 		
+		//Warning label for errors
 		JLabel lblError = new JLabel("Start time is after end time");
 		lblError.setFont(SwingUtil.getFontSub().deriveFont(17f));
 		lblError.setVisible(false);
@@ -242,11 +242,12 @@ public class PanelLocationEdit extends JPanel {
 		gbl_panel_2.rowWeights = new double[]{0.0, Double.MIN_VALUE};
 		panel.setLayout(gbl_panel_2);
 		
+		//Button setup
 		JButton btnBack = new JButton("");
 		btnBack.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				bac.back();
+				bac.back(false);
 			}
 		});
 		btnBack.setBorder(new RoundedBorder(30));
@@ -263,7 +264,7 @@ public class PanelLocationEdit extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				sch.removeScheduleItem(schi);
-				bac.back();
+				bac.back(true);
 			}
 		});
 		
@@ -295,7 +296,7 @@ public class PanelLocationEdit extends JPanel {
 					if (sch.doesOverlap(schi)) {
 						br.setMainPanel(new PanelConfirmOverlap((accept) -> {
 							if (accept) {
-								bac.back();
+								bac.back(false);
 							} else {
 								schi.setStart(oldStart);
 								schi.setEnd(oldEnd);
@@ -303,7 +304,7 @@ public class PanelLocationEdit extends JPanel {
 							}
 						}));
 					} else {
-						bac.back();
+						bac.back(false);
 					}
 				}
 			}
@@ -338,6 +339,7 @@ public class PanelLocationEdit extends JPanel {
 		gbc_rigidArea_5.gridy = 2;
 		add(rigidArea_5, gbc_rigidArea_5);
 		
+		//Validation function; ensures user cannot OK with an invalid input
 		validateAdd = () -> {
 			clock.setFrom(((TimeSpinner) spStart.getModel()).getCurrent());
 			clock.setTo(((TimeSpinner) spEnd.getModel()).getCurrent());

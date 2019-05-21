@@ -13,6 +13,8 @@ public interface IWeatherBlockDayStats extends IWeatherBlock {
 	 * 
 	 * <br><br><b>Unit: EPOCH SECONDS</b>
 	 * 
+	 * null val: Long.MIN_VALUE
+	 * 
 	 * @return Sunrise of the day in epoch seconds
 	 */
 	public long getWeatherSunrise();
@@ -21,6 +23,8 @@ public interface IWeatherBlockDayStats extends IWeatherBlock {
 	 * Get sunset on day of block validity
 	 * 
 	 * <br><br><b>Unit: EPOCH SECONDS</b>
+	 * 
+	 * null val: Long.MIN_VALUE
 	 * 
 	 * @return Sunset of the day in epoch seconds
 	 */

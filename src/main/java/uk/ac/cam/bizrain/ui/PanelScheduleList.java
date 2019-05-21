@@ -208,6 +208,27 @@ public class PanelScheduleList extends JPanel {
 		gbc_rigidArea_2.gridy = 2*pos;
 		panel.add(rigidArea_2, gbc_rigidArea_2);
 		
+		if (br.sm.getSchedules().size() == 0) {
+			JLabel panel_1 = new JLabel("Press the + to new schedule");
+			panel_1.setFont(SwingUtil.getFontTitle().deriveFont(16f));
+			panel_1.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					br.setMainPanel(new PanelAddSchedule(br, () -> br.setMainPanel(beme), s -> {
+						br.sm.addSchedule(new Schedule(s));
+						beme.reschedule(br, pan, LocalTimeToEpoch.getDefault());
+						br.setMainPanel(beme);
+					}));
+				}
+			});
+			GridBagConstraints gbc_panel_1 = new GridBagConstraints();
+			gbc_panel_1.insets = new Insets(0, 0, 0, 5);
+			gbc_panel_1.anchor = GridBagConstraints.CENTER;
+			gbc_panel_1.gridx = 1;
+			gbc_panel_1.gridy = 2*pos+1;
+			panel.add(panel_1, gbc_panel_1);
+		}
+		
 		pan.setViewportView(panel);
 		
 		invalidate();

@@ -16,6 +16,8 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import uk.ac.cam.bizrain.Bizrain;
 import uk.ac.cam.bizrain.ui.comp.RoundedBorder;
@@ -70,11 +72,13 @@ public class PanelAddSchedule extends JPanel {
 		
 		//View
 		//////
+		
+		//Layout setup
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[]{0, 21, 0, 0, 0, 0};
-		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0};
+		gridBagLayout.rowHeights = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 		gridBagLayout.columnWeights = new double[]{0.0, 0.0, 1.0, 1.0, 0.0, Double.MIN_VALUE};
-		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE};
+		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 1.0, 0.0, 0.0, Double.MIN_VALUE};
 		setLayout(gridBagLayout);
 		
 		Component rigidArea = Box.createRigidArea(new Dimension(20, 20));
@@ -114,6 +118,8 @@ public class PanelAddSchedule extends JPanel {
 		gbc_rigidArea_5.gridy = 2;
 		add(rigidArea_5, gbc_rigidArea_5);
 		
+		//Label indicating box
+		//Spaces are to ensure alignment
 		JLabel lblName = new JLabel("     Name:");
 		lblName.setFont(SwingUtil.getFontSub().deriveFont(12f).deriveFont(Font.BOLD));
 		GridBagConstraints gbc_lblName = new GridBagConstraints();
@@ -124,6 +130,7 @@ public class PanelAddSchedule extends JPanel {
 		gbc_lblName.gridy = 3;
 		add(lblName, gbc_lblName);
 		
+		//Main textbox
 		textField = new JTextField();
 		textField.setBorder(new RoundedBorder(30));
 		textField.setBackground(Color.WHITE);
@@ -137,13 +144,24 @@ public class PanelAddSchedule extends JPanel {
 		add(textField, gbc_textField);
 		textField.setColumns(10);
 		
+		JLabel lblError = new JLabel("No name entered");
+		lblError.setFont(SwingUtil.getFontTitle().deriveFont(15f).deriveFont(Font.BOLD));
+		GridBagConstraints gbc_lblError = new GridBagConstraints();
+		gbc_lblError.gridwidth = 3;
+		gbc_lblError.insets = new Insets(0, 0, 5, 5);
+		gbc_lblError.gridx = 1;
+		gbc_lblError.gridy = 6;
+		add(lblError, gbc_lblError);
+		lblError.setVisible(false);
+		
+		//Button panel to make alignment easier
 		JPanel panelButtons = new JPanel();
 		GridBagConstraints gbc_panelButtons = new GridBagConstraints();
 		gbc_panelButtons.gridwidth = 3;
 		gbc_panelButtons.insets = new Insets(0, 0, 5, 5);
 		gbc_panelButtons.fill = GridBagConstraints.HORIZONTAL;
 		gbc_panelButtons.gridx = 1;
-		gbc_panelButtons.gridy = 6;
+		gbc_panelButtons.gridy = 8;
 		add(panelButtons, gbc_panelButtons);
 		GridBagLayout gbl_panelButtons = new GridBagLayout();
 		gbl_panelButtons.columnWidths = new int[]{0, 0, 0};
@@ -175,13 +193,13 @@ public class PanelAddSchedule extends JPanel {
 		GridBagConstraints gbc_rigidArea_2 = new GridBagConstraints();
 		gbc_rigidArea_2.insets = new Insets(0, 0, 0, 5);
 		gbc_rigidArea_2.gridx = 0;
-		gbc_rigidArea_2.gridy = 7;
+		gbc_rigidArea_2.gridy = 9;
 		add(rigidArea_2, gbc_rigidArea_2);
 		
 		Component rigidArea_3 = Box.createRigidArea(new Dimension(20, 20));
 		GridBagConstraints gbc_rigidArea_3 = new GridBagConstraints();
 		gbc_rigidArea_3.gridx = 4;
-		gbc_rigidArea_3.gridy = 7;
+		gbc_rigidArea_3.gridy = 9;
 		add(rigidArea_3, gbc_rigidArea_3);
 
 		// CONTROLLER
@@ -200,6 +218,45 @@ public class PanelAddSchedule extends JPanel {
 				back.back();
 			}
 		});
+		
+		textField.getDocument().addDocumentListener(new DocumentListener() {
+			
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				validate();
+			}
+			
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				validate();
+			}
+			
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				validate();
+			}
+			
+			public void validate() {
+				if (textField.getText() == null || textField.getText().equals("")) {
+					btnAdd.setEnabled(false);
+					lblError.setVisible(true);
+				} else {
+					btnAdd.setEnabled(true);
+					lblError.setVisible(false);
+				}
+			}
+		});
+		
+		
+		//TODO DEDUPE
+		if (textField.getText() == null || textField.getText().equals("")) {
+			btnAdd.setEnabled(false);
+			lblError.setVisible(true);
+		} else {
+			btnAdd.setEnabled(true);
+			lblError.setVisible(false);
+		}
+		
 	}
 
 }

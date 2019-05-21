@@ -32,6 +32,8 @@ import uk.ac.cam.bizrain.schedule.LocalTimeToEpoch;
 import uk.ac.cam.bizrain.schedule.ScheduleItem;
 import uk.ac.cam.bizrain.ui.comp.SwingUtil;
 import uk.ac.cam.bizrain.weather.IWeatherData;
+import uk.ac.cam.bizrain.weather.block.IWeatherBlock;
+import uk.ac.cam.bizrain.weather.block.IWeatherBlockDayStats;
 import uk.ac.cam.bizrain.weather.block.IWeatherBlockWorst;
 
 /**
@@ -115,20 +117,20 @@ public class PanelLocation extends JPanel {
 			line1 = line1.substring(0, l1clip-3) + "...";
 		}
 		
-		int l2clip = 14;
+		int l2clip = 30;
 		if (line2 != null && line2.length() > l2clip) {
 			line2 = line2.substring(0, l2clip-3) + "...";
 		}
 		
-		int l3clip = 14;
+		int l3clip = 30;
 		if (line3 != null && line3.length() > l3clip) {
 			line3 = line3.substring(0, l3clip-3) + "...";
 		}
 		
 		GridBagLayout gridBagLayout = new GridBagLayout();
-		gridBagLayout.columnWidths = new int[]{0, 0, 0, 0};
+		gridBagLayout.columnWidths = new int[]{0, 0, 0, 0, 0};
 		gridBagLayout.rowHeights = new int[]{0, 0, 0, 17, 7, 0};
-		gridBagLayout.columnWeights = new double[]{1.0, 0.0, 1.0, Double.MIN_VALUE};
+		gridBagLayout.columnWeights = new double[]{1.0, 0.0, 0.0, 1.0, Double.MIN_VALUE};
 		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
 		setLayout(gridBagLayout);
 		
@@ -136,13 +138,14 @@ public class PanelLocation extends JPanel {
 		GridBagConstraints gbc_rigidArea = new GridBagConstraints();
 		gbc_rigidArea.gridheight = 5;
 		gbc_rigidArea.insets = new Insets(0, 0, 0, 5);
-		gbc_rigidArea.gridx = 1;
+		gbc_rigidArea.gridx = 2;
 		gbc_rigidArea.gridy = 0;
 		add(rigidArea, gbc_rigidArea);
 		
 		JLabel lbllocationName = new JLabel(line1);
 		lbllocationName.setFont(SwingUtil.getFontTitle().deriveFont(22f));
 		GridBagConstraints gbc_lbllocationName = new GridBagConstraints();
+		gbc_lbllocationName.gridwidth = 2;
 		gbc_lbllocationName.anchor = GridBagConstraints.WEST;
 		gbc_lbllocationName.insets = new Insets(0, 0, 5, 5);
 		gbc_lbllocationName.gridx = 0;
@@ -152,6 +155,7 @@ public class PanelLocation extends JPanel {
 		JLabel lbllocationCity = new JLabel(line2);
 		lbllocationCity.setFont(SwingUtil.getFontSub().deriveFont(14f));
 		GridBagConstraints gbc_lbllocationCity = new GridBagConstraints();
+		gbc_lbllocationCity.gridwidth = 2;
 		gbc_lbllocationCity.anchor = GridBagConstraints.WEST;
 		gbc_lbllocationCity.insets = new Insets(0, 0, 5, 5);
 		gbc_lbllocationCity.gridx = 0;
@@ -161,6 +165,7 @@ public class PanelLocation extends JPanel {
 		JLabel lbllocationCountry = new JLabel(line3);
 		lbllocationCountry.setFont(SwingUtil.getFontSub().deriveFont(14f));
 		GridBagConstraints gbc_lbllocationCountry = new GridBagConstraints();
+		gbc_lbllocationCountry.gridwidth = 2;
 		gbc_lbllocationCountry.anchor = GridBagConstraints.WEST;
 		gbc_lbllocationCountry.insets = new Insets(0, 0, 5, 5);
 		gbc_lbllocationCountry.gridx = 0;
@@ -196,9 +201,29 @@ public class PanelLocation extends JPanel {
 		lblmax.setFont(SwingUtil.getFontNum().deriveFont(18f).deriveFont(Font.BOLD));
 		GridBagConstraints gbc_lblmax = new GridBagConstraints();
 		gbc_lblmax.anchor = GridBagConstraints.SOUTHEAST;
-		gbc_lblmax.gridx = 2;
+		gbc_lblmax.gridx = 3;
 		gbc_lblmax.gridy = 4;
 		add(lblmax, gbc_lblmax);
+		
+		JLabel lblSunchange = new JLabel("");
+		lblSunchange.setIcon(new ImageIcon(PanelLocation.class.getResource("/uk/ac/cam/bizrain/ui/weather/cl-sunchange.png")));
+		GridBagConstraints gbc_lblSunchange = new GridBagConstraints();
+		gbc_lblSunchange.insets = new Insets(0, 0, 0, 5);
+		gbc_lblSunchange.gridx = 1;
+		gbc_lblSunchange.gridy = 4;
+		long startTim = lt2e.toEpoch(schi.getStart());
+		long endTim = lt2e.toEpoch(schi.getEnd());
+		IWeatherBlock cwb = locWeather.getWeatherDataAt((startTim+endTim)/2);
+		
+		if (cwb instanceof IWeatherBlockDayStats) {
+			if ((startTim < ((IWeatherBlockDayStats) cwb).getWeatherSunrise() 
+					&& ((IWeatherBlockDayStats) cwb).getWeatherSunrise() < endTim)
+				|| (startTim < ((IWeatherBlockDayStats) cwb).getWeatherSunset() 
+					&& ((IWeatherBlockDayStats) cwb).getWeatherSunset() < endTim)) {
+				add(lblSunchange, gbc_lblSunchange);
+			}
+		}
+		
 		
 		
 		
@@ -208,10 +233,10 @@ public class PanelLocation extends JPanel {
 		gbc_lblIco.anchor = GridBagConstraints.EAST;
 		gbc_lblIco.gridheight = 4;
 		gbc_lblIco.insets = new Insets(0, 0, 5, 0);
-		gbc_lblIco.gridx = 2;
+		gbc_lblIco.gridx = 3;
 		gbc_lblIco.gridy = 0;
 		add(lblIco, gbc_lblIco);
-
+		
 		showRain = worst.getWeatherMaxPrecipProb() > 0.65;
 	}
 	

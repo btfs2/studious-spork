@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.ComponentOrientation;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -296,6 +297,7 @@ public class PanelLocationSearch extends JPanel {
 		setLayout(gridBagLayout);
 		
 		JLabel lblSearching = new JLabel("Searching...");
+		lblSearching.setFont(SwingUtil.getFontTitle().deriveFont(15f).deriveFont(Font.BOLD));
 		lblSearching.setVisible(false);
 		GridBagConstraints gbc_lblSearching = new GridBagConstraints();
 		gbc_lblSearching.insets = new Insets(0, 0, 5, 5);

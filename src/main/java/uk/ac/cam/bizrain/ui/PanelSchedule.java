@@ -13,6 +13,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
@@ -121,6 +122,7 @@ public class PanelSchedule extends JPanel {
 				br.setMainPanel(new PanelConfirmDelete(sch.getScheduleName(), (delete) -> {
 					if (delete) {
 						br.sm.remSchedule(sch);
+						br.sm.saveSchedules();
 						ret.ret();
 					} else {
 						br.setMainPanel(beme);
@@ -233,11 +235,19 @@ public class PanelSchedule extends JPanel {
 			panel_1.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
-					br.setMainPanel(new PanelLocationEdit(br, sch, si, () -> {
+					/**/
+					br.setMainPanel(new PanelLocationEdit(br, sch, si, (delete) -> {
 						beme.reschedule(br, pan, sch, LocalTimeToEpoch.getDefault());
 						br.setMainPanel(beme);
 						br.sm.saveSchedules();
 					}));
+					/*
+					br.setMainPanel(new PanelMoreInfo(br, sch, si, lt2e, () -> {
+						beme.reschedule(br, pan, sch, LocalTimeToEpoch.getDefault());
+						br.setMainPanel(beme);
+						br.sm.saveSchedules();
+					}));
+					*/
 				}
 			});
 			
@@ -257,6 +267,28 @@ public class PanelSchedule extends JPanel {
 		gbc_rigidArea_2.gridx = 2;
 		gbc_rigidArea_2.gridy = 2*pos;
 		panel.add(rigidArea_2, gbc_rigidArea_2);
+		
+		if (sch.getItems().size() == 0) {
+			JLabel panel_1 = new JLabel("Press the + to new item");
+			panel_1.setFont(SwingUtil.getFontTitle().deriveFont(16f));
+			panel_1.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					br.setMainPanel(new PanelLocationSearch(br, sch, (si) -> {
+						sch.addScheduleItem(si);
+						br.sm.saveSchedules();
+						beme.reschedule(br, pan, sch, LocalTimeToEpoch.getDefault());
+						br.setMainPanel(beme);
+					}, () -> br.setMainPanel(beme)));
+				}
+			});
+			GridBagConstraints gbc_panel_1 = new GridBagConstraints();
+			gbc_panel_1.insets = new Insets(0, 0, 0, 5);
+			gbc_panel_1.anchor = GridBagConstraints.CENTER;
+			gbc_panel_1.gridx = 1;
+			gbc_panel_1.gridy = 2*pos+1;
+			panel.add(panel_1, gbc_panel_1);
+		}
 		
 		pan.setViewportView(panel);
 		

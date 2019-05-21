@@ -137,7 +137,7 @@ public class PanelTimeSelector extends JPanel {
 		gbc_btnBack.gridx = 1;
 		gbc_btnBack.gridy = 5;
 		add(btnBack, gbc_btnBack);
-		btnOk.addMouseListener(new MouseAdapter() {
+		btnBack.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (timeSelector.isStart()) {
